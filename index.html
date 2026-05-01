@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PosudaMarket — Новая архитектура</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #f5f8fa; --surface: #ffffff; --surface2: #f9fafb; --surface3: #f1f4f9;
+    --border: #e8edf3; --border2: #d1dae8;
+    --text: #1e2129; --text2: #3f4254; --text3: #6c7293; --muted: #99a1b7;
+    --primary: #3e97ff; --primary-soft: #eff6ff;
+    --success: #17c653; --success-soft: #e9faf0;
+    --danger: #f8285a; --danger-soft: #fff0f3;
+    --warning: #f6b100; --warning-soft: #fff8ea;
+    --info: #7239ea; --info-soft: #f3eeff;
+    --orange: #fd7e14; --orange-soft: #fff4e5;
+    --font: 'Inter', sans-serif;
+  }
+  body { font-family: var(--font); background: #0f172a; color: var(--text); }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #0a1f3c 50%, #0f172a 100%);
+    padding: 60px 40px;
+  }
+  .cover-eyebrow { display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(62,151,255,.15); border: 1px solid rgba(62,151,255,.3);
+    border-radius: 100px; padding: 6px 18px; color: #7ec8ff;
+    font-size: 13px; font-weight: 600; margin-bottom: 32px; }
+  .cover h1 { font-size: 58px; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 16px; }
+  .cover h1 span { color: #3e97ff; }
+  .cover-sub { font-size: 19px; color: #64748b; max-width: 640px; margin-bottom: 56px; line-height: 1.6; }
+  .flow-diagram { display: flex; align-items: center; gap: 16px; margin-bottom: 48px; flex-wrap: wrap; justify-content: center; }
+  .flow-node { padding: 14px 24px; border-radius: 12px; font-weight: 700; font-size: 15px; text-align: center; }
+  .flow-node.admin { background: rgba(114,57,234,.2); border: 1px solid rgba(114,57,234,.4); color: #c4a0ff; }
+  .flow-node.wholesale { background: rgba(62,151,255,.2); border: 1px solid rgba(62,151,255,.4); color: #7ec8ff; }
+  .flow-node.shop { background: rgba(23,198,83,.2); border: 1px solid rgba(23,198,83,.4); color: #6ee7a0; }
+  .flow-node small { display: block; font-size: 11px; font-weight: 500; opacity: .7; margin-top: 4px; }
+  .flow-arrow { color: #334155; font-size: 24px; font-weight: 300; }
+  .cover-hint { color: #334155; font-size: 13px; }
+
+  /* ARCH DIAGRAM */
+  .arch-section { background: #0f172a; padding: 80px; }
+  .arch-title { font-size: 36px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
+  .arch-sub { font-size: 16px; color: #64748b; text-align: center; margin-bottom: 56px; }
+  .arch-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .arch-card { background: #1e293b; border-radius: 14px; padding: 28px; }
+  .arch-card h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .arch-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .arch-card ul li { font-size: 13px; color: #94a3b8; padding-left: 16px; position: relative; line-height: 1.5; }
+  .arch-card ul li::before { content: '→'; position: absolute; left: 0; color: #475569; }
+  .subdomain-example { margin-top: 20px; background: #0f172a; border-radius: 8px; padding: 12px 16px; font-family: monospace; font-size: 13px; color: #7ec8ff; }
+  .subdomain-example span { color: #475569; }
+
+  /* SECTION COVER */
+  .section-cover { min-height: 35vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 70px 40px; }
+  .section-cover.admin { background: linear-gradient(135deg, #1a0533 0%, #2d1465 100%); }
+  .section-cover.wholesale { background: linear-gradient(135deg, #001833 0%, #0a3566 100%); }
+  .section-cover.shop { background: linear-gradient(135deg, #001a0e 0%, #0a3320 100%); }
+  .section-cover h2 { font-size: 44px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+  .section-cover p { font-size: 17px; color: rgba(255,255,255,.55); max-width: 520px; margin-bottom: 28px; }
+  .perm-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .tag { padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .tag-purple { background: rgba(114,57,234,.2); border: 1px solid rgba(114,57,234,.4); color: #c4a0ff; }
+  .tag-blue { background: rgba(62,151,255,.2); border: 1px solid rgba(62,151,255,.4); color: #7ec8ff; }
+  .tag-green { background: rgba(23,198,83,.2); border: 1px solid rgba(23,198,83,.4); color: #6ee7a0; }
+  .tag-red { background: rgba(248,40,90,.1); border: 1px solid rgba(248,40,90,.3); color: #ff8aaa; }
+
+  /* PAGE */
+  .page-section { background: var(--bg); padding: 56px 72px; }
+  .screen-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 20px; }
+  .screen-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .screen-desc { font-size: 14px; color: var(--text3); margin-bottom: 28px; max-width: 680px; line-height: 1.6; }
+  .note { display: flex; gap: 12px; background: #fff; border-radius: 0 8px 8px 0; padding: 13px 18px; margin-bottom: 24px; font-size: 13px; line-height: 1.5; }
+  .note.n-purple { border-left: 4px solid var(--info); }
+  .note.n-blue { border-left: 4px solid var(--primary); }
+  .note.n-green { border-left: 4px solid var(--success); }
+  .note strong { display: block; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .note p { color: var(--text3); margin: 0; }
+  .screen-wrap { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.07); margin-bottom: 56px; }
+
+  /* TOPBAR */
+  .topbar { display: flex; align-items: center; background: var(--surface); border-bottom: 1px solid var(--border); height: 60px; padding: 0 22px; gap: 6px; }
+  .logo { font-size: 17px; font-weight: 800; color: var(--text); margin-right: 36px; white-space: nowrap; }
+  .logo span { color: var(--primary); }
+  .logo.green span { color: var(--success); }
+  .nav { display: flex; gap: 2px; flex: 1; }
+  .ni { display: flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text3); white-space: nowrap; }
+  .ni.act { background: var(--primary-soft); color: var(--primary); }
+  .ni.act.green { background: var(--success-soft); color: var(--success); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .role-pill { padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .rp-admin { background: var(--info-soft); color: var(--info); }
+  .rp-wholesale { background: var(--primary-soft); color: var(--primary); }
+  .rp-shop { background: var(--success-soft); color: var(--success); }
+  .ava { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+
+  /* SUBDOMAIN BAR */
+  .subdomain-bar { background: #1e293b; padding: 7px 22px; display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .sdb-icon { color: #17c653; font-size: 14px; }
+  .sdb-url { font-family: monospace; color: #94a3b8; }
+  .sdb-url .sdb-sub { color: #7ec8ff; font-weight: 700; }
+  .sdb-url .sdb-domain { color: #475569; }
+
+  /* CONTENT */
+  .body { padding: 24px; }
+  .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .ph { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; }
+  .pt { font-size: 21px; font-weight: 700; color: var(--text); }
+  .ps { font-size: 13px; color: var(--text3); margin-top: 3px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-light { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); }
+  .btn-danger-soft { background: var(--danger-soft); color: var(--danger); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-xs { padding: 4px 10px; font-size: 11px; }
+
+  /* STATS */
+  .stats { display: grid; gap: 14px; margin-bottom: 22px; }
+  .stats-4 { grid-template-columns: repeat(4,1fr); }
+  .stats-3 { grid-template-columns: repeat(3,1fr); }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px; }
+  .stat-ico { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .ic-blue { background: var(--primary-soft); }
+  .ic-purple { background: var(--info-soft); }
+  .ic-orange { background: var(--orange-soft); }
+  .ic-green { background: var(--success-soft); }
+  .ic-red { background: var(--danger-soft); }
+  .stat-label { font-size: 11px; color: var(--text3); font-weight: 500; }
+  .stat-val { font-size: 24px; font-weight: 800; color: var(--text); line-height: 1; }
+  .stat-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .ch { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 18px 12px; border-bottom: 1px solid var(--border); }
+  .ct { font-size: 14px; font-weight: 700; color: var(--text); }
+  .cs { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { padding: 9px 15px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  td { padding: 11px 15px; border-bottom: 1px solid var(--border2); color: var(--text2); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .ctable tr:hover td { background: rgba(255,255,255,.05); color: #e2e8f0; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .b-success { background: var(--success-soft); color: var(--success); }
+  .b-warning { background: var(--warning-soft); color: var(--warning); }
+  .b-info { background: var(--info-soft); color: var(--info); }
+  .b-muted { background: var(--surface3); color: var(--muted); }
+  .b-danger { background: var(--danger-soft); color: var(--danger); }
+  .b-blue { background: var(--primary-soft); color: var(--primary); }
+
+  /* PRODUCT GRID */
+  .product-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; padding: 18px; }
+  .pc { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); }
+  .pc-img { height: 110px; background: var(--surface3); display: flex; align-items: center; justify-content: center; font-size: 34px; }
+  .pc-body { padding: 12px; }
+  .pc-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .pc-sku { font-size: 11px; color: var(--muted); margin-bottom: 6px; font-family: monospace; }
+  .pc-cat { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+  .pc-price { font-size: 20px; font-weight: 800; }
+  .pc-price-label { font-size: 10px; color: var(--muted); font-weight: 500; margin-top: 1px; }
+  .price-blue { color: var(--primary); }
+  .price-green { color: var(--success); }
+
+  /* FORM */
+  .form-group { margin-bottom: 14px; }
+  .fl { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 5px; display: block; }
+  .fc { width: 100%; padding: 8px 12px; border: 1px solid var(--border2); border-radius: 8px; font-size: 13px; color: var(--text); background: var(--surface); outline: none; font-family: var(--font); }
+  .fc:focus { border-color: var(--primary); }
+  .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .fr3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .form-section { padding: 20px; }
+
+  /* CATEGORY TREE */
+  .cat-tree { padding: 16px; }
+  .cat-node { padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text2); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .cat-node.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+  .cat-node.active.green { background: var(--success-soft); color: var(--success); }
+  .cat-child { padding-left: 24px; }
+  .cat-child .cat-node { font-weight: 400; font-size: 12px; }
+
+  /* CART SIDEBAR */
+  .shop-layout { display: flex; }
+  .cat-sidebar { width: 200px; border-right: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+  .cat-sidebar-title { padding: 14px 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .shop-main { flex: 1; background: var(--bg); padding: 20px; overflow: auto; }
+  .cart-sidebar { width: 260px; border-left: 1px solid var(--border); background: var(--surface); flex-shrink: 0; display: flex; flex-direction: column; }
+  .cart-title { padding: 14px 16px; font-size: 13px; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .cart-badge { background: var(--primary); color: #fff; border-radius: 100px; font-size: 11px; padding: 2px 8px; }
+  .cart-items { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .cart-item { padding: 10px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); }
+  .ci-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .ci-row { display: flex; align-items: center; justify-content: space-between; }
+  .ci-qty { display: flex; align-items: center; gap: 6px; }
+  .qty-btn { width: 22px; height: 22px; border-radius: 6px; background: var(--border); border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .ci-price { font-size: 13px; font-weight: 700; color: var(--primary); }
+  .cart-footer { padding: 14px; border-top: 1px solid var(--border); }
+  .cart-total { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .cart-total-label { font-size: 13px; color: var(--text3); }
+  .cart-total-val { font-size: 18px; font-weight: 800; color: var(--text); }
+
+  /* ORDER FORM */
+  .order-form-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; padding: 20px; }
+
+  /* SETTINGS */
+  .settings-layout { display: flex; min-height: 360px; }
+  .settings-nav { width: 200px; border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; }
+  .settings-nav-item { padding: 9px 18px; font-size: 13px; font-weight: 500; color: var(--text3); cursor: pointer; }
+  .settings-nav-item.active { color: var(--primary); font-weight: 600; background: var(--primary-soft); }
+  .settings-content { flex: 1; padding: 24px; }
+
+  /* COMPARE */
+  .compare-section { background: #0f172a; padding: 80px; }
+  .compare-title { font-size: 36px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
+  .compare-sub { font-size: 16px; color: #64748b; text-align: center; margin-bottom: 48px; }
+  .ctable { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; }
+  .ctable th { padding: 15px 18px; font-size: 13px; font-weight: 700; }
+  .ctable th:first-child { color: #64748b; font-weight: 600; font-size: 12px; }
+  .ctable td { padding: 12px 18px; border-top: 1px solid rgba(255,255,255,.05); font-size: 13px; color: #94a3b8; }
+  .ctable td:first-child { color: #e2e8f0; font-weight: 500; }
+  .th-admin { background: rgba(114,57,234,.3); color: #c4a0ff; text-align: center; }
+  .th-wholesale { background: rgba(62,151,255,.3); color: #7ec8ff; text-align: center; }
+  .th-shop { background: rgba(23,198,83,.3); color: #6ee7a0; text-align: center; }
+  .check { color: #17c653; font-size: 16px; display: block; text-align: center; }
+  .cross { color: #f8285a; font-size: 16px; display: block; text-align: center; }
+  .partial { color: #f6b100; font-size: 12px; font-weight: 600; display: block; text-align: center; }
+
+  /* TECH */
+  .tech-section { background: #0f172a; padding: 80px; }
+  .tech-title { font-size: 36px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
+  .tech-sub { font-size: 16px; color: #64748b; text-align: center; margin-bottom: 48px; }
+  .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto; }
+  .tech-card { background: #1e293b; border-radius: 12px; padding: 24px; }
+  .tech-card h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  .tc-purple h4 { color: #7239ea; border-left: 3px solid #7239ea; padding-left: 10px; }
+  .tc-blue h4 { color: #3e97ff; border-left: 3px solid #3e97ff; padding-left: 10px; }
+  .tc-green h4 { color: #17c653; border-left: 3px solid #17c653; padding-left: 10px; }
+  .tc-orange h4 { color: #fd7e14; border-left: 3px solid #fd7e14; padding-left: 10px; }
+  .tech-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .tech-card ul li { font-size: 13px; color: #94a3b8; padding-left: 16px; position: relative; line-height: 1.5; }
+  .tech-card ul li::before { content: '·'; position: absolute; left: 4px; color: #475569; }
+  .tech-card code { font-family: monospace; font-size: 12px; color: #7ec8ff; }
+  .tech-estimate { display: flex; justify-content: center; gap: 48px; margin-top: 48px; }
+  .te-item { text-align: center; }
+  .te-val { font-size: 36px; font-weight: 800; }
+  .te-label { color: #64748b; font-size: 13px; margin-top: 4px; }
+
+  /* DB SCHEMA */
+  .db-section { background: #0f172a; padding: 80px; }
+  .db-title { font-size: 36px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
+  .db-sub { font-size: 16px; color: #64748b; text-align: center; margin-bottom: 48px; }
+  .db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
+  .db-table { background: #1e293b; border-radius: 10px; overflow: hidden; }
+  .db-table-head { padding: 12px 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+  .dbt-purple { background: rgba(114,57,234,.3); color: #c4a0ff; }
+  .dbt-blue { background: rgba(62,151,255,.3); color: #7ec8ff; }
+  .dbt-green { background: rgba(23,198,83,.3); color: #6ee7a0; }
+  .dbt-orange { background: rgba(253,126,20,.3); color: #ffb347; }
+  .dbt-gray { background: rgba(148,163,184,.15); color: #94a3b8; }
+  .db-field { padding: 7px 16px; font-size: 12px; font-family: monospace; color: #94a3b8; border-top: 1px solid rgba(255,255,255,.04); display: flex; justify-content: space-between; }
+  .db-field.new { color: #7ec8ff; }
+  .db-field.key { color: #f6b100; }
+  .db-field-type { color: #475569; font-size: 11px; }
+  .db-new-badge { font-size: 9px; font-weight: 700; background: rgba(62,151,255,.2); color: #7ec8ff; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<div class="cover">
+  <div class="cover-eyebrow">🏗 Новая архитектура · PosudaMarket v2</div>
+  <h1>Мультитенантная<br><span>B2B платформа</span></h1>
+  <p class="cover-sub">Каждый оптовик — отдельный магазин на своём поддомене.<br>Магазины заходят к оптовику и делают заказы.</p>
+  <div class="flow-diagram">
+    <div class="flow-node admin">🛡 Администратор<small>Создаёт оптовиков</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node wholesale">📦 Оптовик<small>posuda-opt.pm.kz</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node shop">🏪 Магазин<small>Делает заказы</small></div>
+  </div>
+  <div class="cover-hint">↓ Прокрутите вниз</div>
+</div>
+
+<!-- ══════════════════ ARCHITECTURE ══════════════════ -->
+<div class="arch-section">
+  <div class="arch-title">Как работает система</div>
+  <div class="arch-sub">Три уровня, каждый со своей зоной ответственности</div>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <h3><span style="font-size:20px;">🛡</span> <span style="color:#c4a0ff;">Администратор</span></h3>
+      <ul>
+        <li>Заходит на основной домен <strong style="color:#e2e8f0;">pm.kz</strong></li>
+        <li>Создаёт аккаунты оптовиков</li>
+        <li>Назначает поддомен каждому оптовику</li>
+        <li>Видит всех пользователей и все заказы</li>
+        <li>Управляет глобальными настройками</li>
+      </ul>
+    </div>
+    <div class="arch-card">
+      <h3><span style="font-size:20px;">📦</span> <span style="color:#7ec8ff;">Оптовик</span></h3>
+      <ul>
+        <li>Работает на своём поддомене</li>
+        <li>Настраивает название магазина</li>
+        <li>Добавляет свои категории и товары</li>
+        <li>Видит заказы от своих магазинов</li>
+        <li>Управляет ценами на свои товары</li>
+      </ul>
+      <div class="subdomain-example">
+        <span>https://</span>optmarket<span>.pm.kz</span><br>
+        <span>https://</span>keramika-opt<span>.pm.kz</span>
+      </div>
+    </div>
+    <div class="arch-card">
+      <h3><span style="font-size:20px;">🏪</span> <span style="color:#6ee7a0;">Магазин</span></h3>
+      <ul>
+        <li>Заходит на поддомен оптовика и сразу видит каталог</li>
+        <li>Добавляет товары в корзину без регистрации</li>
+        <li>При оформлении заказа — предлагается войти или зарегистрироваться</li>
+        <li>Заказ уходит оптовику на подтверждение</li>
+        <li>После подтверждения получает накладную в WhatsApp</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ ADMIN SECTION ══════════════════ -->
+<div class="section-cover admin">
+  <div class="cover-eyebrow" style="background:rgba(114,57,234,.15);border-color:rgba(114,57,234,.3);color:#c4a0ff;">🛡 Роль 1 · Администратор</div>
+  <h2>Панель администратора</h2>
+  <p>Управляет оптовиками, видит всю систему, назначает поддомены</p>
+  <div class="perm-tags">
+    <span class="tag tag-purple">Создание оптовиков</span>
+    <span class="tag tag-purple">Назначение поддоменов</span>
+    <span class="tag tag-purple">Все заказы системы</span>
+    <span class="tag tag-purple">Все пользователи</span>
+    <span class="tag tag-purple">Глобальная статистика</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <!-- Admin: Dashboard -->
+  <div class="screen-label">Администратор · Экран 1</div>
+  <div class="screen-title">Дашборд администратора</div>
+  <div class="screen-desc">Общая статистика по всей платформе: количество оптовиков, магазинов, заказов со всех поддоменов</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni act">🏠 Главная</div>
+        <div class="ni">📦 Оптовики</div>
+        <div class="ni">👥 Пользователи</div>
+        <div class="ni">📋 Все заказы</div>
+        <div class="ni">⚙️ Настройки</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-admin">Администратор</span>
+        <div class="ava" style="background:var(--info)">АД</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Главная</div>
+      <div class="ph">
+        <div><div class="pt">Обзор платформы</div><div class="ps">Статистика по всем оптовикам и магазинам</div></div>
+        <button class="btn btn-primary">+ Добавить оптовика</button>
+      </div>
+      <div class="stats stats-4">
+        <div class="stat"><div class="stat-ico ic-purple">📦</div><div><div class="stat-label">Оптовиков</div><div class="stat-val">6</div><div class="stat-hint">активных поддоменов</div></div></div>
+        <div class="stat"><div class="stat-ico ic-green">🏪</div><div><div class="stat-label">Магазинов</div><div class="stat-val">41</div><div class="stat-hint">зарегистрировано</div></div></div>
+        <div class="stat"><div class="stat-ico ic-orange">📋</div><div><div class="stat-label">Заказов всего</div><div class="stat-val">284</div><div class="stat-hint">за всё время</div></div></div>
+        <div class="stat"><div class="stat-ico ic-blue">💰</div><div><div class="stat-label">Оборот</div><div class="stat-val">1.8М</div><div class="stat-hint">сумма всех заказов</div></div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="ch"><div><div class="ct">Оптовики</div><div class="cs">6 активных</div></div><button class="btn btn-light btn-sm">Все оптовики</button></div>
+          <table>
+            <thead><tr><th>Оптовик</th><th>Поддомен</th><th>Магазинов</th><th>Заказов</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Посудный мир</strong></td><td><code style="font-size:12px;color:var(--primary)">posudamir.pm.kz</code></td><td>12</td><td>94</td><td><span class="badge b-success">Активен</span></td></tr>
+              <tr><td><strong>Керамика Опт</strong></td><td><code style="font-size:12px;color:var(--primary)">keramika.pm.kz</code></td><td>8</td><td>61</td><td><span class="badge b-success">Активен</span></td></tr>
+              <tr><td><strong>Стекло Трейд</strong></td><td><code style="font-size:12px;color:var(--primary)">steklo.pm.kz</code></td><td>5</td><td>38</td><td><span class="badge b-success">Активен</span></td></tr>
+              <tr><td><strong>НержМаркет</strong></td><td><code style="font-size:12px;color:var(--primary)">nerzh.pm.kz</code></td><td>16</td><td>91</td><td><span class="badge b-warning">Настройка</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="ch"><div><div class="ct">Последние заказы</div><div class="cs">Все поддомены</div></div></div>
+          <table>
+            <thead><tr><th>Заказ</th><th>Оптовик</th><th>Магазин</th><th>Сумма</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><strong>#284</strong></td><td>Посудный мир</td><td>ООО Ромашка</td><td><strong>45 200 ₽</strong></td><td><span class="badge b-warning">В обработке</span></td></tr>
+              <tr><td><strong>#283</strong></td><td>Керамика Опт</td><td>ИП Краснов</td><td><strong>28 700 ₽</strong></td><td><span class="badge b-success">Подтверждён</span></td></tr>
+              <tr><td><strong>#282</strong></td><td>НержМаркет</td><td>Посуда Люкс</td><td><strong>112 000 ₽</strong></td><td><span class="badge b-success">Подтверждён</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin: Add Wholesale -->
+  <div class="screen-label">Администратор · Экран 2</div>
+  <div class="screen-title">Создание нового оптовика</div>
+  <div class="screen-desc">Администратор заполняет форму: данные компании, поддомен, логин и пароль для оптовика</div>
+  <div class="note n-purple"><div>🛡</div><div><strong>Ключевое поле — Поддомен</strong><p>Оптовик будет работать на адресе <code>поддомен.pm.kz</code>. Поддомен нельзя изменить после создания. Остальные поля оптовик может менять самостоятельно в настройках.</p></div></div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act">📦 Оптовики</div>
+        <div class="ni">👥 Пользователи</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-admin">Администратор</span><div class="ava" style="background:var(--info)">АД</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Главная / Оптовики / Новый оптовик</div>
+      <div class="ph"><div><div class="pt">Новый оптовик</div><div class="ps">Заполните данные компании</div></div></div>
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:20px;">
+        <div class="card">
+          <div class="ch"><div class="ct">Данные компании</div></div>
+          <div class="form-section">
+            <div class="fr">
+              <div class="form-group"><label class="fl">Название магазина *</label><input class="fc" value="Посудный мир" /></div>
+              <div class="form-group"><label class="fl">Поддомен * <span style="color:var(--muted);font-weight:400;">(нельзя изменить)</span></label>
+                <div style="display:flex;align-items:center;gap:0;">
+                  <input class="fc" style="border-radius:8px 0 0 8px;border-right:none;" value="posudamir" />
+                  <span style="padding:8px 12px;background:var(--surface3);border:1px solid var(--border2);border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);white-space:nowrap;">.pm.kz</span>
+                </div>
+              </div>
+            </div>
+            <div class="fr">
+              <div class="form-group"><label class="fl">Имя контактного лица</label><input class="fc" value="Иван Петров" /></div>
+              <div class="form-group"><label class="fl">Телефон</label><input class="fc" value="+7 (999) 123-45-67" /></div>
+            </div>
+            <div class="form-group"><label class="fl">Email (логин) *</label><input class="fc" value="opt@posudamir.ru" /></div>
+            <div class="fr">
+              <div class="form-group"><label class="fl">Пароль *</label><input class="fc" type="password" value="••••••••" /></div>
+              <div class="form-group"><label class="fl">Подтвердить пароль *</label><input class="fc" type="password" value="••••••••" /></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Предпросмотр</div></div>
+            <div style="padding:16px;">
+              <div style="background:var(--surface2);border-radius:8px;padding:12px;font-size:13px;margin-bottom:12px;">
+                <div style="color:var(--muted);font-size:11px;margin-bottom:4px;">Адрес магазина</div>
+                <div style="font-family:monospace;color:var(--primary);font-weight:600;">https://posudamir.pm.kz</div>
+              </div>
+              <div style="background:var(--success-soft);border-radius:8px;padding:12px;font-size:13px;">
+                <div style="color:var(--muted);font-size:11px;margin-bottom:4px;">Ссылка для магазинов</div>
+                <div style="font-family:monospace;color:var(--success);font-weight:600;font-size:12px;">https://posudamir.pm.kz/register</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Статус</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                <input type="radio" name="status" checked> <span>Активен сразу</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                <input type="radio" name="status"> <span>Создать неактивным</span>
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;">✓ Создать оптовика</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ WHOLESALE SECTION ══════════════════ -->
+<div class="section-cover wholesale">
+  <div class="cover-eyebrow" style="background:rgba(62,151,255,.15);border-color:rgba(62,151,255,.4);color:#7ec8ff;">📦 Роль 2 · Оптовик</div>
+  <h2>Кабинет оптовика</h2>
+  <p>Работает на своём поддомене, ведёт каталог, видит заказы от магазинов</p>
+  <div class="perm-tags">
+    <span class="tag tag-blue">Свой поддомен</span>
+    <span class="tag tag-blue">Название магазина</span>
+    <span class="tag tag-blue">Свои категории</span>
+    <span class="tag tag-blue">Свои товары + артикул</span>
+    <span class="tag tag-blue">Заказы от магазинов</span>
+    <span class="tag tag-red">✗ Не видит других оптовиков</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <!-- Wholesale: Dashboard -->
+  <div class="screen-label">Оптовик · Экран 1</div>
+  <div class="screen-title">Дашборд оптовика</div>
+  <div class="screen-desc">Оптовик заходит на свой поддомен. Видит только свои данные: товары, категории, заказы от магазинов</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni act">🏠 Главная</div>
+        <div class="ni">📦 Товары</div>
+        <div class="ni">🗂 Категории</div>
+        <div class="ni">📋 Заказы</div>
+        <div class="ni">⚙️ Настройки</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-wholesale">Оптовик</span>
+        <div class="ava" style="background:var(--primary)">ПМ</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Мой магазин — Посудный мир</div><div class="ps">posudamir.pm.kz · Ваш каталог и заказы от магазинов</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-light btn-sm">🔗 Ссылка для магазинов</button>
+          <button class="btn btn-primary">+ Добавить товар</button>
+        </div>
+      </div>
+      <div class="stats stats-4">
+        <div class="stat"><div class="stat-ico ic-orange">📦</div><div><div class="stat-label">Товаров</div><div class="stat-val">128</div><div class="stat-hint">в каталоге</div></div></div>
+        <div class="stat"><div class="stat-ico ic-blue">🗂</div><div><div class="stat-label">Категорий</div><div class="stat-val">14</div><div class="stat-hint">создано</div></div></div>
+        <div class="stat"><div class="stat-ico ic-green">🏪</div><div><div class="stat-label">Магазинов</div><div class="stat-val">12</div><div class="stat-hint">работают с вами</div></div></div>
+        <div class="stat"><div class="stat-ico ic-purple">📋</div><div><div class="stat-label">Заказов</div><div class="stat-val">94</div><div class="stat-hint">всего получено</div></div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="ch"><div><div class="ct">Новые заказы</div><div class="cs">От магазинов</div></div><button class="btn btn-light btn-sm">Все заказы</button></div>
+          <table>
+            <thead><tr><th>Заказ</th><th>Магазин</th><th>Позиций</th><th>Сумма</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><strong>#094</strong></td><td>ООО Ромашка</td><td>8 поз.</td><td><strong>45 200 ₽</strong></td><td><span class="badge b-warning">Новый</span></td></tr>
+              <tr><td><strong>#093</strong></td><td>Посуда Люкс</td><td>14 поз.</td><td><strong>87 600 ₽</strong></td><td><span class="badge b-success">Подтверждён</span></td></tr>
+              <tr><td><strong>#092</strong></td><td>ИП Краснов</td><td>5 поз.</td><td><strong>21 000 ₽</strong></td><td><span class="badge b-success">Подтверждён</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="ch"><div><div class="ct">Мои магазины</div><div class="cs">12 клиентов</div></div><button class="btn btn-light btn-sm" style="font-size:11px;">🔗 Скопировать ссылку</button></div>
+          <table>
+            <thead><tr><th>Магазин</th><th>Заказов</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ООО Ромашка</strong><div style="font-size:11px;color:var(--muted)">romashka@mail.ru</div></td><td>23</td><td><span class="badge b-success">Активен</span></td></tr>
+              <tr><td><strong>Посуда Люкс</strong><div style="font-size:11px;color:var(--muted)">info@posuda-lux.ru</div></td><td>18</td><td><span class="badge b-success">Активен</span></td></tr>
+              <tr><td><strong>ИП Краснов</strong><div style="font-size:11px;color:var(--muted)">krasnov@shop.ru</div></td><td>9</td><td><span class="badge b-muted">Новый</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale: Products -->
+  <div class="screen-label">Оптовик · Экран 2</div>
+  <div class="screen-title">Управление товарами</div>
+  <div class="screen-desc">Оптовик добавляет свои товары с артикулом. Категория — необязательна. Цена одна — та, которую видят магазины.</div>
+  <div class="note n-blue"><div>📦</div><div><strong>Артикул — новое поле</strong><p>Каждый товар имеет артикул (SKU). Это уникальный код товара у оптовика — помогает магазинам ссылаться на конкретную позицию при повторных заказах.</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act">📦 Товары</div>
+        <div class="ni">🗂 Категории</div>
+        <div class="ni">📋 Заказы</div>
+        <div class="ni">⚙️ Настройки</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Мои товары</div><div class="ps">128 позиций</div></div>
+        <button class="btn btn-primary">+ Добавить товар</button>
+      </div>
+      <div class="card">
+        <div class="ch">
+          <div style="display:flex;gap:8px;">
+            <select class="fc" style="width:auto;padding:6px 10px;font-size:12px;"><option>Все категории</option><option>Кастрюли</option><option>Сковороды</option></select>
+            <input class="fc" style="width:200px;padding:6px 10px;font-size:12px;" placeholder="🔍 Поиск по названию или арт...">
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Название</th><th>Артикул</th><th>Категория</th><th>Цена за коробку</th><th>Ед/кор</th><th>Цена за ед.</th><th>Статус</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Кастрюля 5л нерж. сталь</strong></td>
+              <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">KST-001</span></td>
+              <td><span class="badge b-muted">Кастрюли</span></td>
+              <td><strong>8 500 ₽</strong></td>
+              <td style="color:var(--muted)">10 шт</td>
+              <td><strong style="color:var(--primary)">850 ₽</strong></td>
+              <td><span class="badge b-success">Активен</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Сковорода 28см тефлон</strong></td>
+              <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">SKV-028</span></td>
+              <td><span class="badge b-muted">Сковороды</span></td>
+              <td><strong>6 200 ₽</strong></td>
+              <td style="color:var(--muted)">10 шт</td>
+              <td><strong style="color:var(--primary)">620 ₽</strong></td>
+              <td><span class="badge b-success">Активен</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Дуршлаг 24см</strong></td>
+              <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">DRS-024</span></td>
+              <td><span class="badge b-muted" style="background:var(--surface3);color:var(--muted);">— без категории</span></td>
+              <td><strong>3 600 ₽</strong></td>
+              <td style="color:var(--muted)">6 шт</td>
+              <td><strong style="color:var(--primary)">600 ₽</strong></td>
+              <td><span class="badge b-success">Активен</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale: Add Product form -->
+  <div class="screen-label">Оптовик · Экран 3</div>
+  <div class="screen-title">Форма добавления товара</div>
+  <div class="screen-desc">Поля товара: название, артикул, категория (необязательно), цена за коробку, единиц в коробке, фото, описание</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/products/new</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni">🏠 Главная</div><div class="ni act">📦 Товары</div><div class="ni">🗂 Категории</div><div class="ni">📋 Заказы</div></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Товары / Новый товар</div>
+      <div class="ph"><div><div class="pt">Новый товар</div></div><div style="display:flex;gap:8px;"><button class="btn btn-light btn-sm">Отмена</button><button class="btn btn-primary">Сохранить</button></div></div>
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;">
+        <div class="card">
+          <div class="ch"><div class="ct">Основная информация</div></div>
+          <div class="form-section">
+            <div class="fr">
+              <div class="form-group"><label class="fl">Название товара *</label><input class="fc" placeholder="Кастрюля 5л нерж. сталь" /></div>
+              <div class="form-group"><label class="fl">Артикул (SKU) *</label><input class="fc" placeholder="KST-001" /></div>
+            </div>
+            <div class="form-group"><label class="fl">Категория <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label>
+              <select class="fc"><option value="">— Без категории</option><option>Кастрюли</option><option>Сковороды</option><option>Ножи</option><option>Разное</option></select>
+            </div>
+            <div class="fr3">
+              <div class="form-group"><label class="fl">Цена за коробку *</label><input class="fc" placeholder="8 500 ₽" /></div>
+              <div class="form-group"><label class="fl">Единиц в коробке *</label><input class="fc" placeholder="10" /></div>
+              <div class="form-group"><label class="fl">Цена за единицу</label><input class="fc" placeholder="Авто: 850 ₽" style="background:var(--surface2);color:var(--muted);" readonly /></div>
+            </div>
+            <div class="form-group"><label class="fl">Примечание / описание</label><textarea class="fc" rows="3" placeholder="Дополнительная информация о товаре..."></textarea></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Фото товара</div></div>
+            <div style="padding:16px;">
+              <div style="height:120px;background:var(--surface3);border-radius:8px;border:2px dashed var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+                <div style="font-size:28px;">📷</div>
+                <div style="font-size:12px;color:var(--muted);">Нажмите для загрузки</div>
+                <div style="font-size:11px;color:var(--muted);">JPG, PNG до 5МБ</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Видимость</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;"><input type="checkbox" checked> Активен (виден магазинам)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale: Settings -->
+  <div class="screen-label">Оптовик · Экран 4</div>
+  <div class="screen-title">Настройки магазина</div>
+  <div class="screen-desc">Оптовик может менять название своего магазина и другие параметры</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/settings</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni">🏠 Главная</div><div class="ni">📦 Товары</div><div class="ni">🗂 Категории</div><div class="ni">📋 Заказы</div><div class="ni act">⚙️ Настройки</div></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="settings-layout">
+      <div class="settings-nav">
+        <div class="settings-nav-item active">🏪 Магазин</div>
+        <div class="settings-nav-item">👤 Профиль</div>
+        <div class="settings-nav-item">🔐 Безопасность</div>
+        <div class="settings-nav-item">🔗 Ссылки доступа</div>
+      </div>
+      <div class="settings-content">
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:20px;">Настройки магазина</div>
+        <div class="fr">
+          <div class="form-group"><label class="fl">Название магазина *</label><input class="fc" value="Посудный мир" /></div>
+          <div class="form-group"><label class="fl">Поддомен <span style="color:var(--muted);font-weight:400;">(нельзя изменить)</span></label>
+            <input class="fc" value="posudamir.pm.kz" readonly style="background:var(--surface2);color:var(--muted);" />
+          </div>
+        </div>
+        <div class="fr">
+          <div class="form-group"><label class="fl">Телефон для магазинов</label><input class="fc" value="+7 (999) 123-45-67" /></div>
+          <div class="form-group"><label class="fl">Email для связи</label><input class="fc" value="opt@posudamir.ru" /></div>
+        </div>
+        <div class="form-group"><label class="fl">Описание / условия работы</label><textarea class="fc" rows="3">Минимальный заказ от 5 000 ₽. Отгрузка в течение 2 рабочих дней.</textarea></div>
+        <div style="padding:14px;background:var(--primary-soft);border-radius:8px;margin-top:4px;">
+          <div style="font-size:12px;font-weight:600;color:var(--primary);margin-bottom:6px;">🔗 Ссылка для регистрации магазинов</div>
+          <div style="font-family:monospace;font-size:13px;color:var(--primary-dark);">https://posudamir.pm.kz/register</div>
+          <button class="btn btn-primary btn-sm" style="margin-top:10px;">Скопировать</button>
+        </div>
+        <div style="margin-top:20px;"><button class="btn btn-primary">Сохранить изменения</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ SHOP SECTION ══════════════════ -->
+<div class="section-cover shop">
+  <div class="cover-eyebrow" style="background:rgba(23,198,83,.15);border-color:rgba(23,198,83,.4);color:#6ee7a0;">🏪 Роль 3 · Магазин</div>
+  <h2>Кабинет магазина</h2>
+  <p>Заходит на сайт оптовика — сразу видит каталог. Регистрация только при оформлении заказа.</p>
+  <div class="perm-tags">
+    <span class="tag tag-green">Каталог сразу без входа</span>
+    <span class="tag tag-green">Корзина без регистрации</span>
+    <span class="tag tag-green">Регистрация при оформлении</span>
+    <span class="tag tag-green">Свои заказы и накладные</span>
+    <span class="tag tag-red">✗ Не видит других магазинов</span>
+    <span class="tag tag-red">✗ Не видит других оптовиков</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <!-- Shop: Public catalog (no login) -->
+  <div class="screen-label">Магазин · Экран 1</div>
+  <div class="screen-title">Публичный каталог — без регистрации</div>
+  <div class="screen-desc">Посетитель заходит на posudamir.pm.kz и сразу видит весь каталог товаров с ценами. Кнопки «Войти» и «Зарегистрироваться» есть в шапке, но они необязательны для просмотра.</div>
+  <div class="note n-green"><div>👁</div><div><strong>Открытый каталог</strong><p>Каталог доступен без авторизации. Добавить товары в корзину тоже можно сразу. Логин потребуется только в момент нажатия «Оформить заказ».</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz</span></span></div>
+    <div class="topbar">
+      <div class="logo green">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni act green">📦 Каталог</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-light btn-sm">Войти</button>
+        <button class="btn btn-success btn-sm">Зарегистрироваться</button>
+      </div>
+    </div>
+    <div class="shop-layout" style="min-height:440px;">
+      <div class="cat-sidebar">
+        <div class="cat-sidebar-title">Категории</div>
+        <div class="cat-tree">
+          <div class="cat-node" style="color:var(--text3);background:var(--surface3);margin-bottom:4px;">📦 Все товары <span style="margin-left:auto;font-size:11px;color:var(--muted);">128</span></div>
+          <div class="cat-node active green">🥘 Кастрюли <span style="margin-left:auto;font-size:11px;">32</span></div>
+          <div class="cat-node">🍳 Сковороды <span style="margin-left:auto;font-size:11px;color:var(--muted);">28</span></div>
+          <div class="cat-node">🔪 Ножи <span style="margin-left:auto;font-size:11px;color:var(--muted);">15</span></div>
+          <div class="cat-node">🫖 Чайники <span style="margin-left:auto;font-size:11px;color:var(--muted);">12</span></div>
+          <div class="cat-node">🥗 Миски и тарелки <span style="margin-left:auto;font-size:11px;color:var(--muted);">24</span></div>
+          <div class="cat-node" style="color:var(--muted);font-size:12px;">— Без категории <span style="margin-left:auto;font-size:11px;">17</span></div>
+        </div>
+      </div>
+      <div class="shop-main">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Кастрюли</div>
+          <span style="font-size:12px;color:var(--muted);">32 товара</span>
+          <input class="fc" style="margin-left:auto;width:200px;padding:6px 12px;font-size:12px;" placeholder="🔍 Поиск..." />
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="pc"><div class="pc-img">🥘</div><div class="pc-body"><div class="pc-name">Кастрюля 5л нерж. сталь</div><div class="pc-sku">Арт: KST-001</div><div class="pc-price price-green">850 ₽ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт</span></div><div class="pc-price-label">8 500 ₽ за коробку (10 шт)</div><div style="display:flex;gap:6px;margin-top:10px;"><input class="fc" style="width:60px;padding:6px 8px;text-align:center;font-size:13px;" value="1" /><button class="btn btn-success" style="flex:1;justify-content:center;font-size:12px;">+ В корзину</button></div></div></div>
+          <div class="pc"><div class="pc-img">🥘</div><div class="pc-body"><div class="pc-name">Кастрюля 3л эмаль</div><div class="pc-sku">Арт: KST-003</div><div class="pc-price price-green">420 ₽ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт</span></div><div class="pc-price-label">5 040 ₽ за коробку (12 шт)</div><div style="display:flex;gap:6px;margin-top:10px;"><input class="fc" style="width:60px;padding:6px 8px;text-align:center;font-size:13px;" value="2" /><button class="btn btn-success" style="flex:1;justify-content:center;font-size:12px;">+ В корзину</button></div></div></div>
+          <div class="pc"><div class="pc-img">🥘</div><div class="pc-body"><div class="pc-name">Кастрюля 8л нерж. с крышкой</div><div class="pc-sku">Арт: KST-008</div><div class="pc-price price-green">1 200 ₽ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт</span></div><div class="pc-price-label">12 000 ₽ за коробку (10 шт)</div><div style="display:flex;gap:6px;margin-top:10px;"><input class="fc" style="width:60px;padding:6px 8px;text-align:center;font-size:13px;" value="1" /><button class="btn btn-success" style="flex:1;justify-content:center;font-size:12px;">+ В корзину</button></div></div></div>
+        </div>
+      </div>
+      <div class="cart-sidebar">
+        <div class="cart-title">🛒 Корзина <span class="cart-badge">3</span></div>
+        <div class="cart-items">
+          <div class="cart-item"><div class="ci-name">Кастрюля 5л нерж. сталь</div><div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-001</div><div class="ci-row"><div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">1</span><button class="qty-btn">+</button></div><div class="ci-price">850 ₽</div></div></div>
+          <div class="cart-item"><div class="ci-name">Кастрюля 3л эмаль</div><div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-003</div><div class="ci-row"><div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">2</span><button class="qty-btn">+</button></div><div class="ci-price">840 ₽</div></div></div>
+          <div class="cart-item"><div class="ci-name">Кастрюля 8л нерж. с крышкой</div><div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-008</div><div class="ci-row"><div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">1</span><button class="qty-btn">+</button></div><div class="ci-price">1 200 ₽</div></div></div>
+        </div>
+        <div class="cart-footer">
+          <div class="cart-total"><span class="cart-total-label">Итого:</span><span class="cart-total-val">2 890 ₽</span></div>
+          <button class="btn btn-success" style="width:100%;justify-content:center;">Оформить заказ →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop: Login modal on checkout -->
+  <div class="screen-label">Магазин · Экран 2</div>
+  <div class="screen-title">Вход / Регистрация при оформлении заказа</div>
+  <div class="screen-desc">Когда гость нажимает «Оформить заказ» — появляется модальное окно с выбором: войти или зарегистрироваться. Корзина при этом сохраняется.</div>
+  <div class="note n-green"><div>💡</div><div><strong>Не теряем корзину</strong><p>Содержимое корзины хранится в localStorage до момента входа. После авторизации корзина переносится в заказ автоматически.</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz</span></span></div>
+    <div style="position:relative;background:var(--bg);padding:40px;min-height:420px;display:flex;align-items:center;justify-content:center;">
+      <!-- blurred bg hint -->
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.35);border-radius:0 0 12px 12px;backdrop-filter:blur(2px);"></div>
+      <!-- Modal -->
+      <div style="position:relative;z-index:2;background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:32px;width:400px;box-shadow:0 20px 60px rgba(0,0,0,.2);">
+        <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px;text-align:center;">Для оформления заказа</div>
+        <div style="font-size:13px;color:var(--text3);text-align:center;margin-bottom:24px;">Войдите или зарегистрируйтесь — это займёт 30 секунд</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+          <button class="btn btn-success" style="justify-content:center;padding:12px;font-size:13px;">Зарегистрироваться</button>
+          <button class="btn btn-light" style="justify-content:center;padding:12px;font-size:13px;border:1px solid var(--border2);">Уже есть аккаунт</button>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Ваша корзина сохранена</div>
+          <div style="font-size:12px;color:var(--text3);display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">Кастрюля 5л нерж. сталь × 1<span>850 ₽</span></div>
+          <div style="font-size:12px;color:var(--text3);display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">Кастрюля 3л эмаль × 2<span>840 ₽</span></div>
+          <div style="font-size:12px;color:var(--text3);display:flex;justify-content:space-between;padding:4px 0;">Кастрюля 8л нерж. × 1<span>1 200 ₽</span></div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);display:flex;justify-content:space-between;padding:8px 0 0;margin-top:4px;border-top:1px solid var(--border);">Итого<span>2 890 ₽</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop: Catalog with categories and cart (logged in) -->
+  <div class="screen-label">Магазин · Экран 3</div>
+  <div class="screen-title">Каталог товаров — авторизованный пользователь</div>
+  <div class="screen-desc">После входа — тот же каталог, но в шапке появляется имя магазина и раздел «Мои заказы».</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/catalog</span></span></div>
+    <div class="topbar">
+      <div class="logo green">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act green">📦 Каталог</div>
+        <div class="ni">📋 Мои заказы</div>
+        <div class="ni">👤 Профиль</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-shop">Магазин</span>
+        <div class="ava" style="background:var(--success)">РМ</div>
+      </div>
+    </div>
+    <div class="shop-layout" style="min-height:480px;">
+      <!-- Category sidebar -->
+      <div class="cat-sidebar">
+        <div class="cat-sidebar-title">Категории</div>
+        <div class="cat-tree">
+          <div class="cat-node" style="color:var(--text3);background:var(--surface3);margin-bottom:4px;">📦 Все товары <span style="margin-left:auto;font-size:11px;color:var(--muted);">128</span></div>
+          <div class="cat-node active green">🥘 Кастрюли <span style="margin-left:auto;font-size:11px;">32</span></div>
+          <div class="cat-node">🍳 Сковороды <span style="margin-left:auto;font-size:11px;color:var(--muted);">28</span></div>
+          <div class="cat-node">🔪 Ножи <span style="margin-left:auto;font-size:11px;color:var(--muted);">15</span></div>
+          <div class="cat-node">🫖 Чайники <span style="margin-left:auto;font-size:11px;color:var(--muted);">12</span></div>
+          <div class="cat-node">🥗 Миски и тарелки <span style="margin-left:auto;font-size:11px;color:var(--muted);">24</span></div>
+          <div class="cat-node" style="color:var(--muted);font-size:12px;">— Без категории <span style="margin-left:auto;font-size:11px;">17</span></div>
+        </div>
+      </div>
+      <!-- Products -->
+      <div class="shop-main">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Кастрюли</div>
+          <span style="font-size:12px;color:var(--muted);">32 товара</span>
+          <input class="fc" style="margin-left:auto;width:200px;padding:6px 12px;font-size:12px;" placeholder="🔍 Поиск..." />
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="pc">
+            <div class="pc-img">🥘</div>
+            <div class="pc-body">
+              <div class="pc-name">Кастрюля 5л нерж. сталь</div>
+              <div class="pc-sku">Арт: KST-001</div>
+              <div class="pc-price price-green">850 ₽ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт</span></div>
+              <div class="pc-price-label">8 500 ₽ за коробку (10 шт)</div>
+              <div style="display:flex;gap:6px;margin-top:10px;">
+                <input class="fc" style="width:60px;padding:6px 8px;text-align:center;font-size:13px;" value="1" />
+                <button class="btn btn-success" style="flex:1;justify-content:center;font-size:12px;">+ В корзину</button>
+              </div>
+            </div>
+          </div>
+          <div class="pc">
+            <div class="pc-img">🥘</div>
+            <div class="pc-body">
+              <div class="pc-name">Кастрюля 3л эмаль</div>
+              <div class="pc-sku">Арт: KST-003</div>
+              <div class="pc-price price-green">420 ₽ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт</span></div>
+              <div class="pc-price-label">5 040 ₽ за коробку (12 шт)</div>
+              <div style="display:flex;gap:6px;margin-top:10px;">
+                <input class="fc" style="width:60px;padding:6px 8px;text-align:center;font-size:13px;" value="2" />
+                <button class="btn btn-success" style="flex:1;justify-content:center;font-size:12px;">+ В корзину</button>
+              </div>
+            </div>
+          </div>
+          <div class="pc">
+            <div class="pc-img">🥘</div>
+            <div class="pc-body">
+              <div class="pc-name">Кастрюля 8л нерж. с крышкой</div>
+              <div class="pc-sku">Арт: KST-008</div>
+              <div class="pc-price price-green">1 200 ₽ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт</span></div>
+              <div class="pc-price-label">12 000 ₽ за коробку (10 шт)</div>
+              <div style="display:flex;gap:6px;margin-top:10px;">
+                <input class="fc" style="width:60px;padding:6px 8px;text-align:center;font-size:13px;" value="1" />
+                <button class="btn btn-success" style="flex:1;justify-content:center;font-size:12px;">+ В корзину</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Cart -->
+      <div class="cart-sidebar">
+        <div class="cart-title">🛒 Корзина <span class="cart-badge">3</span></div>
+        <div class="cart-items">
+          <div class="cart-item">
+            <div class="ci-name">Кастрюля 5л нерж. сталь</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-001</div>
+            <div class="ci-row">
+              <div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">1</span><button class="qty-btn">+</button></div>
+              <div class="ci-price">850 ₽</div>
+            </div>
+          </div>
+          <div class="cart-item">
+            <div class="ci-name">Кастрюля 3л эмаль</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-003</div>
+            <div class="ci-row">
+              <div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">2</span><button class="qty-btn">+</button></div>
+              <div class="ci-price">840 ₽</div>
+            </div>
+          </div>
+          <div class="cart-item">
+            <div class="ci-name">Кастрюля 8л нерж. с крышкой</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-008</div>
+            <div class="ci-row">
+              <div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">1</span><button class="qty-btn">+</button></div>
+              <div class="ci-price">1 200 ₽</div>
+            </div>
+          </div>
+        </div>
+        <div class="cart-footer">
+          <div class="cart-total"><span class="cart-total-label">Итого:</span><span class="cart-total-val">2 890 ₽</span></div>
+          <button class="btn btn-success" style="width:100%;justify-content:center;">Оформить заказ →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop: Checkout -->
+  <div class="screen-label">Магазин · Экран 4</div>
+  <div class="screen-title">Оформление заказа</div>
+  <div class="screen-desc">После входа магазин проверяет состав корзины, добавляет комментарий и отправляет заказ оптовику одной кнопкой.</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/checkout</span></span></div>
+    <div class="topbar">
+      <div class="logo green">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni act green">📦 Каталог</div><div class="ni">📋 Мои заказы</div></div>
+      <div class="topbar-right"><span class="role-pill rp-shop">Магазин</span><div class="ava" style="background:var(--success)">РМ</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Каталог / Оформление заказа</div>
+      <div class="ph"><div><div class="pt">Оформление заказа</div><div class="ps">ООО Ромашка · Проверьте состав и подтвердите</div></div></div>
+      <div class="order-form-layout">
+        <div class="card">
+          <div class="ch"><div class="ct">Состав заказа</div><div class="cs">3 позиции</div></div>
+          <table>
+            <thead><tr><th>Товар</th><th>Артикул</th><th>Кол-во</th><th>Цена/шт</th><th>Сумма</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Кастрюля 5л нерж. сталь</strong></td><td style="font-family:monospace;font-size:12px;color:var(--muted)">KST-001</td><td>1 шт</td><td>850 ₽</td><td><strong>850 ₽</strong></td></tr>
+              <tr><td><strong>Кастрюля 3л эмаль</strong></td><td style="font-family:monospace;font-size:12px;color:var(--muted)">KST-003</td><td>2 шт</td><td>420 ₽</td><td><strong>840 ₽</strong></td></tr>
+              <tr><td><strong>Кастрюля 8л нерж. с крышкой</strong></td><td style="font-family:monospace;font-size:12px;color:var(--muted)">KST-008</td><td>1 шт</td><td>1 200 ₽</td><td><strong>1 200 ₽</strong></td></tr>
+            </tbody>
+          </table>
+          <div style="padding:14px 16px;background:var(--surface2);border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:20px;align-items:center;">
+            <span style="font-size:13px;color:var(--text3);">Итого:</span>
+            <span style="font-size:22px;font-weight:800;color:var(--text);">2 890 ₽</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Комментарий</div></div>
+            <div class="form-section" style="padding:16px;">
+              <div class="form-group"><textarea class="fc" rows="4" placeholder="Пожелания или уточнения для оптовика..."></textarea></div>
+            </div>
+          </div>
+          <button class="btn btn-success" style="width:100%;justify-content:center;padding:13px;font-size:14px;">✓ Отправить заказ оптовику</button>
+          <button class="btn btn-light" style="width:100%;justify-content:center;">← Вернуться в каталог</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop: My Orders -->
+  <div class="screen-label">Магазин · Экран 5</div>
+  <div class="screen-title">Мои заказы — статус и накладная</div>
+  <div class="screen-desc">Магазин видит статус своих заказов. Когда оптовик подтверждает — появляется кнопка скачать накладную.</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/orders</span></span></div>
+    <div class="topbar">
+      <div class="logo green">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni">📦 Каталог</div><div class="ni act green">📋 Мои заказы</div><div class="ni">👤 Профиль</div></div>
+      <div class="topbar-right"><span class="role-pill rp-shop">Магазин</span><div class="ava" style="background:var(--success)">РМ</div></div>
+    </div>
+    <div class="body">
+      <div class="ph"><div><div class="pt">Мои заказы</div><div class="ps">ООО Ромашка · Посудный мир</div></div></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Заказ</th><th>Дата</th><th>Позиций</th><th>Сумма</th><th>Статус</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><strong>#094</strong></td><td>01.05.2026</td><td>3 поз.</td><td><strong style="color:var(--success)">2 890 ₽</strong></td><td><span class="badge b-warning">Новый ⏳</span></td><td><button class="btn btn-light btn-xs">👁 Смотреть</button></td></tr>
+            <tr><td><strong>#087</strong></td><td>14.04.2026</td><td>8 поз.</td><td><strong style="color:var(--success)">18 600 ₽</strong></td><td><span class="badge b-success">Подтверждён ✓</span></td><td><button class="btn btn-light btn-xs">📄 Накладная</button></td></tr>
+            <tr><td><strong>#071</strong></td><td>28.03.2026</td><td>5 поз.</td><td><strong style="color:var(--success)">9 450 ₽</strong></td><td><span class="badge b-success">Подтверждён ✓</span></td><td><button class="btn btn-light btn-xs">📄 Накладная</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ WHOLESALE ORDER FLOW ══════════════════ -->
+<div class="section-cover wholesale" style="min-height:20vh;padding:48px 40px;">
+  <div class="cover-eyebrow" style="background:rgba(62,151,255,.15);border-color:rgba(62,151,255,.4);color:#7ec8ff;">📋 Флоу обработки заказа · Оптовик</div>
+  <h2 style="font-size:32px;">Получил заказ → Проверил → Подтвердил → WhatsApp</h2>
+</div>
+
+<div class="page-section">
+  <!-- Wholesale: Incoming orders list -->
+  <div class="screen-label">Оптовик · Флоу 1</div>
+  <div class="screen-title">Входящий заказ от магазина</div>
+  <div class="screen-desc">Оптовик видит новый заказ в списке со статусом «Новый». Может открыть, отредактировать количество или позиции, и затем подтвердить.</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/admin/orders</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni">🏠 Главная</div><div class="ni">📦 Товары</div><div class="ni">🗂 Категории</div><div class="ni act">📋 Заказы</div><div class="ni">⚙️ Настройки</div></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Заказы от магазинов</div><div class="ps">94 заказа всего · 1 новый</div></div>
+        <div style="display:flex;gap:8px;">
+          <select class="fc" style="width:auto;padding:6px 10px;font-size:12px;"><option>Все статусы</option><option selected>Новые</option><option>Подтверждённые</option></select>
+        </div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Заказ</th><th>Магазин</th><th>Дата</th><th>Позиций</th><th>Сумма</th><th>Статус</th><th></th></tr></thead>
+          <tbody>
+            <tr style="background:#fffbeb;">
+              <td><strong>#094</strong></td>
+              <td><strong>ООО Ромашка</strong><div style="font-size:11px;color:var(--muted)">+7 (999) 111-22-33</div></td>
+              <td>01.05.2026</td><td>3 поз.</td>
+              <td><strong>2 890 ₽</strong></td>
+              <td><span class="badge b-warning">🆕 Новый</span></td>
+              <td><button class="btn btn-primary btn-xs">Открыть →</button></td>
+            </tr>
+            <tr><td><strong>#093</strong></td><td>Посуда Люкс</td><td>29.04.2026</td><td>14 поз.</td><td><strong>87 600 ₽</strong></td><td><span class="badge b-success">Подтверждён</span></td><td><button class="btn btn-light btn-xs">📄 Накладная</button></td></tr>
+            <tr><td><strong>#092</strong></td><td>ИП Краснов</td><td>27.04.2026</td><td>5 поз.</td><td><strong>21 000 ₽</strong></td><td><span class="badge b-success">Подтверждён</span></td><td><button class="btn btn-light btn-xs">📄 Накладная</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale: Order detail + edit -->
+  <div class="screen-label">Оптовик · Флоу 2</div>
+  <div class="screen-title">Детальный просмотр и редактирование заказа</div>
+  <div class="screen-desc">Оптовик открывает заказ: видит состав, может изменить количество, удалить позицию или добавить комментарий. Когда всё готово — нажимает «Подтвердить заказ».</div>
+  <div class="note n-blue"><div>✏️</div><div><strong>Редактирование до подтверждения</strong><p>Пока статус «Новый» — оптовик может менять количество и убирать позиции. После нажатия «Подтвердить» — заказ фиксируется и автоматически формируется накладная.</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/admin/orders/094</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni">🏠 Главная</div><div class="ni">📦 Товары</div><div class="ni act">📋 Заказы</div></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Заказы / #094</div>
+      <div class="ph">
+        <div>
+          <div class="pt">Заказ #094 <span class="badge b-warning" style="font-size:13px;margin-left:8px;">Новый</span></div>
+          <div class="ps">ООО Ромашка · 01.05.2026 · +7 (999) 111-22-33</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-light btn-sm">Отклонить</button>
+          <button class="btn btn-primary" style="padding:10px 20px;font-size:14px;">✓ Подтвердить заказ</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:20px;">
+        <div class="card">
+          <div class="ch"><div class="ct">Состав заказа</div><div class="cs">Можно редактировать</div></div>
+          <table>
+            <thead><tr><th>Товар</th><th>Артикул</th><th>Кол-во</th><th>Цена/шт</th><th>Сумма</th><th></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Кастрюля 5л нерж. сталь</strong></td>
+                <td style="font-family:monospace;font-size:12px;color:var(--muted)">KST-001</td>
+                <td><input class="fc" value="1" style="width:56px;padding:4px 8px;text-align:center;" /></td>
+                <td>850 ₽</td><td><strong>850 ₽</strong></td>
+                <td><button class="btn btn-danger-soft btn-xs">✕</button></td>
+              </tr>
+              <tr>
+                <td><strong>Кастрюля 3л эмаль</strong></td>
+                <td style="font-family:monospace;font-size:12px;color:var(--muted)">KST-003</td>
+                <td><input class="fc" value="2" style="width:56px;padding:4px 8px;text-align:center;" /></td>
+                <td>420 ₽</td><td><strong>840 ₽</strong></td>
+                <td><button class="btn btn-danger-soft btn-xs">✕</button></td>
+              </tr>
+              <tr>
+                <td><strong>Кастрюля 8л нерж. с крышкой</strong></td>
+                <td style="font-family:monospace;font-size:12px;color:var(--muted)">KST-008</td>
+                <td><input class="fc" value="1" style="width:56px;padding:4px 8px;text-align:center;" /></td>
+                <td>1 200 ₽</td><td><strong>1 200 ₽</strong></td>
+                <td><button class="btn btn-danger-soft btn-xs">✕</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:14px 16px;background:var(--surface2);border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:20px;align-items:center;">
+            <span style="font-size:13px;color:var(--text3);">Итого:</span>
+            <span style="font-size:22px;font-weight:800;color:var(--text);">2 890 ₽</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Клиент</div></div>
+            <div style="padding:14px;">
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px;">ООО Ромашка</div>
+              <div style="font-size:12px;color:var(--text3);margin-bottom:2px;">📞 +7 (999) 111-22-33</div>
+              <div style="font-size:12px;color:var(--text3);">✉️ romashka@mail.ru</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Комментарий клиента</div></div>
+            <div style="padding:14px;font-size:13px;color:var(--text3);font-style:italic;">"Доставка желательно утром, до 11:00"</div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Заметка оптовика</div></div>
+            <div style="padding:14px;">
+              <textarea class="fc" rows="3" placeholder="Внутренняя заметка (не видна клиенту)..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale: Invoice + WhatsApp -->
+  <div class="screen-label">Оптовик · Флоу 3</div>
+  <div class="screen-title">Подтверждение → Накладная → WhatsApp</div>
+  <div class="screen-desc">После нажатия «Подтвердить» система генерирует накладную. Оптовик видит накладную и одной кнопкой отправляет её в WhatsApp клиенту — ссылка открывается автоматически с готовым текстом и прикреплённым PDF.</div>
+  <div class="note n-blue"><div>💬</div><div><strong>Автоматический WhatsApp</strong><p>Кнопка «Отправить в WhatsApp» формирует ссылку <code>wa.me/номер?text=...</code> с текстом накладной. PDF накладной прикреплён или дана ссылка на скачивание. Оптовик просто нажимает — и WhatsApp открывается с готовым сообщением.</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/admin/orders/094/invoice</span></span></div>
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav"><div class="ni">🏠 Главная</div><div class="ni act">📋 Заказы</div></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Заказы / #094 / Накладная</div>
+      <div class="ph">
+        <div>
+          <div class="pt">Накладная #094 <span class="badge b-success" style="font-size:13px;margin-left:8px;">✓ Подтверждён</span></div>
+          <div class="ps">ООО Ромашка · 01.05.2026</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-light btn-sm">⬇️ Скачать PDF</button>
+          <button class="btn" style="background:#25D366;color:#fff;font-size:13px;padding:8px 18px;gap:8px;">
+            <span style="font-size:16px;">💬</span> Отправить в WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <!-- Invoice preview -->
+      <div class="card" style="max-width:680px;">
+        <div style="padding:28px;border-bottom:2px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <div style="font-size:22px;font-weight:800;color:var(--text);">Посудный мир</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">posudamir.pm.kz</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:18px;font-weight:700;color:var(--text);">НАКЛАДНАЯ</div>
+              <div style="font-size:14px;color:var(--primary);font-weight:600;">#094</div>
+              <div style="font-size:12px;color:var(--muted);">01.05.2026</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:20px 28px;border-bottom:1px solid var(--border);background:var(--surface2);">
+          <div style="font-size:11px;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:6px;">Покупатель</div>
+          <div style="font-size:14px;font-weight:700;">ООО Ромашка</div>
+          <div style="font-size:12px;color:var(--text3);">+7 (999) 111-22-33 · romashka@mail.ru</div>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Наименование</th><th>Арт.</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--muted)">1</td><td>Кастрюля 5л нерж. сталь</td><td style="font-family:monospace;font-size:11px;color:var(--muted)">KST-001</td><td>1 шт</td><td>850 ₽</td><td><strong>850 ₽</strong></td></tr>
+            <tr><td style="color:var(--muted)">2</td><td>Кастрюля 3л эмаль</td><td style="font-family:monospace;font-size:11px;color:var(--muted)">KST-003</td><td>2 шт</td><td>420 ₽</td><td><strong>840 ₽</strong></td></tr>
+            <tr><td style="color:var(--muted)">3</td><td>Кастрюля 8л нерж. с крышкой</td><td style="font-family:monospace;font-size:11px;color:var(--muted)">KST-008</td><td>1 шт</td><td>1 200 ₽</td><td><strong>1 200 ₽</strong></td></tr>
+          </tbody>
+        </table>
+        <div style="padding:16px 28px;background:var(--surface2);display:flex;justify-content:flex-end;align-items:center;gap:24px;">
+          <span style="font-size:13px;color:var(--text3);">ИТОГО К ОПЛАТЕ:</span>
+          <span style="font-size:24px;font-weight:800;color:var(--text);">2 890 ₽</span>
+        </div>
+      </div>
+
+      <!-- WhatsApp preview -->
+      <div style="margin-top:24px;max-width:680px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px;">Предпросмотр сообщения WhatsApp:</div>
+        <div style="background:#e9faf0;border-radius:12px;padding:18px 20px;border:1px solid #b7f0cd;font-size:13px;line-height:1.7;color:#1a3a2a;">
+          <div style="font-weight:700;margin-bottom:8px;">💬 Сообщение будет отправлено на +7 (999) 111-22-33</div>
+          <div style="background:#fff;border-radius:8px;padding:14px;font-family:monospace;font-size:12px;color:#333;line-height:1.8;">
+            Здравствуйте, ООО Ромашка!<br><br>
+            Ваш заказ #094 от 01.05.2026 подтверждён ✅<br><br>
+            Состав заказа:<br>
+            • Кастрюля 5л нерж. сталь (KST-001) — 1 шт × 850 ₽<br>
+            • Кастрюля 3л эмаль (KST-003) — 2 шт × 420 ₽<br>
+            • Кастрюля 8л нерж. с крышкой (KST-008) — 1 шт × 1 200 ₽<br><br>
+            <strong>Итого: 2 890 ₽</strong><br><br>
+            Накладная: https://posudamir.pm.kz/invoice/094<br><br>
+            — Посудный мир
+          </div>
+          <button class="btn" style="background:#25D366;color:#fff;margin-top:14px;font-size:13px;padding:10px 20px;">
+            💬 Открыть WhatsApp и отправить
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ DB SCHEMA (hidden) ══════════════════ -->
+<div style="display:none;">
+<div class="db-section">
+  <div class="db-title">Схема базы данных</div>
+  <div class="db-sub">Новые поля и таблицы относительно текущей версии</div>
+  <div class="db-grid">
+    <div class="db-table">
+      <div class="db-table-head dbt-purple">👥 users</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>role <span class="db-new-badge">NEW</span></span><span class="db-field-type">enum</span></div>
+      <div class="db-field new"><span>wholesale_id <span class="db-new-badge">NEW</span></span><span class="db-field-type">FK → wholesalers</span></div>
+      <div class="db-field"><span>first_name</span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>last_name</span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>email</span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>phone</span><span class="db-field-type">string</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-blue">🏪 wholesalers <span class="db-new-badge" style="font-size:10px;">NEW TABLE</span></div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>subdomain</span><span class="db-field-type">string unique</span></div>
+      <div class="db-field new"><span>name</span><span class="db-field-type">string</span></div>
+      <div class="db-field new"><span>contact_phone</span><span class="db-field-type">string</span></div>
+      <div class="db-field new"><span>contact_email</span><span class="db-field-type">string</span></div>
+      <div class="db-field new"><span>description</span><span class="db-field-type">text</span></div>
+      <div class="db-field new"><span>is_active</span><span class="db-field-type">boolean</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-orange">📦 products</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>wholesale_id <span class="db-new-badge">NEW</span></span><span class="db-field-type">FK → wholesalers</span></div>
+      <div class="db-field new"><span>sku <span class="db-new-badge">NEW</span></span><span class="db-field-type">string (артикул)</span></div>
+      <div class="db-field"><span>category_id</span><span class="db-field-type">FK nullable</span></div>
+      <div class="db-field"><span>name</span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>box_price</span><span class="db-field-type">decimal</span></div>
+      <div class="db-field"><span>units_per_box</span><span class="db-field-type">integer</span></div>
+      <div class="db-field"><span>unit_price</span><span class="db-field-type">decimal (авто)</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-green">🗂 categories</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>wholesale_id <span class="db-new-badge">NEW</span></span><span class="db-field-type">FK → wholesalers</span></div>
+      <div class="db-field"><span>name</span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>parent_id</span><span class="db-field-type">FK nullable</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-gray">📋 orders</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>wholesale_id <span class="db-new-badge">NEW</span></span><span class="db-field-type">FK → wholesalers</span></div>
+      <div class="db-field new"><span>shop_user_id <span class="db-new-badge">NEW</span></span><span class="db-field-type">FK → users</span></div>
+      <div class="db-field"><span>number</span><span class="db-field-type">string unique</span></div>
+      <div class="db-field"><span>order_date</span><span class="db-field-type">date</span></div>
+      <div class="db-field"><span>status</span><span class="db-field-type">enum</span></div>
+      <div class="db-field"><span>total_amount</span><span class="db-field-type">decimal</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-gray">🛒 order_items</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field"><span>order_id</span><span class="db-field-type">FK → orders</span></div>
+      <div class="db-field"><span>product_id</span><span class="db-field-type">FK → products</span></div>
+      <div class="db-field new"><span>sku_snapshot <span class="db-new-badge">NEW</span></span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>quantity</span><span class="db-field-type">integer</span></div>
+      <div class="db-field"><span>unit_price</span><span class="db-field-type">decimal</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /hidden -->
+
+<!-- ══════════════════ COMPARE ══════════════════ -->
+<div class="compare-section">
+  <div class="compare-title">Сравнение доступов</div>
+  <div class="compare-sub">Что может каждая роль</div>
+  <table class="ctable">
+    <thead>
+      <tr>
+        <th style="width:38%"></th>
+        <th class="th-admin">🛡 Администратор</th>
+        <th class="th-wholesale">📦 Оптовик</th>
+        <th class="th-shop">🏪 Магазин</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Создание оптовиков</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Назначение поддоменов</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Просмотр всех заказов платформы</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Изменение названия магазина</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Управление категориями и товарами</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Просмотр входящих заказов от магазинов</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Редактирование заказа до подтверждения</td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Подтверждение заказа</td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Отправка накладной в WhatsApp</td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Просмотр каталога без регистрации</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Корзина и оформление заказа</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Просмотр статуса своих заказов</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Скачивание своих накладных</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+</html>
