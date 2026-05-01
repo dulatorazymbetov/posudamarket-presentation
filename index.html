@@ -589,9 +589,10 @@
           </div>
         </div>
         <table>
-          <thead><tr><th>Название</th><th>Артикул</th><th>Штрих-код</th><th>Категория</th><th>Цена за ед.</th><th>Ед/кор</th><th>Цена за коробку (авто)</th><th>Статус</th><th></th></tr></thead>
+          <thead><tr><th>Фото</th><th>Название</th><th>Артикул <span style="color:var(--primary);font-size:10px;">уникальный</span></th><th>Штрих-код</th><th>Категория</th><th>Цена за ед.</th><th>Ед/кор</th><th>Цена за коробку (авто)</th><th>Статус</th><th></th></tr></thead>
           <tbody>
             <tr>
+              <td><div style="width:44px;height:44px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border);">🥘</div></td>
               <td><strong>Кастрюля 5л нерж. сталь</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">KST-001</span></td>
               <td><span style="font-family:monospace;font-size:11px;color:var(--muted);">4607001234561</span></td>
@@ -599,10 +600,16 @@
               <td><strong style="color:var(--primary)">850 ₽</strong></td>
               <td style="color:var(--muted)">10 шт</td>
               <td><strong>8 500 ₽</strong> <span style="font-size:10px;color:var(--muted)">авто</span></td>
-              <td><span class="badge b-success">Активен</span></td>
+              <td>
+                <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                  <div style="width:36px;height:20px;background:var(--success);border-radius:100px;position:relative;"><div style="position:absolute;right:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
+                  <span style="font-size:12px;color:var(--success);font-weight:600;">Активен</span>
+                </label>
+              </td>
               <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
             </tr>
             <tr>
+              <td><div style="width:44px;height:44px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border);">🍳</div></td>
               <td><strong>Сковорода 28см тефлон</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">SKV-028</span></td>
               <td><span style="font-family:monospace;font-size:11px;color:var(--muted);">4607001234578</span></td>
@@ -610,10 +617,16 @@
               <td><strong style="color:var(--primary)">620 ₽</strong></td>
               <td style="color:var(--muted)">10 шт</td>
               <td><strong>6 200 ₽</strong> <span style="font-size:10px;color:var(--muted)">авто</span></td>
-              <td><span class="badge b-success">Активен</span></td>
+              <td>
+                <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                  <div style="width:36px;height:20px;background:var(--success);border-radius:100px;position:relative;"><div style="position:absolute;right:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
+                  <span style="font-size:12px;color:var(--success);font-weight:600;">Активен</span>
+                </label>
+              </td>
               <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
             </tr>
             <tr>
+              <td><div style="width:44px;height:44px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;border:1px dashed var(--border2);color:var(--muted);font-size:18px;">📷</div></td>
               <td><strong>Дуршлаг 24см</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">DRS-024</span></td>
               <td><span style="font-size:11px;color:var(--muted);">—</span></td>
@@ -621,7 +634,12 @@
               <td><strong style="color:var(--primary)">600 ₽</strong></td>
               <td style="color:var(--muted)">6 шт</td>
               <td><strong>3 600 ₽</strong> <span style="font-size:10px;color:var(--muted)">авто</span></td>
-              <td><span class="badge b-success">Активен</span></td>
+              <td>
+                <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                  <div style="width:36px;height:20px;background:var(--border2);border-radius:100px;position:relative;"><div style="position:absolute;left:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
+                  <span style="font-size:12px;color:var(--muted);font-weight:600;">Скрыт</span>
+                </label>
+              </td>
               <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
             </tr>
           </tbody>
@@ -650,7 +668,7 @@
           <div class="form-section">
             <div class="form-group"><label class="fl">Название товара *</label><input class="fc" placeholder="Кастрюля 5л нерж. сталь" /></div>
             <div class="fr">
-              <div class="form-group"><label class="fl">Артикул (SKU) <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label><input class="fc" placeholder="KST-001" /></div>
+              <div class="form-group"><label class="fl">Артикул (SKU) <span style="color:var(--muted);font-weight:400;">(необязательно · уникальный)</span></label><input class="fc" placeholder="KST-001" /></div>
               <div class="form-group"><label class="fl">Штрих-код <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label><input class="fc" placeholder="4607001234567" /></div>
             </div>
             <div class="form-group"><label class="fl">Категория <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label>
