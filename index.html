@@ -561,8 +561,8 @@
   <!-- Wholesale: Products -->
   <div class="screen-label">Оптовик · Экран 2</div>
   <div class="screen-title">Управление товарами</div>
-  <div class="screen-desc">Оптовик добавляет свои товары с артикулом. Категория — необязательна. Цена одна — та, которую видят магазины.</div>
-  <div class="note n-blue"><div>📦</div><div><strong>Артикул — новое поле</strong><p>Каждый товар имеет артикул (SKU). Это уникальный код товара у оптовика — помогает магазинам ссылаться на конкретную позицию при повторных заказах.</p></div></div>
+  <div class="screen-desc">Оптовик добавляет свои товары. Категория и артикул — необязательны. Цена за единицу и единиц в коробке → цена за коробку считается автоматически.</div>
+  <div class="note n-blue"><div>📦</div><div><strong>Автоподсчёт цены за коробку</strong><p>Оптовик вводит цену за единицу и количество единиц в коробке — система сама вычисляет цену за коробку. Артикул необязателен, но помогает магазинам ссылаться на конкретную позицию.</p></div></div>
   <div class="screen-wrap">
     <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz</span></span></div>
     <div class="topbar">
@@ -589,15 +589,15 @@
           </div>
         </div>
         <table>
-          <thead><tr><th>Название</th><th>Артикул</th><th>Категория</th><th>Цена за коробку</th><th>Ед/кор</th><th>Цена за ед.</th><th>Статус</th><th></th></tr></thead>
+          <thead><tr><th>Название</th><th>Артикул</th><th>Категория</th><th>Цена за ед.</th><th>Ед/кор</th><th>Цена за коробку (авто)</th><th>Статус</th><th></th></tr></thead>
           <tbody>
             <tr>
               <td><strong>Кастрюля 5л нерж. сталь</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">KST-001</span></td>
               <td><span class="badge b-muted">Кастрюли</span></td>
-              <td><strong>8 500 ₽</strong></td>
-              <td style="color:var(--muted)">10 шт</td>
               <td><strong style="color:var(--primary)">850 ₽</strong></td>
+              <td style="color:var(--muted)">10 шт</td>
+              <td><strong>8 500 ₽</strong> <span style="font-size:10px;color:var(--muted)">авто</span></td>
               <td><span class="badge b-success">Активен</span></td>
               <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
             </tr>
@@ -605,9 +605,9 @@
               <td><strong>Сковорода 28см тефлон</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">SKV-028</span></td>
               <td><span class="badge b-muted">Сковороды</span></td>
-              <td><strong>6 200 ₽</strong></td>
-              <td style="color:var(--muted)">10 шт</td>
               <td><strong style="color:var(--primary)">620 ₽</strong></td>
+              <td style="color:var(--muted)">10 шт</td>
+              <td><strong>6 200 ₽</strong> <span style="font-size:10px;color:var(--muted)">авто</span></td>
               <td><span class="badge b-success">Активен</span></td>
               <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
             </tr>
@@ -615,9 +615,9 @@
               <td><strong>Дуршлаг 24см</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">DRS-024</span></td>
               <td><span class="badge b-muted" style="background:var(--surface3);color:var(--muted);">— без категории</span></td>
-              <td><strong>3 600 ₽</strong></td>
-              <td style="color:var(--muted)">6 шт</td>
               <td><strong style="color:var(--primary)">600 ₽</strong></td>
+              <td style="color:var(--muted)">6 шт</td>
+              <td><strong>3 600 ₽</strong> <span style="font-size:10px;color:var(--muted)">авто</span></td>
               <td><span class="badge b-success">Активен</span></td>
               <td><div style="display:flex;gap:4px;"><button class="btn btn-light btn-xs">✏️</button><button class="btn btn-danger-soft btn-xs">🗑</button></div></td>
             </tr>
@@ -647,15 +647,15 @@
           <div class="form-section">
             <div class="fr">
               <div class="form-group"><label class="fl">Название товара *</label><input class="fc" placeholder="Кастрюля 5л нерж. сталь" /></div>
-              <div class="form-group"><label class="fl">Артикул (SKU) *</label><input class="fc" placeholder="KST-001" /></div>
+              <div class="form-group"><label class="fl">Артикул (SKU) <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label><input class="fc" placeholder="KST-001" /></div>
             </div>
             <div class="form-group"><label class="fl">Категория <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label>
               <select class="fc"><option value="">— Без категории</option><option>Кастрюли</option><option>Сковороды</option><option>Ножи</option><option>Разное</option></select>
             </div>
             <div class="fr3">
-              <div class="form-group"><label class="fl">Цена за коробку *</label><input class="fc" placeholder="8 500 ₽" /></div>
+              <div class="form-group"><label class="fl">Цена за единицу *</label><input class="fc" placeholder="850 ₽" /></div>
               <div class="form-group"><label class="fl">Единиц в коробке *</label><input class="fc" placeholder="10" /></div>
-              <div class="form-group"><label class="fl">Цена за единицу</label><input class="fc" placeholder="Авто: 850 ₽" style="background:var(--surface2);color:var(--muted);" readonly /></div>
+              <div class="form-group"><label class="fl">Цена за коробку <span style="color:var(--success);font-weight:600;">(авто)</span></label><input class="fc" placeholder="8 500 ₽" style="background:var(--surface2);color:var(--success);font-weight:600;" readonly /></div>
             </div>
             <div class="form-group"><label class="fl">Примечание / описание</label><textarea class="fc" rows="3" placeholder="Дополнительная информация о товаре..."></textarea></div>
           </div>
