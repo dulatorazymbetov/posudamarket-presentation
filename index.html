@@ -589,11 +589,12 @@
           </div>
         </div>
         <table>
-          <thead><tr><th>Название</th><th>Артикул</th><th>Категория</th><th>Цена за ед.</th><th>Ед/кор</th><th>Цена за коробку (авто)</th><th>Статус</th><th></th></tr></thead>
+          <thead><tr><th>Название</th><th>Артикул</th><th>Штрих-код</th><th>Категория</th><th>Цена за ед.</th><th>Ед/кор</th><th>Цена за коробку (авто)</th><th>Статус</th><th></th></tr></thead>
           <tbody>
             <tr>
               <td><strong>Кастрюля 5л нерж. сталь</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">KST-001</span></td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--muted);">4607001234561</span></td>
               <td><span class="badge b-muted">Кастрюли</span></td>
               <td><strong style="color:var(--primary)">850 ₽</strong></td>
               <td style="color:var(--muted)">10 шт</td>
@@ -604,6 +605,7 @@
             <tr>
               <td><strong>Сковорода 28см тефлон</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">SKV-028</span></td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--muted);">4607001234578</span></td>
               <td><span class="badge b-muted">Сковороды</span></td>
               <td><strong style="color:var(--primary)">620 ₽</strong></td>
               <td style="color:var(--muted)">10 шт</td>
@@ -614,6 +616,7 @@
             <tr>
               <td><strong>Дуршлаг 24см</strong></td>
               <td><span style="font-family:monospace;font-size:12px;background:var(--surface3);padding:2px 8px;border-radius:4px;">DRS-024</span></td>
+              <td><span style="font-size:11px;color:var(--muted);">—</span></td>
               <td><span class="badge b-muted" style="background:var(--surface3);color:var(--muted);">— без категории</span></td>
               <td><strong style="color:var(--primary)">600 ₽</strong></td>
               <td style="color:var(--muted)">6 шт</td>
@@ -645,9 +648,10 @@
         <div class="card">
           <div class="ch"><div class="ct">Основная информация</div></div>
           <div class="form-section">
+            <div class="form-group"><label class="fl">Название товара *</label><input class="fc" placeholder="Кастрюля 5л нерж. сталь" /></div>
             <div class="fr">
-              <div class="form-group"><label class="fl">Название товара *</label><input class="fc" placeholder="Кастрюля 5л нерж. сталь" /></div>
               <div class="form-group"><label class="fl">Артикул (SKU) <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label><input class="fc" placeholder="KST-001" /></div>
+              <div class="form-group"><label class="fl">Штрих-код <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label><input class="fc" placeholder="4607001234567" /></div>
             </div>
             <div class="form-group"><label class="fl">Категория <span style="color:var(--muted);font-weight:400;">(необязательно)</span></label>
               <select class="fc"><option value="">— Без категории</option><option>Кастрюли</option><option>Сковороды</option><option>Ножи</option><option>Разное</option></select>
