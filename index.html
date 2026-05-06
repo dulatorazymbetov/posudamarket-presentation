@@ -62,6 +62,7 @@
   .section-cover.admin { background: linear-gradient(135deg, #1a0533 0%, #2d1465 100%); }
   .section-cover.wholesale { background: linear-gradient(135deg, #001833 0%, #0a3566 100%); }
   .section-cover.shop { background: linear-gradient(135deg, #001a0e 0%, #0a3320 100%); }
+  .section-cover.client { background: linear-gradient(135deg, #1a0e00 0%, #3a2000 100%); }
   .section-cover h2 { font-size: 44px; font-weight: 800; color: #fff; margin-bottom: 12px; }
   .section-cover p { font-size: 17px; color: rgba(255,255,255,.55); max-width: 520px; margin-bottom: 28px; }
   .perm-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
@@ -98,6 +99,7 @@
   .rp-admin { background: var(--info-soft); color: var(--info); }
   .rp-wholesale { background: var(--primary-soft); color: var(--primary); }
   .rp-shop { background: var(--success-soft); color: var(--success); }
+  .rp-client { background: var(--orange-soft); color: var(--orange); }
   .ava { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
 
   /* SUBDOMAIN BAR */
@@ -281,13 +283,15 @@
 <div class="cover">
   <div class="cover-eyebrow">🏗 Новая архитектура · PosudaMarket v2</div>
   <h1>Мультитенантная<br><span>B2B платформа</span></h1>
-  <p class="cover-sub">Каждый оптовик — отдельный магазин на своём поддомене.<br>Магазины заходят к оптовику и делают заказы.</p>
+  <p class="cover-sub">Каждый оптовик — отдельный магазин на своём поддомене.<br>Магазины заходят к оптовику и делают заказы. Клиенты покупают у магазинов.</p>
   <div class="flow-diagram">
     <div class="flow-node admin">🛡 Администратор<small>Создаёт оптовиков</small></div>
     <div class="flow-arrow">→</div>
     <div class="flow-node wholesale">📦 Оптовик<small>posuda-opt.pm.kz</small></div>
     <div class="flow-arrow">→</div>
     <div class="flow-node shop">🏪 Магазин<small>Делает заказы</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="background:rgba(253,126,20,.15);border-color:rgba(253,126,20,.4);color:#ffc078;">🛍 Клиент<small>Покупает у магазина</small></div>
   </div>
   <div class="cover-hint">↓ Прокрутите вниз</div>
 </div>
@@ -295,7 +299,7 @@
 <!-- ══════════════════ ARCHITECTURE ══════════════════ -->
 <div class="arch-section">
   <div class="arch-title">Как работает система</div>
-  <div class="arch-sub">Три уровня, каждый со своей зоной ответственности</div>
+  <div class="arch-sub">Четыре уровня, каждый со своей зоной ответственности</div>
   <div class="arch-grid">
     <div class="arch-card">
       <h3><span style="font-size:20px;">🛡</span> <span style="color:#c4a0ff;">Администратор</span></h3>
@@ -329,6 +333,17 @@
         <li>При оформлении заказа — предлагается войти или зарегистрироваться</li>
         <li>Заказ уходит оптовику на подтверждение</li>
         <li>После подтверждения получает накладную в WhatsApp</li>
+        <li>Принимает розничные заказы от своих клиентов</li>
+      </ul>
+    </div>
+    <div class="arch-card" style="border-color:rgba(253,126,20,.3);">
+      <h3><span style="font-size:20px;">🛍</span> <span style="color:var(--orange);">Клиент</span></h3>
+      <ul>
+        <li>Заходит на сайт магазина и видит розничный каталог</li>
+        <li>Добавляет товары в корзину без регистрации</li>
+        <li>Оформляет заказ — указывает имя, телефон, адрес доставки</li>
+        <li>Видит статус своих заказов в личном кабинете</li>
+        <li>При подтверждении получает уведомление</li>
       </ul>
     </div>
   </div>
@@ -1256,6 +1271,343 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- ══════════════════ CLIENT SECTION ══════════════════ -->
+<div class="section-cover client">
+  <div class="cover-eyebrow" style="background:rgba(253,126,20,.15);border-color:rgba(253,126,20,.4);color:#ffc078;">🛍 Роль 4 · Клиент</div>
+  <h2>Кабинет клиента магазина</h2>
+  <p>Розничный покупатель заходит на сайт магазина, выбирает товары и оформляет заказ. Магазин видит все входящие заказы в своей панели.</p>
+  <div class="perm-tags">
+    <span class="tag" style="background:rgba(253,126,20,.15);border:1px solid rgba(253,126,20,.35);color:#ffc078;">Каталог без входа</span>
+    <span class="tag" style="background:rgba(253,126,20,.15);border:1px solid rgba(253,126,20,.35);color:#ffc078;">Корзина без регистрации</span>
+    <span class="tag" style="background:rgba(253,126,20,.15);border:1px solid rgba(253,126,20,.35);color:#ffc078;">Свои заказы</span>
+    <span class="tag tag-red">✗ Не видит других клиентов</span>
+    <span class="tag tag-red">✗ Не видит оптовика</span>
+  </div>
+</div>
+
+<div class="page-section">
+
+  <!-- CLIENT: Экран 1 — Каталог магазина -->
+  <div class="screen-label">Клиент · Экран 1</div>
+  <div class="screen-title">Каталог магазина — без регистрации</div>
+  <div class="screen-desc">Клиент заходит на сайт магазина и сразу видит розничный каталог с ценами, которые магазин выставляет сам. Добавлять в корзину можно без входа.</div>
+  <div class="note n-blue"><div>💡</div><div><strong>Розничные цены — магазин устанавливает сам</strong><p>Магазин закупает у оптовика по оптовой цене, а продаёт клиентам с наценкой. Клиент видит только розничную цену.</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🌐</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.shop.kz</span></span></div>
+    <div class="topbar">
+      <div class="logo" style="color:var(--orange);">Посудный<span style="color:var(--orange);opacity:.6;"> мир</span></div>
+      <div class="nav">
+        <div class="ni act" style="background:var(--orange-soft);color:var(--orange);">🛍 Каталог</div>
+        <div class="ni">📋 Мои заказы</div>
+        <div class="ni">ℹ️ О нас</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-light btn-sm">Войти</button>
+        <button class="btn btn-sm" style="background:var(--orange);color:#fff;border-color:transparent;">Регистрация</button>
+      </div>
+    </div>
+    <div class="body">
+      <div style="display:flex;gap:24px;">
+        <!-- Категории -->
+        <div style="width:180px;flex-shrink:0;">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Категории</div>
+          <div class="cat-node active" style="background:var(--orange-soft);color:var(--orange);">🥘 Кастрюли <span style="margin-left:auto;font-size:11px;">18</span></div>
+          <div class="cat-node">🍳 Сковороды <span style="margin-left:auto;font-size:11px;color:var(--muted);">12</span></div>
+          <div class="cat-node">🥗 Миски и тарелки <span style="margin-left:auto;font-size:11px;color:var(--muted);">24</span></div>
+          <div class="cat-node">🫙 Банки и контейнеры <span style="margin-left:auto;font-size:11px;color:var(--muted);">9</span></div>
+        </div>
+        <!-- Товары -->
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Кастрюли</div>
+            <span style="font-size:12px;color:var(--muted);">18 товаров</span>
+            <input class="fc" style="margin-left:auto;width:200px;padding:6px 12px;font-size:12px;" placeholder="🔍 Поиск..." />
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div class="pc">
+              <div class="pc-img"><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=300&h=220&fit=crop&auto=format" alt="Кастрюля 5л" /></div>
+              <div class="pc-body">
+                <div class="pc-name">Кастрюля 5л нерж. сталь</div>
+                <div class="pc-sku">Арт: KST-001</div>
+                <div class="pc-price" style="color:var(--orange);">1 200 ₸ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт.</span></div>
+                <div class="pc-price-label">В наличии · розничная цена</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+                  <input class="fc" style="width:52px;padding:6px 8px;text-align:center;font-size:13px;" value="1" />
+                  <span style="font-size:12px;color:var(--muted);">шт.</span>
+                  <button class="btn btn-sm" style="flex:1;justify-content:center;font-size:12px;background:var(--orange);color:#fff;border-color:transparent;">+ В корзину</button>
+                </div>
+              </div>
+            </div>
+            <div class="pc">
+              <div class="pc-img"><img src="https://images.unsplash.com/photo-1556909172-8c2f041fca1e?w=300&h=220&fit=crop&auto=format" alt="Кастрюля 3л" /></div>
+              <div class="pc-body">
+                <div class="pc-name">Кастрюля 3л эмаль</div>
+                <div class="pc-sku">Арт: KST-003</div>
+                <div class="pc-price" style="color:var(--orange);">650 ₸ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт.</span></div>
+                <div class="pc-price-label">В наличии · розничная цена</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+                  <input class="fc" style="width:52px;padding:6px 8px;text-align:center;font-size:13px;" value="2" />
+                  <span style="font-size:12px;color:var(--muted);">шт.</span>
+                  <button class="btn btn-sm" style="flex:1;justify-content:center;font-size:12px;background:var(--orange);color:#fff;border-color:transparent;">+ В корзину</button>
+                </div>
+              </div>
+            </div>
+            <div class="pc">
+              <div class="pc-img"><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=300&h=220&fit=crop&auto=format" alt="Кастрюля 8л" /></div>
+              <div class="pc-body">
+                <div class="pc-name">Кастрюля 8л нерж. с крышкой</div>
+                <div class="pc-sku">Арт: KST-008</div>
+                <div class="pc-price" style="color:var(--orange);">1 800 ₸ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт.</span></div>
+                <div class="pc-price-label">В наличии · розничная цена</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+                  <input class="fc" style="width:52px;padding:6px 8px;text-align:center;font-size:13px;" value="1" />
+                  <span style="font-size:12px;color:var(--muted);">шт.</span>
+                  <button class="btn btn-sm" style="flex:1;justify-content:center;font-size:12px;background:var(--orange);color:#fff;border-color:transparent;">+ В корзину</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Корзина -->
+        <div class="cart-sidebar">
+          <div class="cart-title">🛒 Корзина <span class="cart-badge" style="background:var(--orange);color:#fff;">3</span></div>
+          <div class="cart-items">
+            <div class="cart-item">
+              <div class="ci-name">Кастрюля 5л нерж. сталь</div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-001 · 1 200 ₸/шт.</div>
+              <div class="ci-row">
+                <div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">1</span><button class="qty-btn">+</button><span style="font-size:11px;color:var(--muted);">шт.</span></div>
+                <div class="ci-price" style="color:var(--orange);">1 200 ₸</div>
+              </div>
+            </div>
+            <div class="cart-item">
+              <div class="ci-name">Кастрюля 3л эмаль</div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-003 · 650 ₸/шт.</div>
+              <div class="ci-row">
+                <div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">2</span><button class="qty-btn">+</button><span style="font-size:11px;color:var(--muted);">шт.</span></div>
+                <div class="ci-price" style="color:var(--orange);">1 300 ₸</div>
+              </div>
+            </div>
+            <div class="cart-item">
+              <div class="ci-name">Кастрюля 8л нерж. с крышкой</div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Арт: KST-008 · 1 800 ₸/шт.</div>
+              <div class="ci-row">
+                <div class="ci-qty"><button class="qty-btn">−</button><span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;">1</span><button class="qty-btn">+</button><span style="font-size:11px;color:var(--muted);">шт.</span></div>
+                <div class="ci-price" style="color:var(--orange);">1 800 ₸</div>
+              </div>
+            </div>
+          </div>
+          <div class="cart-footer">
+            <div class="cart-total"><span class="cart-total-label">Итого:</span><span class="cart-total-val" style="color:var(--orange);">4 300 ₸</span></div>
+            <button class="btn btn-sm" style="width:100%;justify-content:center;background:var(--orange);color:#fff;border-color:transparent;">Оформить заказ →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT: Экран 2 — Оформление заказа -->
+  <div class="screen-label">Клиент · Экран 2</div>
+  <div class="screen-title">Оформление заказа</div>
+  <div class="screen-desc">Клиент указывает контактные данные, адрес доставки и подтверждает заказ. Регистрация необязательна — можно оформить как гость.</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.shop.kz/checkout</span></span></div>
+    <div class="topbar">
+      <div class="logo" style="color:var(--orange);">Посудный<span style="color:var(--orange);opacity:.6;"> мир</span></div>
+      <div class="nav"><div class="ni act" style="background:var(--orange-soft);color:var(--orange);">🛍 Каталог</div></div>
+      <div class="topbar-right"><span class="role-pill rp-client">Клиент</span><div class="ava" style="background:var(--orange);">АИ</div></div>
+    </div>
+    <div class="body">
+      <div class="ph"><div><div class="pt">Оформление заказа</div><div class="ps">Проверьте состав и укажите данные доставки</div></div></div>
+      <div class="order-form-layout">
+        <div class="card">
+          <div class="ch"><div class="ct">Состав заказа</div><div class="cs">3 позиции</div></div>
+          <table>
+            <thead><tr><th style="width:44px;"></th><th>Товар</th><th>Кол-во</th><th>Цена/шт.</th><th>Сумма</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
+                <td><strong>Кастрюля 5л нерж. сталь</strong></td><td>1 шт.</td><td>1 200 ₸</td><td><strong>1 200 ₸</strong></td>
+              </tr>
+              <tr>
+                <td><img src="https://images.unsplash.com/photo-1556909172-8c2f041fca1e?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
+                <td><strong>Кастрюля 3л эмаль</strong></td><td>2 шт.</td><td>650 ₸</td><td><strong>1 300 ₸</strong></td>
+              </tr>
+              <tr>
+                <td><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
+                <td><strong>Кастрюля 8л нерж. с крышкой</strong></td><td>1 шт.</td><td>1 800 ₸</td><td><strong>1 800 ₸</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:14px 16px;background:var(--surface2);border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:20px;align-items:center;">
+            <span style="font-size:13px;color:var(--text3);">Итого:</span>
+            <span style="font-size:22px;font-weight:800;color:var(--orange);">4 300 ₸</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Контактные данные</div></div>
+            <div class="form-section" style="padding:16px;">
+              <div class="form-group"><label class="fl">Имя *</label><input class="fc" value="Айгерим Исакова" /></div>
+              <div class="form-group"><label class="fl">Телефон *</label><input class="fc" value="+7 (777) 333-44-55" /></div>
+              <div class="form-group"><label class="fl">Адрес доставки</label><input class="fc" placeholder="Алматы, ул. Абая 10, кв. 5" /></div>
+              <div class="form-group"><label class="fl">Комментарий</label><textarea class="fc" rows="2" placeholder="Пожелания к заказу..."></textarea></div>
+            </div>
+          </div>
+          <button class="btn btn-sm" style="width:100%;justify-content:center;padding:13px;font-size:14px;background:var(--orange);color:#fff;border-color:transparent;">✓ Подтвердить заказ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT: Экран 3 — Мои заказы -->
+  <div class="screen-label">Клиент · Экран 3</div>
+  <div class="screen-title">Мои заказы — статус</div>
+  <div class="screen-desc">После оформления клиент видит статус своего заказа. Когда магазин подтверждает — статус обновляется автоматически.</div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.shop.kz/orders</span></span></div>
+    <div class="topbar">
+      <div class="logo" style="color:var(--orange);">Посудный<span style="color:var(--orange);opacity:.6;"> мир</span></div>
+      <div class="nav">
+        <div class="ni">🛍 Каталог</div>
+        <div class="ni act" style="background:var(--orange-soft);color:var(--orange);">📋 Мои заказы</div>
+        <div class="ni">👤 Профиль</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-client">Клиент</span><div class="ava" style="background:var(--orange);">АИ</div></div>
+    </div>
+    <div class="body">
+      <div class="ph"><div><div class="pt">Мои заказы</div><div class="ps">Айгерим Исакова · Посудный мир</div></div></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Заказ</th><th>Дата</th><th>Позиций</th><th>Сумма</th><th>Статус</th><th></th></tr></thead>
+          <tbody>
+            <tr style="background:#fff8f0;">
+              <td><strong>#012</strong></td>
+              <td>06.05.2026</td>
+              <td>3 поз.</td>
+              <td><strong style="color:var(--orange)">4 300 ₸</strong></td>
+              <td><span class="badge b-warning">Новый ⏳</span></td>
+              <td><button class="btn btn-light btn-xs">👁 Смотреть</button></td>
+            </tr>
+            <tr>
+              <td><strong>#008</strong></td>
+              <td>20.04.2026</td>
+              <td>5 поз.</td>
+              <td><strong style="color:var(--orange)">7 850 ₸</strong></td>
+              <td><span class="badge b-success">Подтверждён ✓</span></td>
+              <td><button class="btn btn-light btn-xs">📄 Чек</button></td>
+            </tr>
+            <tr>
+              <td><strong>#003</strong></td>
+              <td>01.04.2026</td>
+              <td>2 поз.</td>
+              <td><strong style="color:var(--orange)">2 400 ₸</strong></td>
+              <td><span class="badge b-success">Подтверждён ✓</span></td>
+              <td><button class="btn btn-light btn-xs">📄 Чек</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT FLOW: Магазин видит заказы клиентов -->
+  <div class="screen-label" style="color:var(--success);">Магазин · Флоу — входящие заказы от клиентов</div>
+  <div class="screen-title">Магазин получает заказ от клиента</div>
+  <div class="screen-desc">В панели магазина появляется раздел «Заказы клиентов». Магазин может подтвердить заказ, изменить статус и отправить уведомление клиенту.</div>
+  <div class="note n-green"><div>🔄</div><div><strong>Полная цепочка</strong><p>Клиент → заказывает у Магазина → Магазин закупает у Оптовика → Оптовик подтверждает и отправляет накладную в WhatsApp.</p></div></div>
+  <div class="screen-wrap">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.shop.kz/admin/client-orders</span></span></div>
+    <div class="topbar">
+      <div class="logo green">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni">📦 Каталог</div>
+        <div class="ni act green">📋 Заказы клиентов</div>
+        <div class="ni">🛒 Закупки</div>
+        <div class="ni">⚙️ Настройки</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-shop">Магазин</span><div class="ava" style="background:var(--success)">РМ</div></div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Заказы клиентов</div><div class="ps">Посудный мир · входящие розничные заказы</div></div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="badge b-warning" style="font-size:13px;padding:6px 14px;">3 новых</span>
+        </div>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Заказ</th>
+              <th>Клиент</th>
+              <th>Дата</th>
+              <th>Позиций</th>
+              <th>Сумма</th>
+              <th>Статус</th>
+              <th class="col-actions">Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#fff8f0;">
+              <td><strong>#012</strong></td>
+              <td>
+                <div style="font-weight:600;">Айгерим Исакова</div>
+                <div style="font-size:11px;color:var(--muted);">+7 (777) 333-44-55</div>
+              </td>
+              <td style="color:var(--muted);font-size:13px;">06.05.2026</td>
+              <td style="color:var(--muted);">3 поз.</td>
+              <td><strong style="color:var(--orange);">4 300 ₸</strong></td>
+              <td><span class="badge b-warning">🆕 Новый</span></td>
+              <td>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-sm" style="background:#16a34a;color:#fff;border-color:transparent;font-weight:600;">✓ Принять</button>
+                  <button class="btn btn-light btn-xs">👁 Детали</button>
+                </div>
+              </td>
+            </tr>
+            <tr style="background:#fff8f0;">
+              <td><strong>#011</strong></td>
+              <td>
+                <div style="font-weight:600;">Марат Сейткали</div>
+                <div style="font-size:11px;color:var(--muted);">+7 (701) 222-11-33</div>
+              </td>
+              <td style="color:var(--muted);font-size:13px;">05.05.2026</td>
+              <td style="color:var(--muted);">2 поз.</td>
+              <td><strong style="color:var(--orange);">2 900 ₸</strong></td>
+              <td><span class="badge b-warning">🆕 Новый</span></td>
+              <td>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-sm" style="background:#16a34a;color:#fff;border-color:transparent;font-weight:600;">✓ Принять</button>
+                  <button class="btn btn-light btn-xs">👁 Детали</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>#010</strong></td>
+              <td>
+                <div style="font-weight:600;">Динара Нурланова</div>
+                <div style="font-size:11px;color:var(--muted);">+7 (747) 555-66-77</div>
+              </td>
+              <td style="color:var(--muted);font-size:13px;">03.05.2026</td>
+              <td style="color:var(--muted);">6 поз.</td>
+              <td><strong style="color:var(--orange);">9 600 ₸</strong></td>
+              <td><span class="badge b-success">✓ Подтверждён</span></td>
+              <td>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-light btn-xs">📄 Чек</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ══════════════════ DB SCHEMA (hidden) ══════════════════ -->
