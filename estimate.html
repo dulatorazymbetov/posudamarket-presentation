@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PosudaMarket — Оценка разработки</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #1e2129;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 48px 56px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .doc-header {
+    border-bottom: 3px solid #3e97ff;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .doc-logo { font-size: 22px; font-weight: 800; color: #1e2129; }
+  .doc-logo span { color: #3e97ff; }
+  .doc-meta { text-align: right; font-size: 12px; color: #6c7293; line-height: 1.8; }
+  .doc-title { font-size: 28px; font-weight: 800; color: #1e2129; margin-bottom: 6px; }
+  .doc-subtitle { font-size: 14px; color: #6c7293; margin-bottom: 32px; }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: #f0f7ff;
+    border: 1.5px solid #3e97ff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .sb-item { text-align: center; }
+  .sb-val { font-size: 26px; font-weight: 800; color: #3e97ff; line-height: 1; }
+  .sb-label { font-size: 11px; color: #6c7293; margin-top: 4px; }
+
+  /* SECTION TITLE */
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e2129;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e8edf3;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .num {
+    background: #3e97ff;
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 28px; font-size: 12.5px; }
+  thead th {
+    background: #f5f8fa;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #99a1b7;
+    border-bottom: 1px solid #e8edf3;
+  }
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f1f4f9;
+    color: #3f4254;
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #fafbfd; }
+  td strong { color: #1e2129; font-weight: 600; }
+  .td-days { text-align: center; font-weight: 700; color: #3e97ff; white-space: nowrap; }
+  .td-days.warn { color: #f6b100; }
+  .td-days.danger { color: #f8285a; }
+  .td-sum { text-align: right; font-weight: 700; color: #1e2129; white-space: nowrap; }
+  .td-phase { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .ph-1 { color: #7239ea; }
+  .ph-2 { color: #3e97ff; }
+  .ph-3 { color: #17c653; }
+  .ph-4 { color: #f6b100; }
+  .ph-5 { color: #fd7e14; }
+
+  /* NOTE */
+  .note {
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 1.6;
+    display: flex;
+    gap: 10px;
+  }
+  .note.blue { background: #eff6ff; border-left: 4px solid #3e97ff; }
+  .note.green { background: #e9faf0; border-left: 4px solid #17c653; }
+  .note.yellow { background: #fff8ea; border-left: 4px solid #f6b100; }
+  .note.purple { background: #f3eeff; border-left: 4px solid #7239ea; }
+  .note strong { display: block; font-weight: 700; color: #1e2129; margin-bottom: 2px; }
+
+  /* TOTALS */
+  .phase-totals {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .pt-card {
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .pt-card .pt-num { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .pt-card .pt-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .pt-card .pt-days { font-size: 11px; color: #6c7293; margin-top: 2px; }
+
+  /* GANTT */
+  .gantt-wrap { margin-bottom: 28px; }
+  .gantt-row { display: flex; align-items: center; gap: 0; margin-bottom: 6px; font-size: 11px; }
+  .gantt-label { width: 180px; flex-shrink: 0; color: #3f4254; font-weight: 500; padding-right: 10px; text-align: right; }
+  .gantt-track { flex: 1; background: #f1f4f9; border-radius: 4px; height: 20px; position: relative; overflow: hidden; }
+  .gantt-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 6px; font-size: 10px; font-weight: 700; color: #fff; white-space: nowrap; position: absolute; top: 0; }
+  .gantt-week { position: absolute; top: 0; bottom: 0; border-left: 1px dashed #d1dae8; }
+  .gantt-week-label { display: flex; margin-left: 180px; margin-bottom: 2px; }
+  .gwl { flex: 1; text-align: center; font-size: 9px; color: #99a1b7; font-weight: 600; }
+
+  /* RISK TABLE */
+  .risk-chip { padding: 2px 8px; border-radius: 100px; font-size: 10px; font-weight: 700; }
+  .risk-low { background: #e9faf0; color: #17c653; }
+  .risk-med { background: #fff8ea; color: #f6b100; }
+  .risk-high { background: #fff0f3; color: #f8285a; }
+
+  /* FOOTER */
+  .doc-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #e8edf3;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #99a1b7;
+  }
+
+  /* TOTAL ROW */
+  .total-row td {
+    background: #f0f7ff !important;
+    font-weight: 700 !important;
+    color: #1e2129 !important;
+    border-top: 2px solid #3e97ff !important;
+    border-bottom: none !important;
+    font-size: 13px;
+  }
+  .total-row .td-days { color: #3e97ff !important; font-size: 14px; }
+  .total-row .td-sum { color: #3e97ff !important; font-size: 14px; }
+
+  @media print {
+    body { padding: 24px 32px; font-size: 12px; }
+    .summary-box { grid-template-columns: repeat(4,1fr); }
+    .phase-totals { grid-template-columns: repeat(5,1fr); }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <div>
+    <div class="doc-logo">Posuda<span>Market</span></div>
+    <div style="font-size:11px;color:#99a1b7;margin-top:3px;">B2B платформа поставщиков и оптовиков</div>
+  </div>
+  <div class="doc-meta">
+    <div><strong>Коммерческое предложение</strong></div>
+    <div>Оценка разработки · версия 1.0</div>
+    <div>Дата: 08.05.2026</div>
+  </div>
+</div>
+
+<div class="doc-title">Оценка сроков и стоимости разработки</div>
+<div class="doc-subtitle">PosudaMarket — мультиролевая B2B платформа с invite-системой, складским учётом и подписками</div>
+
+<!-- SUMMARY -->
+<div class="summary-box">
+  <div class="sb-item">
+    <div class="sb-val">~4</div>
+    <div class="sb-label">месяца разработки</div>
+  </div>
+  <div class="sb-item">
+    <div class="sb-val">5</div>
+    <div class="sb-label">фаз проекта</div>
+  </div>
+  <div class="sb-item">
+    <div class="sb-val">4</div>
+    <div class="sb-label">роли в системе</div>
+  </div>
+  <div class="sb-item">
+    <div class="sb-val" style="color:#17c653;">MVP</div>
+    <div class="sb-label">через 6–8 недель</div>
+  </div>
+</div>
+
+<!-- РАЗДЕЛ 1: ЧТО УЖЕ ЕСТЬ -->
+<h2><span class="num">✓</span> Что уже реализовано (текущая версия)</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width:40%">Компонент</th>
+      <th>Статус</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Laravel Backend + Sanctum Auth</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>API, авторизация, JWT-токены</td>
+    </tr>
+    <tr>
+      <td><strong>Vue 3 + Pinia Frontend</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>SPA, роутинг, стейт-менеджмент</td>
+    </tr>
+    <tr>
+      <td><strong>Управление товарами</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>CRUD, фото, категории, артикулы</td>
+    </tr>
+    <tr>
+      <td><strong>Управление поставщиками</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>CRUD, soft-delete, восстановление</td>
+    </tr>
+    <tr>
+      <td><strong>Заказы и накладные</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>Оформление по коробкам, PDF, WhatsApp</td>
+    </tr>
+    <tr>
+      <td><strong>Каталог товаров</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>Фильтры, поиск, корзина, заказ</td>
+    </tr>
+    <tr>
+      <td><strong>Профиль, смена пароля</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>Редактирование, сброс через email</td>
+    </tr>
+    <tr>
+      <td><strong>Дашборд со статистикой</strong></td>
+      <td><span style="color:#17c653;font-weight:700;">✅ Готово</span></td>
+      <td>Товары, заказы, суммы</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note blue">
+  <div>💡</div>
+  <div><strong>Это сокращает сроки примерно на 6–8 недель</strong>
+  Фундамент уже готов — не нужно строить с нуля. Разработка начинается с надстройки ролей и новой бизнес-логики поверх работающей системы.</div>
+</div>
+
+<!-- РАЗДЕЛ 2: ФАЗЫ РАЗРАБОТКИ -->
+<h2><span class="num">2</span> Фазы разработки и сроки</h2>
+
+<!-- ФАЗА 1 -->
+<div style="margin-bottom:6px;">
+  <span class="td-phase ph-1" style="font-size:12px;font-weight:700;">● ФАЗА 1 — Архитектура ролей и доступа</span>
+  <span style="color:#6c7293;font-size:12px;margin-left:8px;">Недели 1–2 · ~2 нед.</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:42%">Задача</th>
+      <th style="width:14%">Компонент</th>
+      <th style="width:10%;text-align:center;">Дней</th>
+      <th>Что входит</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>RBAC: роли и middleware</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Поле role в users, middleware role:admin/supplier/wholesaler, Gate-политики</td>
+    </tr>
+    <tr>
+      <td><strong>Регистрация с выбором роли</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">2</td>
+      <td>POST /auth/register, форма регистрации, редирект по роли после входа</td>
+    </tr>
+    <tr>
+      <td><strong>Привязка поставщика к пользователю</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Поле user_id в suppliers, is_active, is_default. Поставщик видит только свои данные</td>
+    </tr>
+    <tr>
+      <td><strong>Разделение дашбордов по роли</strong></td>
+      <td>Frontend</td>
+      <td class="td-days">3</td>
+      <td>Разные навигации, разные маршруты, защита страниц по роли</td>
+    </tr>
+    <tr>
+      <td><strong>Миграции новых таблиц</strong></td>
+      <td>Backend</td>
+      <td class="td-days">1</td>
+      <td>wholesaler_suppliers, subscriptions, invite_codes, settings</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2"><strong>Итого фаза 1</strong></td>
+      <td class="td-days">10</td>
+      <td style="color:#7239ea;font-weight:700;">~2 рабочих недели</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- ФАЗА 2 -->
+<div style="margin-bottom:6px;">
+  <span class="td-phase ph-2" style="font-size:12px;font-weight:700;">● ФАЗА 2 — Invite-система и доступ к поставщикам</span>
+  <span style="color:#6c7293;font-size:12px;margin-left:8px;">Недели 3–4 · ~2 нед.</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:42%">Задача</th>
+      <th style="width:14%">Компонент</th>
+      <th style="width:10%;text-align:center;">Дней</th>
+      <th>Что входит</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Генерация invite-кода поставщика</strong></td>
+      <td>Backend</td>
+      <td class="td-days">1</td>
+      <td>Уникальный код при регистрации, хранение в suppliers.invite_code</td>
+    </tr>
+    <tr>
+      <td><strong>Публичная страница invite</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">3</td>
+      <td>GET /invite/supplier/{code} — карточка поставщика, кнопки входа/регистрации, redirect после авторизации</td>
+    </tr>
+    <tr>
+      <td><strong>Прикрепление поставщика по invite</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>POST /invite/supplier/{code}/attach, запись в wholesaler_suppliers (source: invite), сообщение «уже добавлен»</td>
+    </tr>
+    <tr>
+      <td><strong>Логика default-поставщика</strong></td>
+      <td>Backend</td>
+      <td class="td-days">1</td>
+      <td>При регистрации оптовика — автодобавление default поставщика. Админ назначает default.</td>
+    </tr>
+    <tr>
+      <td><strong>Фильтрация поставщиков и товаров по доступу</strong></td>
+      <td>Backend</td>
+      <td class="td-days">3</td>
+      <td>GET /suppliers и GET /products — возвращать только доступные для роли/уровня оптовика</td>
+    </tr>
+    <tr>
+      <td><strong>Раздел «Мои поставщики» для оптовика</strong></td>
+      <td>Frontend</td>
+      <td class="td-days">3</td>
+      <td>Список поставщиков с тегами (default/invite/подписка), блок заблокированных, баннер апгрейда</td>
+    </tr>
+    <tr>
+      <td><strong>Страница invite-ссылки в кабинете поставщика</strong></td>
+      <td>Frontend</td>
+      <td class="td-days">2</td>
+      <td>Отображение ссылки, кнопки копировать/поделиться, QR-код, список подключившихся оптовиков</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2"><strong>Итого фаза 2</strong></td>
+      <td class="td-days">15</td>
+      <td style="color:#3e97ff;font-weight:700;">~3 рабочих недели</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- ФАЗА 3 -->
+<div style="margin-bottom:6px;">
+  <span class="td-phase ph-3" style="font-size:12px;font-weight:700;">● ФАЗА 3 — Подписки и тарифы</span>
+  <span style="color:#6c7293;font-size:12px;margin-left:8px;">Недели 5–6 · ~2 нед.</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:42%">Задача</th>
+      <th style="width:14%">Компонент</th>
+      <th style="width:10%;text-align:center;">Дней</th>
+      <th>Что входит</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Модель подписок (trial/active/expired)</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Таблица subscriptions, статусы, даты, связь с user_id</td>
+    </tr>
+    <tr>
+      <td><strong>Trial-период при регистрации (14 дней)</strong></td>
+      <td>Backend</td>
+      <td class="td-days">1</td>
+      <td>Автосоздание trial-подписки при регистрации оптовика</td>
+    </tr>
+    <tr>
+      <td><strong>Автоматическое истечение подписки</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Cron/Scheduler — ежедневная проверка, перевод в expired, скрытие подписочных поставщиков</td>
+    </tr>
+    <tr>
+      <td><strong>Промокоды</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">2</td>
+      <td>Таблица promo_codes, применение при оплате, скидка в %</td>
+    </tr>
+    <tr>
+      <td><strong>Страница тарифов и подписки для оптовика</strong></td>
+      <td>Frontend</td>
+      <td class="td-days">3</td>
+      <td>Статус подписки, дата окончания, план с функциями, кнопка оплаты, промокод, история</td>
+    </tr>
+    <tr>
+      <td><strong>Управление подписками в админке</strong></td>
+      <td>Frontend + Backend</td>
+      <td class="td-days">2</td>
+      <td>Таблица подписок, ручное продление, выдача доступа, статистика</td>
+    </tr>
+    <tr>
+      <td><strong>Уведомления об окончании (email)</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Письма за 7 и 1 день до истечения через Laravel Mail + Queue</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2"><strong>Итого фаза 3</strong></td>
+      <td class="td-days">14</td>
+      <td style="color:#17c653;font-weight:700;">~3 рабочих недели</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- ФАЗА 4 -->
+<div style="margin-bottom:6px;">
+  <span class="td-phase ph-4" style="font-size:12px;font-weight:700;">● ФАЗА 4 — Складской учёт</span>
+  <span style="color:#6c7293;font-size:12px;margin-left:8px;">Недели 7–9 · ~3 нед.</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:42%">Задача</th>
+      <th style="width:14%">Компонент</th>
+      <th style="width:10%;text-align:center;">Дней</th>
+      <th>Что входит</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Таблицы движения товара</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>stock_receipts (поступления), stock_writeoffs (списание), stock_inventories (ревизии), stock_items</td>
+    </tr>
+    <tr>
+      <td><strong>Остатки товаров (текущий баланс)</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Таблица stock_balances, пересчёт при проведении документов, поддержка ∞</td>
+    </tr>
+    <tr>
+      <td><strong>Поступления: CRUD документов</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">4</td>
+      <td>Создание накладной, список позиций в коробках, черновик, проведение, пересчёт остатков</td>
+    </tr>
+    <tr>
+      <td><strong>Сканирование штрихкода</strong></td>
+      <td>Frontend</td>
+      <td class="td-days">3</td>
+      <td>Камера (браузерный API), ввод кода вручную, поиск товара по коду/артикулу</td>
+    </tr>
+    <tr>
+      <td><strong>Создание карточки товара на месте</strong></td>
+      <td>Frontend</td>
+      <td class="td-days">2</td>
+      <td>Модальная форма при незнакомом штрихкоде — создать товар, сразу добавить в накладную</td>
+    </tr>
+    <tr>
+      <td><strong>Списание: CRUD актов</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">3</td>
+      <td>Выбор причины, список товаров, проведение → уменьшение остатка</td>
+    </tr>
+    <tr>
+      <td><strong>Инвентаризация (ревизия)</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">4</td>
+      <td>Создание ведомости, ввод факта, расчёт расхождений (+/-), акт с корректировкой остатков</td>
+    </tr>
+    <tr>
+      <td><strong>Интеграция склада с заказами</strong></td>
+      <td>Backend</td>
+      <td class="td-days">2</td>
+      <td>Автосписание коробок при подтверждении заказа, блокировка заказа при нехватке</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2"><strong>Итого фаза 4</strong></td>
+      <td class="td-days">22</td>
+      <td style="color:#f6b100;font-weight:700;">~4–5 рабочих недель</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- ФАЗА 5 -->
+<div style="margin-bottom:6px;">
+  <span class="td-phase ph-5" style="font-size:12px;font-weight:700;">● ФАЗА 5 — Расширенная админка, аналитика, полировка</span>
+  <span style="color:#6c7293;font-size:12px;margin-left:8px;">Недели 10–12 · ~3 нед.</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:42%">Задача</th>
+      <th style="width:14%">Компонент</th>
+      <th style="width:10%;text-align:center;">Дней</th>
+      <th>Что входит</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Управление поставщиками в админке</strong></td>
+      <td>Frontend + Backend</td>
+      <td class="td-days">2</td>
+      <td>Таблица с invite-ссылками, кнопки Default/Блок/Разблок, назначение default</td>
+    </tr>
+    <tr>
+      <td><strong>Управление пользователями</strong></td>
+      <td>Frontend + Backend</td>
+      <td class="td-days">2</td>
+      <td>Список оптовиков, фильтры, блокировка, ручная выдача доступа</td>
+    </tr>
+    <tr>
+      <td><strong>Аналитика платформы</strong></td>
+      <td>Backend + Frontend</td>
+      <td class="td-days">4</td>
+      <td>Выручка от подписок, топ поставщиков, конверсия invite, новые регистрации, графики</td>
+    </tr>
+    <tr>
+      <td><strong>Telegram-уведомления</strong></td>
+      <td>Backend</td>
+      <td class="td-days">3</td>
+      <td>Бот для уведомлений: окончание подписки, новый заказ, новый поставщик</td>
+    </tr>
+    <tr>
+      <td><strong>Тестирование и QA</strong></td>
+      <td>Весь стек</td>
+      <td class="td-days">5</td>
+      <td>Ручное тестирование всех ролей, граничные случаи, исправление багов</td>
+    </tr>
+    <tr>
+      <td><strong>Деплой и документация</strong></td>
+      <td>DevOps</td>
+      <td class="td-days">2</td>
+      <td>Настройка сервера/хостинга, CI/CD, документация для пользователей</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2"><strong>Итого фаза 5</strong></td>
+      <td class="td-days">18</td>
+      <td style="color:#fd7e14;font-weight:700;">~3–4 рабочих недели</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- ИТОГО ПО ФАЗАМ -->
+<h2><span class="num">3</span> Итого по фазам</h2>
+
+<div class="phase-totals">
+  <div class="pt-card" style="background:#f3eeff;border:1px solid rgba(114,57,234,.2);">
+    <div class="pt-num" style="color:#7239ea;">10</div>
+    <div class="pt-label" style="color:#7239ea;">Фаза 1</div>
+    <div class="pt-days">Роли и доступ</div>
+  </div>
+  <div class="pt-card" style="background:#eff6ff;border:1px solid rgba(62,151,255,.2);">
+    <div class="pt-num" style="color:#3e97ff;">15</div>
+    <div class="pt-label" style="color:#3e97ff;">Фаза 2</div>
+    <div class="pt-days">Invite-система</div>
+  </div>
+  <div class="pt-card" style="background:#e9faf0;border:1px solid rgba(23,198,83,.2);">
+    <div class="pt-num" style="color:#17c653;">14</div>
+    <div class="pt-label" style="color:#17c653;">Фаза 3</div>
+    <div class="pt-days">Подписки</div>
+  </div>
+  <div class="pt-card" style="background:#fff8ea;border:1px solid rgba(246,177,0,.2);">
+    <div class="pt-num" style="color:#f6b100;">22</div>
+    <div class="pt-label" style="color:#f6b100;">Фаза 4</div>
+    <div class="pt-days">Склад</div>
+  </div>
+  <div class="pt-card" style="background:#fff4e5;border:1px solid rgba(253,126,20,.2);">
+    <div class="pt-num" style="color:#fd7e14;">18</div>
+    <div class="pt-label" style="color:#fd7e14;">Фаза 5</div>
+    <div class="pt-days">Админка + QA</div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Метрика</th>
+      <th style="text-align:center;">1 разработчик (full-stack)</th>
+      <th style="text-align:center;">2 разработчика (BE + FE)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Всего рабочих дней</strong></td>
+      <td style="text-align:center;font-weight:700;">79 дней</td>
+      <td style="text-align:center;font-weight:700;">79 дней</td>
+    </tr>
+    <tr>
+      <td><strong>Календарный срок</strong></td>
+      <td style="text-align:center;font-weight:700;color:#3e97ff;">~16 недель (4 мес.)</td>
+      <td style="text-align:center;font-weight:700;color:#17c653;">~10 недель (2,5 мес.)</td>
+    </tr>
+    <tr>
+      <td><strong>MVP (Фазы 1+2+3)</strong></td>
+      <td style="text-align:center;">~8 недель</td>
+      <td style="text-align:center;color:#17c653;">~5–6 недель</td>
+    </tr>
+    <tr>
+      <td><strong>Буфер на непредвиденное (+15%)</strong></td>
+      <td style="text-align:center;">+12 дней</td>
+      <td style="text-align:center;">+12 дней</td>
+    </tr>
+    <tr>
+      <td><strong>Итоговый срок с буфером</strong></td>
+      <td style="text-align:center;font-weight:700;color:#3e97ff;">~4,5 месяца</td>
+      <td style="text-align:center;font-weight:700;color:#17c653;">~3 месяца</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- РАЗДЕЛ 4: СТОИМОСТЬ -->
+<h2><span class="num">4</span> Ориентировочная стоимость</h2>
+
+<div class="note yellow">
+  <div>⚠️</div>
+  <div><strong>Важное примечание</strong>
+  Стоимость зависит от расценок конкретного исполнителя. Ниже — рыночные диапазоны по Казахстану и СНГ. Так как часть системы уже готова, экономия составит 30–40% по сравнению с разработкой с нуля.</div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Категория специалиста</th>
+      <th style="text-align:center;">Ставка (день)</th>
+      <th style="text-align:center;">79 дней</th>
+      <th style="text-align:right;">Итого</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Junior Full-stack (1–2 года)</strong></td>
+      <td style="text-align:center;">8 000 – 12 000 ₸</td>
+      <td style="text-align:center;">× 79</td>
+      <td class="td-sum">632 000 – 948 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Middle Full-stack (2–4 года)</strong></td>
+      <td style="text-align:center;">15 000 – 25 000 ₸</td>
+      <td style="text-align:center;">× 79</td>
+      <td class="td-sum">1 185 000 – 1 975 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Senior Full-stack (4+ года)</strong></td>
+      <td style="text-align:center;">30 000 – 50 000 ₸</td>
+      <td style="text-align:center;">× 79</td>
+      <td class="td-sum">2 370 000 – 3 950 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>2 разработчика Middle (быстрее × 1.5)</strong></td>
+      <td style="text-align:center;">15 000 – 25 000 ₸ × 2</td>
+      <td style="text-align:center;">× 79</td>
+      <td class="td-sum">2 370 000 – 3 950 000 ₸</td>
+    </tr>
+    <tr style="background:#f0f7ff;">
+      <td><strong>💡 Рекомендуемый вариант<br><span style="font-size:11px;font-weight:400;color:#6c7293;">1 Middle full-stack (вы продолжаете сами или нанимаете 1)</span></strong></td>
+      <td style="text-align:center;color:#3e97ff;font-weight:700;">~20 000 ₸/день</td>
+      <td style="text-align:center;">× 79</td>
+      <td class="td-sum" style="color:#3e97ff;font-size:14px;">~1 580 000 ₸</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note green">
+  <div>💰</div>
+  <div><strong>Окупаемость: при 20 оптовиках с подпиской 9 900 ₸/мес = 198 000 ₸/мес</strong>
+  Разработка окупается за 8–10 месяцев при умеренном росте. При 50 подписчиках — за 3–4 месяца после запуска.</div>
+</div>
+
+<!-- РАЗДЕЛ 5: ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ -->
+<h2><span class="num">5</span> Дополнительные функции (в планах)</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width:38%">Функция</th>
+      <th style="width:12%;text-align:center;">Дней</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Интеграция Kaspi Pay</strong></td>
+      <td class="td-days warn">5</td>
+      <td>Приём оплаты за подписку через Kaspi, webhook подтверждения</td>
+    </tr>
+    <tr>
+      <td><strong>Telegram-бот (полноценный)</strong></td>
+      <td class="td-days warn">7</td>
+      <td>Уведомления, просмотр заказов, остатков, ответы на заказы через бота</td>
+    </tr>
+    <tr>
+      <td><strong>Мобильное приложение (PWA)</strong></td>
+      <td class="td-days warn">5</td>
+      <td>Адаптация под мобильные устройства, offline-режим для склада, push-уведомления</td>
+    </tr>
+    <tr>
+      <td><strong>Интеграция с 1С</strong></td>
+      <td class="td-days danger">10</td>
+      <td>Выгрузка накладных, синхронизация остатков и товаров с 1С:Предприятие</td>
+    </tr>
+    <tr>
+      <td><strong>Сканер штрихкода (нативный, iOS/Android)</strong></td>
+      <td class="td-days warn">5</td>
+      <td>Интеграция через Capacitor/Cordova, быстрее и надёжнее браузерного API</td>
+    </tr>
+    <tr>
+      <td><strong>Аналитика просмотров каталога</strong></td>
+      <td class="td-days">3</td>
+      <td>Какие товары смотрели, клики по поставщикам, воронка invite</td>
+    </tr>
+    <tr>
+      <td><strong>Избранные товары</strong></td>
+      <td class="td-days">2</td>
+      <td>Оптовик сохраняет товары в избранное, быстрый доступ к частым позициям</td>
+    </tr>
+    <tr>
+      <td><strong>Автопродление подписки</strong></td>
+      <td class="td-days warn">4</td>
+      <td>Интеграция с платёжным шлюзом, рекуррентные платежи, уведомления</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- РАЗДЕЛ 6: РИСКИ -->
+<h2><span class="num">6</span> Риски и рекомендации</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width:30%">Риск</th>
+      <th style="width:12%;text-align:center;">Уровень</th>
+      <th>Митигация</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Сканирование штрихкода в браузере нестабильно</strong></td>
+      <td style="text-align:center;"><span class="risk-chip risk-med">Средний</span></td>
+      <td>Резервный вариант — ввод вручную. В перспективе — нативное мобильное приложение.</td>
+    </tr>
+    <tr>
+      <td><strong>Интеграция с Kaspi Pay требует договора</strong></td>
+      <td style="text-align:center;"><span class="risk-chip risk-med">Средний</span></td>
+      <td>На старте — ручная выдача доступа администратором после оплаты. Kaspi — следующий этап.</td>
+    </tr>
+    <tr>
+      <td><strong>Рост данных в складском учёте</strong></td>
+      <td style="text-align:center;"><span class="risk-chip risk-low">Низкий</span></td>
+      <td>Индексы на таблицах движения, пагинация, архивирование старых документов.</td>
+    </tr>
+    <tr>
+      <td><strong>Изменение требований в процессе</strong></td>
+      <td style="text-align:center;"><span class="risk-chip risk-high">Высокий</span></td>
+      <td>Разбить на спринты по 2 недели, согласовывать результат перед следующей фазой.</td>
+    </tr>
+    <tr>
+      <td><strong>Безопасность invite-ссылок</strong></td>
+      <td style="text-align:center;"><span class="risk-chip risk-low">Низкий</span></td>
+      <td>Коды — случайные, достаточной длины (12+ символов). Rate limiting на прикрепление.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- РЕКОМЕНДОВАННЫЙ ПЛАН -->
+<h2><span class="num">7</span> Рекомендуемый план запуска</h2>
+
+<div class="note purple">
+  <div>🚀</div>
+  <div><strong>Стратегия: MVP → Продажи → Расширение</strong>
+  Не нужно разрабатывать всё сразу. Запустите MVP (Фазы 1–3) за 6–8 недель, начните продавать подписки, и на полученные деньги финансируйте Фазы 4–5.</div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Этап</th>
+      <th style="text-align:center;">Срок</th>
+      <th>Что запускается</th>
+      <th>Цель</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>🟣 MVP</strong></td>
+      <td style="text-align:center;font-weight:700;color:#7239ea;">Нед. 1–8</td>
+      <td>Роли, invite-ссылки, подписки, базовый доступ</td>
+      <td>Первые платящие клиенты</td>
+    </tr>
+    <tr>
+      <td><strong>🔵 Beta</strong></td>
+      <td style="text-align:center;font-weight:700;color:#3e97ff;">Нед. 9–14</td>
+      <td>Складской учёт (поступления, списание, ревизия)</td>
+      <td>Удержание, рост LTV</td>
+    </tr>
+    <tr>
+      <td><strong>🟢 Release</strong></td>
+      <td style="text-align:center;font-weight:700;color:#17c653;">Нед. 15–18</td>
+      <td>Аналитика, Telegram-бот, полировка, деплой</td>
+      <td>Масштабирование</td>
+    </tr>
+    <tr>
+      <td><strong>🟠 v2.0</strong></td>
+      <td style="text-align:center;font-weight:700;color:#fd7e14;">Нед. 19+</td>
+      <td>Kaspi Pay, 1С, мобильное приложение, автопродление</td>
+      <td>Новые рынки</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div>PosudaMarket · Оценка разработки v1.0 · 08.05.2026</div>
+  <div>Документ сформирован для внутреннего использования</div>
+</div>
+
+</body>
+</html>
