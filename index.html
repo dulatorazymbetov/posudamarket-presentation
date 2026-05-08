@@ -1669,25 +1669,27 @@
 
 <!-- ══════════════════ STOCK SECTION ══════════════════ -->
 <div class="section-cover" style="background:linear-gradient(135deg,#0a1a2a 0%,#0f2a1a 100%);">
-  <div class="cover-eyebrow" style="background:rgba(62,151,255,.15);border-color:rgba(62,151,255,.4);color:#7ec8ff;">📦 Учёт остатков</div>
-  <h2>Складской учёт</h2>
-  <p>Оптовик ведёт остатки по коробкам. Магазин — по штукам для клиентов. Или ставят ∞ — без ограничений.</p>
+  <div class="cover-eyebrow" style="background:rgba(62,151,255,.15);border-color:rgba(62,151,255,.4);color:#7ec8ff;">📦 Складской учёт</div>
+  <h2>Поступления, Списание, Инвентаризация</h2>
+  <p>Оптовик ведёт полноценный складской учёт: приходные накладные со сканированием, списание, ревизия остатков.</p>
   <div class="perm-tags">
-    <span class="tag tag-blue">Оптовик → остатки в коробках</span>
-    <span class="tag tag-green">Магазин → остатки в штуках</span>
-    <span class="tag" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;">∞ Без ограничений</span>
+    <span class="tag tag-blue">Поступления по коробкам</span>
+    <span class="tag tag-green">Сканирование штрихкода</span>
+    <span class="tag" style="background:rgba(248,40,90,.15);border:1px solid rgba(248,40,90,.3);color:#ff8aaa;">Списание</span>
+    <span class="tag tag-purple">Инвентаризация (ревизия)</span>
+    <span class="tag" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;">∞ Без лимита</span>
   </div>
 </div>
 
 <div class="page-section">
 
-  <!-- STOCK: Оптовик управляет остатками -->
-  <div class="screen-label">Оптовик · Склад</div>
-  <div class="screen-title">Остатки товаров — по коробкам</div>
-  <div class="screen-desc">Оптовик видит остатки по каждому товару в коробках. Можно указать точное число или поставить ∞ — тогда ограничений нет. Магазины при заказе видят доступное количество.</div>
-  <div class="note n-blue"><div>📦</div><div><strong>Как это работает</strong><p>Если остаток = 5 коробок, магазин не сможет заказать больше 5. При ∞ — заказывает сколько угодно. Остаток автоматически уменьшается при подтверждении заказа.</p></div></div>
-  <div class="screen-wrap">
-    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.pm.kz/stock</span></span></div>
+  <!-- Навигация по разделу склада -->
+  <div class="screen-label">Склад · Оптовик</div>
+  <div class="screen-title">Разделы складского учёта</div>
+  <div class="screen-desc">Три документа движения товара: Поступление (приход по коробкам), Списание (убыль/брак), Инвентаризация (сверка факта с системой).</div>
+
+  <!-- Обзор разделов склада -->
+  <div class="screen-wrap" style="margin-bottom:48px;">
     <div class="topbar">
       <div class="logo">Посудный<span> мир</span></div>
       <div class="nav">
@@ -1700,195 +1702,111 @@
     </div>
     <div class="body">
       <div class="ph">
-        <div><div class="pt">Остатки на складе</div><div class="ps">Управление запасами по товарам</div></div>
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-light btn-sm">📥 Импорт</button>
-          <button class="btn btn-primary btn-sm">+ Пополнить</button>
-        </div>
+        <div><div class="pt">Складской учёт</div><div class="ps">Управление остатками · движение товаров</div></div>
       </div>
-
       <!-- Сводка -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-        <div class="stat" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,10px);padding:16px;">
-          <div class="stat-ico ic-blue">📦</div>
-          <div><div class="stat-label">Всего позиций</div><div class="stat-val">24</div><div class="stat-hint">активных товаров</div></div>
-        </div>
-        <div class="stat" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,10px);padding:16px;">
-          <div class="stat-ico ic-green">✅</div>
-          <div><div class="stat-label">В наличии</div><div class="stat-val">18</div><div class="stat-hint">есть остаток</div></div>
-        </div>
-        <div class="stat" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,10px);padding:16px;">
-          <div class="stat-ico ic-yellow" style="background:var(--warning-soft);color:var(--warning);">⚠️</div>
-          <div><div class="stat-label">Заканчивается</div><div class="stat-val">4</div><div class="stat-hint">менее 5 коробок</div></div>
-        </div>
-        <div class="stat" style="background:var(--danger-soft);border:1px solid var(--danger);border-radius:var(--radius,10px);padding:16px;">
-          <div class="stat-ico" style="background:var(--danger-soft);color:var(--danger);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;">❌</div>
-          <div><div class="stat-label" style="color:var(--danger);">Нет в наличии</div><div class="stat-val" style="color:var(--danger);">2</div><div class="stat-hint">закончились</div></div>
-        </div>
+      <div class="stats stats-4" style="margin-bottom:22px;">
+        <div class="stat"><div class="stat-ico ic-blue">📦</div><div><div class="stat-label">Позиций</div><div class="stat-val">24</div><div class="stat-hint">в каталоге</div></div></div>
+        <div class="stat"><div class="stat-ico ic-green">✅</div><div><div class="stat-label">В наличии</div><div class="stat-val">18</div><div class="stat-hint">есть остаток</div></div></div>
+        <div class="stat"><div class="stat-ico" style="background:var(--warning-soft);">⚠️</div><div><div class="stat-label">Заканчивается</div><div class="stat-val">4</div><div class="stat-hint">&lt; 5 коробок</div></div></div>
+        <div class="stat" style="background:var(--danger-soft);border-color:rgba(248,40,90,.2);"><div class="stat-ico" style="background:rgba(248,40,90,.1);">❌</div><div><div class="stat-label" style="color:var(--danger)">Нет</div><div class="stat-val" style="color:var(--danger)">2</div><div class="stat-hint">закончились</div></div></div>
       </div>
-
-      <div class="card">
-        <div class="ch">
-          <div><div class="ct">Остатки по товарам</div><div class="cs">24 позиции</div></div>
-          <div style="display:flex;gap:8px;">
-            <input class="fc" style="width:200px;padding:6px 12px;font-size:12px;" placeholder="🔍 Поиск товара..." />
-            <select class="fc" style="width:140px;padding:6px 10px;font-size:12px;">
-              <option>Все товары</option>
-              <option>Заканчиваются</option>
-              <option>Нет в наличии</option>
-            </select>
+      <!-- Три раздела -->
+      <div class="three-col" style="margin-bottom:0;">
+        <div class="card" style="cursor:pointer;border-color:var(--primary);">
+          <div style="padding:20px;text-align:center;">
+            <div style="font-size:36px;margin-bottom:10px;">📥</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Поступления</div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">Приходные накладные. Учёт по коробкам. Сканирование штрихкода.</div>
+            <span class="badge b-blue" style="font-size:11px;">3 документа сегодня</span>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--primary-soft);">
+            <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">+ Новое поступление</button>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width:44px;"></th>
-              <th>Товар</th>
-              <th>Артикул</th>
-              <th>Категория</th>
-              <th style="text-align:center;">Остаток (кор.)</th>
-              <th style="text-align:center;">Статус</th>
-              <th style="text-align:center;">Действие</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Кастрюля 5л нерж. сталь</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">KST-001</span></td>
-              <td><span class="badge b-muted">Кастрюли</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="24" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;" />
-                  <span style="font-size:11px;color:var(--muted);">кор.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge b-success">В наличии</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
-            </tr>
-            <tr>
-              <td><img src="https://images.unsplash.com/photo-1556909172-8c2f041fca1e?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Кастрюля 3л эмаль</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">KST-003</span></td>
-              <td><span class="badge b-muted">Кастрюли</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="∞" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;font-size:18px;color:var(--primary);" />
-                  <span style="font-size:11px;color:var(--muted);">кор.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge b-blue" style="background:var(--primary-soft);color:var(--primary);">Без лимита ∞</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
-            </tr>
-            <tr style="background:#fff8ea;">
-              <td><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Кастрюля 8л нерж. с крышкой</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">KST-008</span></td>
-              <td><span class="badge b-muted">Кастрюли</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="3" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;color:var(--warning);" />
-                  <span style="font-size:11px;color:var(--muted);">кор.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge" style="background:var(--warning-soft);color:var(--warning);">⚠️ Мало</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
-            </tr>
-            <tr style="background:#fff0f3;">
-              <td><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Сковорода 28см тефлон</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">SKV-028</span></td>
-              <td><span class="badge b-muted">Сковороды</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="0" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;color:var(--danger);" />
-                  <span style="font-size:11px;color:var(--muted);">кор.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge b-danger" style="background:var(--danger-soft);color:var(--danger);">❌ Нет</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="card" style="cursor:pointer;border-color:rgba(248,40,90,.3);">
+          <div style="padding:20px;text-align:center;">
+            <div style="font-size:36px;margin-bottom:10px;">📤</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Списание</div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">Брак, потери, списание по причинам. Уменьшает остаток.</div>
+            <span class="badge b-danger" style="font-size:11px;">1 акт за неделю</span>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--danger-soft);">
+            <button class="btn btn-danger-soft btn-sm" style="width:100%;justify-content:center;">+ Акт списания</button>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;border-color:rgba(114,57,234,.3);">
+          <div style="padding:20px;text-align:center;">
+            <div style="font-size:36px;margin-bottom:10px;">📋</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Инвентаризация</div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">Ревизия остатков. Сверка факта с системой. Выявление расхождений.</div>
+            <span class="badge b-info" style="font-size:11px;">Последняя: 01.05.2026</span>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--info-soft);">
+            <button class="btn btn-sm" style="width:100%;justify-content:center;background:var(--info-soft);color:var(--info);border:1px solid rgba(114,57,234,.3);">+ Начать ревизию</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- STOCK: Магазин управляет остатками (штуки для клиентов) -->
-  <div class="screen-label">Магазин · Склад</div>
-  <div class="screen-title">Остатки для клиентов — по штукам</div>
-  <div class="screen-desc">Магазин ведёт собственный учёт остатков в штуках — это то, что видят розничные клиенты при заказе. Отдельно от оптовых остатков.</div>
-  <div class="note n-green"><div>🏪</div><div><strong>Два уровня остатков</strong><p>Оптовик → остатки в коробках (для магазинов). Магазин → остатки в штуках (для клиентов). Каждый управляет своим складом независимо.</p></div></div>
-  <div class="screen-wrap">
-    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.shop.kz/stock</span></span></div>
+  <!-- ── ПОСТУПЛЕНИЯ: список документов ── -->
+  <div class="screen-label">Склад · Поступления · Список</div>
+  <div class="screen-title">Журнал поступлений</div>
+  <div class="screen-desc">Все приходные накладные. Каждый документ фиксирует: поставщика, дату, список товаров в коробках, итоговую сумму. Можно открыть или создать новый.</div>
+  <div class="screen-wrap" style="margin-bottom:48px;">
     <div class="topbar">
-      <div class="logo green">Посудный<span> мир</span></div>
+      <div class="logo">Посудный<span> мир</span></div>
       <div class="nav">
         <div class="ni">🏠 Главная</div>
-        <div class="ni">📦 Каталог</div>
-        <div class="ni act green">🗄 Склад</div>
-        <div class="ni">📋 Заказы клиентов</div>
-        <div class="ni">🛒 Закупки</div>
+        <div class="ni">📦 Товары</div>
+        <div class="ni act">🗄 Склад</div>
       </div>
-      <div class="topbar-right"><span class="role-pill rp-shop">Магазин</span><div class="ava" style="background:var(--success)">РМ</div></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
     </div>
     <div class="body">
+      <div class="breadcrumb">Склад → Поступления</div>
       <div class="ph">
-        <div><div class="pt">Мои остатки</div><div class="ps">Розничный склад для клиентов · в штуках</div></div>
-        <button class="btn btn-primary btn-sm">+ Пополнить</button>
+        <div><div class="pt">Поступления</div><div class="ps">Приходные накладные · учёт в коробках</div></div>
+        <button class="btn btn-primary">+ Новое поступление</button>
       </div>
       <div class="card">
-        <div class="ch"><div class="ct">Остатки по товарам</div><div class="cs">18 позиций</div></div>
+        <div class="ch">
+          <div><div class="ct">Все документы</div><div class="cs">май 2026</div></div>
+          <div style="display:flex;gap:8px;">
+            <input class="fc" placeholder="Поиск по №..." style="width:160px;padding:6px 10px;font-size:12px;"/>
+            <select class="fc" style="width:130px;padding:6px 10px;font-size:12px;"><option>Все статусы</option><option>Проведён</option><option>Черновик</option></select>
+          </div>
+        </div>
         <table>
-          <thead>
-            <tr>
-              <th style="width:44px;"></th>
-              <th>Товар</th>
-              <th>Артикул</th>
-              <th style="text-align:center;">Остаток (шт.)</th>
-              <th style="text-align:center;">Статус</th>
-              <th style="text-align:center;">Действие</th>
-            </tr>
-          </thead>
+          <thead><tr><th>№ документа</th><th>Дата</th><th>Поставщик</th><th>Позиций</th><th>Коробок</th><th>Сумма</th><th>Статус</th><th></th></tr></thead>
           <tbody>
             <tr>
-              <td><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Кастрюля 5л нерж. сталь</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">KST-001</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="47" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;" />
-                  <span style="font-size:11px;color:var(--muted);">шт.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge b-success">В наличии</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
+              <td><strong style="color:var(--primary);">ПН-2026-047</strong></td>
+              <td style="color:var(--muted);font-size:12px;">08.05.2026</td>
+              <td>ООО «Посудный Рай»</td>
+              <td>6 поз.</td><td><strong>48 кор.</strong></td>
+              <td><strong>124 800 ₸</strong></td>
+              <td><span class="badge b-success">Проведён</span></td>
+              <td><button class="btn btn-light btn-xs">Открыть</button></td>
             </tr>
             <tr>
-              <td><img src="https://images.unsplash.com/photo-1556909172-8c2f041fca1e?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Кастрюля 3л эмаль</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">KST-003</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="∞" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;font-size:18px;color:var(--primary);" />
-                  <span style="font-size:11px;color:var(--muted);">шт.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge b-blue" style="background:var(--primary-soft);color:var(--primary);">Без лимита ∞</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
+              <td><strong style="color:var(--primary);">ПН-2026-046</strong></td>
+              <td style="color:var(--muted);font-size:12px;">07.05.2026</td>
+              <td>ТОО «КазПосуда»</td>
+              <td>12 поз.</td><td><strong>96 кор.</strong></td>
+              <td><strong>287 400 ₸</strong></td>
+              <td><span class="badge b-success">Проведён</span></td>
+              <td><button class="btn btn-light btn-xs">Открыть</button></td>
             </tr>
-            <tr style="background:#fff8ea;">
-              <td><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td>
-              <td><strong>Кастрюля 8л нерж. с крышкой</strong></td>
-              <td><span style="font-family:monospace;font-size:12px;color:var(--muted)">KST-008</span></td>
-              <td style="text-align:center;">
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                  <input class="fc" value="8" style="width:64px;padding:4px 8px;text-align:center;font-weight:700;color:var(--warning);" />
-                  <span style="font-size:11px;color:var(--muted);">шт.</span>
-                </div>
-              </td>
-              <td style="text-align:center;"><span class="badge" style="background:var(--warning-soft);color:var(--warning);">⚠️ Мало</span></td>
-              <td style="text-align:center;"><button class="btn btn-light btn-xs">💾 Сохранить</button></td>
+            <tr style="background:var(--warning-soft);">
+              <td><strong style="color:var(--primary);">ПН-2026-048</strong></td>
+              <td style="color:var(--muted);font-size:12px;">08.05.2026</td>
+              <td>ООО «Посуда Оптом»</td>
+              <td>3 поз.</td><td><strong>—</strong></td>
+              <td>—</td>
+              <td><span class="badge b-warning">Черновик</span></td>
+              <td><button class="btn btn-primary btn-xs">Продолжить</button></td>
             </tr>
           </tbody>
         </table>
@@ -1896,69 +1814,381 @@
     </div>
   </div>
 
-  <!-- STOCK: Как видят клиенты -->
-  <div class="screen-label">Клиент · Каталог с остатками</div>
-  <div class="screen-title">Клиент видит наличие в каталоге</div>
-  <div class="screen-desc">В карточке товара отображается статус наличия. Если товара нет — кнопка «В корзину» недоступна.</div>
-  <div class="screen-wrap">
-    <div class="subdomain-bar"><span class="sdb-icon">🌐</span><span class="sdb-url"><span class="sdb-sub">posudamir</span><span class="sdb-domain">.shop.kz</span></span></div>
+  <!-- ── ПОСТУПЛЕНИЯ: создание документа ── -->
+  <div class="screen-label">Склад · Поступления · Новый документ</div>
+  <div class="screen-title">Создание приходной накладной</div>
+  <div class="screen-desc">Оптовик вводит товары сканированием штрихкода или вручную. Количество — в коробках. Если товар не найден — создаётся карточка прямо здесь.</div>
+  <div class="note n-blue" style="margin-bottom:24px;">
+    <div>📷</div>
+    <div><strong>Сканирование штрихкода</strong><p>Нажмите «Сканировать» и поднесите камеру/сканер к коробке. Товар найден — добавляется в список. Не найден — появляется форма создания новой карточки товара прямо в документе.</p></div>
+  </div>
+  <div class="screen-wrap" style="margin-bottom:48px;">
     <div class="topbar">
-      <div class="logo" style="color:var(--orange);">Посудный<span style="color:var(--orange);opacity:.6;"> мир</span></div>
-      <div class="nav"><div class="ni act" style="background:var(--orange-soft);color:var(--orange);">🛍 Каталог</div></div>
-      <div class="topbar-right"><span class="role-pill rp-client">Клиент</span></div>
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni act">🗄 Склад · Поступления</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
     </div>
     <div class="body">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-        <!-- В наличии -->
-        <div class="pc">
-          <div class="pc-img"><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=300&h=220&fit=crop&auto=format" alt="" /></div>
-          <div class="pc-body">
-            <div class="pc-name">Кастрюля 5л нерж. сталь</div>
-            <div class="pc-sku">Арт: KST-001</div>
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0;"></span>
-              <span style="font-size:11px;color:var(--success);font-weight:600;">В наличии · 47 шт.</span>
-            </div>
-            <div class="pc-price" style="color:var(--orange);">1 200 ₸ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт.</span></div>
-            <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
-              <input class="fc" style="width:52px;padding:6px 8px;text-align:center;font-size:13px;" value="1" />
-              <button class="btn btn-sm" style="flex:1;justify-content:center;font-size:12px;background:var(--orange);color:#fff;border-color:transparent;">+ В корзину</button>
-            </div>
-          </div>
-        </div>
-        <!-- Мало -->
-        <div class="pc" style="border-color:var(--warning);">
-          <div class="pc-img"><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=300&h=220&fit=crop&auto=format" alt="" /></div>
-          <div class="pc-body">
-            <div class="pc-name">Кастрюля 8л нерж. с крышкой</div>
-            <div class="pc-sku">Арт: KST-008</div>
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warning);flex-shrink:0;"></span>
-              <span style="font-size:11px;color:var(--warning);font-weight:600;">Осталось мало · 8 шт.</span>
-            </div>
-            <div class="pc-price" style="color:var(--orange);">1 800 ₸ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт.</span></div>
-            <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
-              <input class="fc" style="width:52px;padding:6px 8px;text-align:center;font-size:13px;" value="1" />
-              <button class="btn btn-sm" style="flex:1;justify-content:center;font-size:12px;background:var(--orange);color:#fff;border-color:transparent;">+ В корзину</button>
+      <div class="breadcrumb">Склад → Поступления → <strong>ПН-2026-048 · Новый</strong></div>
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;">
+        <!-- Левая часть: шапка + таблица товаров -->
+        <div>
+          <!-- Шапка документа -->
+          <div class="card" style="margin-bottom:16px;">
+            <div class="ch"><div class="ct">Реквизиты документа</div></div>
+            <div class="form-section">
+              <div class="fr3">
+                <div class="form-group">
+                  <label class="fl">Дата поступления</label>
+                  <input class="fc" type="text" value="08.05.2026" />
+                </div>
+                <div class="form-group">
+                  <label class="fl">Поставщик</label>
+                  <select class="fc"><option>ООО «Посуда Оптом»</option><option>ООО «Посудный Рай»</option><option>ТОО «КазПосуда»</option></select>
+                </div>
+                <div class="form-group">
+                  <label class="fl">Комментарий</label>
+                  <input class="fc" placeholder="Заметка к поставке..." />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Нет в наличии -->
-        <div class="pc" style="border-color:var(--border2);opacity:.7;">
-          <div class="pc-img" style="position:relative;"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=220&fit=crop&auto=format" alt="" style="filter:grayscale(60%);" /><div style="position:absolute;inset:0;background:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;"><span style="background:#fff;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--danger);">НЕТ В НАЛИЧИИ</span></div></div>
-          <div class="pc-body">
-            <div class="pc-name">Сковорода 28см тефлон</div>
-            <div class="pc-sku">Арт: SKV-028</div>
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--danger);flex-shrink:0;"></span>
-              <span style="font-size:11px;color:var(--danger);font-weight:600;">Нет в наличии</span>
+
+          <!-- Добавление товаров -->
+          <div class="card">
+            <div class="ch">
+              <div><div class="ct">Товары в накладной</div><div class="cs">3 позиции · 48 коробок</div></div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-primary btn-sm" style="background:var(--success);">📷 Сканировать штрихкод</button>
+                <button class="btn btn-light btn-sm">+ Добавить вручную</button>
+              </div>
             </div>
-            <div class="pc-price" style="color:var(--muted);">890 ₸ <span style="font-size:12px;color:var(--muted);font-weight:400;">/ шт.</span></div>
-            <div style="margin-top:10px;">
-              <button class="btn btn-sm" style="width:100%;justify-content:center;font-size:12px;background:var(--surface3);color:var(--muted);border-color:var(--border2);cursor:not-allowed;" disabled>Нет в наличии</button>
+
+            <!-- Строка сканирования -->
+            <div style="background:var(--success-soft);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;">
+              <div style="width:34px;height:34px;border-radius:8px;background:var(--success);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;">📷</div>
+              <div style="flex:1;">
+                <input class="fc" placeholder="Штрихкод или артикул..." style="border-color:var(--success);" value="4870044005391" />
+              </div>
+              <button class="btn btn-sm" style="background:var(--success);color:#fff;">Найти</button>
             </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:40px;"></th>
+                  <th>Товар</th>
+                  <th>Артикул</th>
+                  <th style="width:80px;text-align:center;">Шт/кор.</th>
+                  <th style="width:110px;text-align:center;">Кол-во (кор.)</th>
+                  <th style="width:110px;text-align:right;">Цена/кор.</th>
+                  <th style="width:110px;text-align:right;">Сумма</th>
+                  <th style="width:36px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+                  <td><strong>Кастрюля 5л нерж. сталь</strong><div style="font-size:10px;color:var(--muted);">Найдено по штрихкоду</div></td>
+                  <td><span style="font-family:monospace;font-size:11px;color:var(--muted)">KST-001</span></td>
+                  <td style="text-align:center;color:var(--text3);font-size:12px;">6 шт.</td>
+                  <td style="text-align:center;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:4px;">
+                      <button class="qty-btn">−</button>
+                      <input class="fc" value="12" style="width:50px;padding:4px 6px;text-align:center;font-weight:700;" />
+                      <button class="qty-btn">+</button>
+                    </div>
+                  </td>
+                  <td style="text-align:right;"><input class="fc" value="2 600" style="width:90px;padding:4px 8px;text-align:right;" /></td>
+                  <td style="text-align:right;"><strong>31 200 ₸</strong></td>
+                  <td><button class="btn btn-danger-soft btn-xs" style="padding:4px 6px;">✕</button></td>
+                </tr>
+                <tr>
+                  <td><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+                  <td><strong>Сковорода 28см антипригарная</strong></td>
+                  <td><span style="font-family:monospace;font-size:11px;color:var(--muted)">SKV-028</span></td>
+                  <td style="text-align:center;color:var(--text3);font-size:12px;">4 шт.</td>
+                  <td style="text-align:center;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:4px;">
+                      <button class="qty-btn">−</button>
+                      <input class="fc" value="20" style="width:50px;padding:4px 6px;text-align:center;font-weight:700;" />
+                      <button class="qty-btn">+</button>
+                    </div>
+                  </td>
+                  <td style="text-align:right;"><input class="fc" value="1 850" style="width:90px;padding:4px 8px;text-align:right;" /></td>
+                  <td style="text-align:right;"><strong>37 000 ₸</strong></td>
+                  <td><button class="btn btn-danger-soft btn-xs" style="padding:4px 6px;">✕</button></td>
+                </tr>
+                <tr>
+                  <td><img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+                  <td><strong>Чайник 3л нерж.</strong></td>
+                  <td><span style="font-family:monospace;font-size:11px;color:var(--muted)">CHA-003</span></td>
+                  <td style="text-align:center;color:var(--text3);font-size:12px;">6 шт.</td>
+                  <td style="text-align:center;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:4px;">
+                      <button class="qty-btn">−</button>
+                      <input class="fc" value="16" style="width:50px;padding:4px 6px;text-align:center;font-weight:700;" />
+                      <button class="qty-btn">+</button>
+                    </div>
+                  </td>
+                  <td style="text-align:right;"><input class="fc" value="3 500" style="width:90px;padding:4px 8px;text-align:right;" /></td>
+                  <td style="text-align:right;"><strong>56 000 ₸</strong></td>
+                  <td><button class="btn btn-danger-soft btn-xs" style="padding:4px 6px;">✕</button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+
+        <!-- Правая часть: итоги + действия -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Итого</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text3);">Позиций</span><strong>3</strong></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text3);">Коробок</span><strong>48</strong></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text3);">Штук (итого)</span><strong>288</strong></div>
+              <div style="height:1px;background:var(--border);"></div>
+              <div style="display:flex;justify-content:space-between;font-size:15px;"><span style="color:var(--text2);font-weight:600;">Сумма</span><strong style="color:var(--primary);font-size:17px;">124 200 ₸</strong></div>
+            </div>
+          </div>
+          <button class="btn btn-success" style="justify-content:center;padding:12px;font-size:14px;">✅ Провести накладную</button>
+          <button class="btn btn-light" style="justify-content:center;padding:10px;font-size:13px;">💾 Сохранить черновик</button>
+          <div class="note n-blue" style="margin:0;">
+            <div>ℹ️</div>
+            <div><strong style="font-size:12px;">После проведения</strong><p style="font-size:11px;">Остатки на складе автоматически увеличатся на указанные коробки</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ШТРИХКОД НЕ НАЙДЕН: создание карточки ── -->
+  <div class="screen-label">Склад · Поступления · Штрихкод не найден</div>
+  <div class="screen-title">Товар по штрихкоду не найден — создать карточку</div>
+  <div class="screen-desc">Если штрихкод не распознан в базе, система предлагает создать новую карточку товара прямо в документе. Без перехода на другую страницу.</div>
+  <div class="screen-wrap" style="max-width:620px;margin-left:auto;margin-right:auto;margin-bottom:48px;">
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span></div>
+    </div>
+    <div class="body">
+      <!-- Результат сканирования -->
+      <div style="background:var(--warning-soft);border:1px solid var(--warning);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:22px;">🔍</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Штрихкод не найден: <span style="font-family:monospace;color:var(--warning);">4870044009988</span></div>
+          <div style="font-size:12px;color:var(--text3);">Этого товара нет в базе. Создайте карточку чтобы добавить его в поступление.</div>
+        </div>
+      </div>
+      <!-- Форма быстрого создания -->
+      <div class="card">
+        <div class="ch"><div><div class="ct">Новая карточка товара</div><div class="cs">Заполните основные поля</div></div></div>
+        <div class="form-section">
+          <div class="form-group">
+            <label class="fl">Название товара <span style="color:var(--danger)">*</span></label>
+            <input class="fc" placeholder="Например: Кастрюля 6л нерж. сталь" />
+          </div>
+          <div class="fr">
+            <div class="form-group">
+              <label class="fl">Артикул (SKU)</label>
+              <input class="fc" placeholder="KST-006" />
+            </div>
+            <div class="form-group">
+              <label class="fl">Штрихкод</label>
+              <input class="fc" value="4870044009988" style="background:var(--surface3);" readonly />
+            </div>
+          </div>
+          <div class="fr3">
+            <div class="form-group">
+              <label class="fl">Категория</label>
+              <select class="fc"><option>Кастрюли</option><option>Сковороды</option><option>Чайники</option><option>+ Новая</option></select>
+            </div>
+            <div class="form-group">
+              <label class="fl">Шт. в коробке <span style="color:var(--danger)">*</span></label>
+              <input class="fc" type="number" placeholder="6" />
+            </div>
+            <div class="form-group">
+              <label class="fl">Цена за коробку <span style="color:var(--danger)">*</span></label>
+              <input class="fc" type="number" placeholder="2 800" />
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-primary" style="flex:1;justify-content:center;">✅ Создать и добавить в накладную</button>
+            <button class="btn btn-light">Отмена</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── СПИСАНИЕ ── -->
+  <div class="screen-label">Склад · Списание</div>
+  <div class="screen-title">Акт списания товаров</div>
+  <div class="screen-desc">Фиксирует убыль: брак, бой, пересорт, недостача. Уменьшает остаток на складе. Указывается причина списания.</div>
+  <div class="screen-wrap" style="margin-bottom:48px;">
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni act">🗄 Склад · Списание</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Склад → Списание → <strong>АС-2026-011 · Новый</strong></div>
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;">
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="ch"><div class="ct">Реквизиты акта</div></div>
+            <div class="form-section">
+              <div class="fr3">
+                <div class="form-group">
+                  <label class="fl">Дата</label>
+                  <input class="fc" value="08.05.2026" />
+                </div>
+                <div class="form-group">
+                  <label class="fl">Причина списания</label>
+                  <select class="fc"><option>Брак / повреждение</option><option>Истёк срок</option><option>Пересорт</option><option>Недостача</option><option>Другое</option></select>
+                </div>
+                <div class="form-group">
+                  <label class="fl">Комментарий</label>
+                  <input class="fc" placeholder="Пояснение..." />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch">
+              <div><div class="ct">Списываемые товары</div><div class="cs">по коробкам</div></div>
+              <button class="btn btn-light btn-sm">+ Добавить товар</button>
+            </div>
+            <table>
+              <thead><tr><th style="width:40px;"></th><th>Товар</th><th style="text-align:center;">Остаток</th><th style="text-align:center;">Списать (кор.)</th><th style="text-align:right;">Сумма</th><th style="width:36px;"></th></tr></thead>
+              <tbody>
+                <tr style="background:var(--danger-soft);">
+                  <td><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+                  <td><strong>Кастрюля 8л нерж. с крышкой</strong><div style="font-size:10px;color:var(--danger);">Причина: повреждение при доставке</div></td>
+                  <td style="text-align:center;"><span style="font-size:12px;color:var(--warning);font-weight:600;">3 кор.</span></td>
+                  <td style="text-align:center;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:4px;">
+                      <button class="qty-btn">−</button>
+                      <input class="fc" value="2" style="width:50px;padding:4px 6px;text-align:center;font-weight:700;border-color:var(--danger);" />
+                      <button class="qty-btn">+</button>
+                    </div>
+                  </td>
+                  <td style="text-align:right;color:var(--danger);"><strong>−5 200 ₸</strong></td>
+                  <td><button class="btn btn-danger-soft btn-xs" style="padding:4px 6px;">✕</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div class="ch"><div class="ct">Итого</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text3)">Списывается коробок</span><strong style="color:var(--danger)">2</strong></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text3)">Сумма убытка</span><strong style="color:var(--danger)">5 200 ₸</strong></div>
+            </div>
+          </div>
+          <button class="btn btn-danger-soft" style="justify-content:center;padding:12px;font-size:14px;border:1px solid rgba(248,40,90,.3);">📤 Провести списание</button>
+          <button class="btn btn-light" style="justify-content:center;padding:10px;">💾 Черновик</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ИНВЕНТАРИЗАЦИЯ ── -->
+  <div class="screen-label">Склад · Инвентаризация (ревизия)</div>
+  <div class="screen-title">Сверка фактических остатков с системой</div>
+  <div class="screen-desc">Оптовик проходит по каждой позиции и вводит фактическое количество коробок. Система показывает расхождение. По итогу — акт инвентаризации с корректировкой остатков.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Посудный<span> мир</span></div>
+      <div class="nav">
+        <div class="ni act">🗄 Склад · Инвентаризация</div>
+      </div>
+      <div class="topbar-right"><span class="role-pill rp-wholesale">Оптовик</span><div class="ava" style="background:var(--primary)">ПМ</div></div>
+    </div>
+    <div class="body">
+      <div class="breadcrumb">Склад → Инвентаризация → <strong>ИНВ-2026-003 · В процессе</strong></div>
+      <div class="ph">
+        <div><div class="pt">Ревизия остатков</div><div class="ps">08.05.2026 · Пересчитано 3 из 24 позиций</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-light btn-sm">📷 Сканировать</button>
+          <button class="btn btn-primary btn-sm">✅ Завершить ревизию</button>
+        </div>
+      </div>
+      <!-- Прогресс -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;">
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;"><span style="color:var(--text3)">Прогресс проверки</span><span style="font-weight:700;">3 / 24 позиций</span></div>
+          <div style="background:var(--surface3);border-radius:100px;height:8px;overflow:hidden;">
+            <div style="background:var(--primary);height:100%;width:12.5%;border-radius:100px;"></div>
+          </div>
+        </div>
+        <div style="text-align:center;padding-left:16px;border-left:1px solid var(--border);">
+          <div style="font-size:20px;font-weight:800;color:var(--danger);">2</div>
+          <div style="font-size:11px;color:var(--muted);">расхождения</div>
+        </div>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>Товар</th>
+              <th style="text-align:center;">По системе (кор.)</th>
+              <th style="text-align:center;">Факт (кор.)</th>
+              <th style="text-align:center;">Расхождение</th>
+              <th style="text-align:center;">Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--success-soft);">
+              <td><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+              <td><strong>Кастрюля 5л нерж. сталь</strong></td>
+              <td style="text-align:center;font-weight:700;">24</td>
+              <td style="text-align:center;">
+                <input class="fc" value="24" style="width:60px;padding:4px 8px;text-align:center;font-weight:700;border-color:var(--success);" />
+              </td>
+              <td style="text-align:center;"><span style="color:var(--success);font-weight:700;font-size:13px;">0</span></td>
+              <td style="text-align:center;"><span class="badge b-success">Совпадает</span></td>
+            </tr>
+            <tr style="background:#fff8ea;">
+              <td><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+              <td><strong>Сковорода 28см антипригарная</strong></td>
+              <td style="text-align:center;font-weight:700;">20</td>
+              <td style="text-align:center;">
+                <input class="fc" value="18" style="width:60px;padding:4px 8px;text-align:center;font-weight:700;border-color:var(--warning);" />
+              </td>
+              <td style="text-align:center;"><span style="color:var(--danger);font-weight:700;font-size:13px;">−2</span></td>
+              <td style="text-align:center;"><span class="badge b-warning">Недостача</span></td>
+            </tr>
+            <tr style="background:var(--info-soft);">
+              <td><img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+              <td><strong>Чайник 3л нерж.</strong></td>
+              <td style="text-align:center;font-weight:700;">16</td>
+              <td style="text-align:center;">
+                <input class="fc" value="19" style="width:60px;padding:4px 8px;text-align:center;font-weight:700;border-color:var(--info);" />
+              </td>
+              <td style="text-align:center;"><span style="color:var(--info);font-weight:700;font-size:13px;">+3</span></td>
+              <td style="text-align:center;"><span class="badge b-info">Излишек</span></td>
+            </tr>
+            <tr>
+              <td><img src="https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=80&h=80&fit=crop&auto=format" style="width:32px;height:32px;border-radius:6px;object-fit:cover;" /></td>
+              <td><strong>Тарелка обеденная 26см</strong></td>
+              <td style="text-align:center;color:var(--muted);">10</td>
+              <td style="text-align:center;">
+                <input class="fc" value="" placeholder="—" style="width:60px;padding:4px 8px;text-align:center;border-style:dashed;" />
+              </td>
+              <td style="text-align:center;color:var(--muted);">—</td>
+              <td style="text-align:center;"><span class="badge b-muted">Не проверено</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -2930,7 +3160,7 @@
 </div>
 
 <!-- ══════════════════ TECH ARCHITECTURE ══════════════════ -->
-<div class="section-cover tech">
+<div style="display:none;"><div class="section-cover tech">
   <div class="cover-eyebrow" style="background:rgba(62,151,255,.1);border-color:rgba(62,151,255,.3);color:#7ec8ff;">⚙️ Технологии и архитектура</div>
   <h2>Готово к масштабированию</h2>
   <p>RBAC, защищённое API, мобильная версия, интеграции с Kaspi, 1С, CRM, Telegram-ботом</p>
@@ -3035,7 +3265,7 @@
     <div class="te-item"><div class="te-val" style="color:#f6b100;">∞</div><div class="te-label">поставщиков по подписке</div></div>
     <div class="te-item"><div class="te-val" style="color:#7239ea;">1</div><div class="te-label">invite-ссылка = навсегда</div></div>
   </div>
-</div>
+</div></div>
 
 <!-- ══════════════════ DB SCHEMA (hidden) ══════════════════ -->
 <div style="display:none;">
