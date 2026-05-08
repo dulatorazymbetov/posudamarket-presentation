@@ -258,6 +258,67 @@
   .te-val { font-size: 36px; font-weight: 800; }
   .te-label { color: #64748b; font-size: 13px; margin-top: 4px; }
 
+  /* INVITE / ACCESS SYSTEM */
+  .section-cover.invite { background: linear-gradient(135deg, #001233 0%, #0a1f4a 100%); }
+  .section-cover.supplier-cab { background: linear-gradient(135deg, #001a00 0%, #0a3010 100%); }
+  .section-cover.admin2 { background: linear-gradient(135deg, #1a0533 0%, #2d1465 100%); }
+  .section-cover.tech { background: linear-gradient(135deg, #0a0a1a 0%, #1a1a33 100%); }
+  .invite-flow { display: flex; align-items: center; gap: 0; margin: 28px 0; flex-wrap: wrap; justify-content: center; }
+  .if-step { display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 16px 22px; text-align: center; min-width: 140px; }
+  .if-step .if-ico { font-size: 28px; }
+  .if-step .if-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.8); }
+  .if-step .if-sub { font-size: 10px; color: rgba(255,255,255,.4); }
+  .if-arrow { color: rgba(255,255,255,.25); font-size: 22px; padding: 0 8px; }
+  .access-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .am-card { background: var(--surface); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+  .am-head { padding: 12px 16px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .am-head.free { background: var(--surface3); color: var(--text3); border-bottom: 1px solid var(--border); }
+  .am-head.paid { background: linear-gradient(135deg,#3e97ff15,#7239ea15); color: var(--primary); border-bottom: 1px solid var(--border); }
+  .am-item { padding: 9px 16px; font-size: 13px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border2); }
+  .am-item:last-child { border-bottom: none; }
+  .am-ico { width: 20px; text-align: center; flex-shrink: 0; }
+  .invite-link-box { background: #f0f7ff; border: 1.5px dashed var(--primary); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .ilb-url { font-family: monospace; font-size: 13px; color: var(--primary); font-weight: 600; }
+  .ilb-hint { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .connected-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border2); }
+  .connected-row:last-child { border-bottom: none; }
+  .sub-banner { background: linear-gradient(135deg, #3e97ff, #7239ea); border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; color: #fff; }
+  .sub-banner-left h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .sub-banner-left p { font-size: 13px; opacity: .8; }
+  .sub-status-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .ssb-ico { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .ssb-ico.trial { background: var(--warning-soft); }
+  .ssb-ico.active { background: var(--success-soft); }
+  .ssb-ico.expired { background: var(--danger-soft); }
+  .ssb-info { flex: 1; }
+  .ssb-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .ssb-desc { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .ssb-badge { padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+  .ssb-badge.trial { background: var(--warning-soft); color: var(--warning); }
+  .ssb-badge.active { background: var(--success-soft); color: var(--success); }
+  .ssb-badge.expired { background: var(--danger-soft); color: var(--danger); }
+  .plan-card { border: 2px solid var(--primary); border-radius: 14px; padding: 24px; background: var(--surface); position: relative; overflow: hidden; }
+  .plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #3e97ff, #7239ea); }
+  .plan-price { font-size: 32px; font-weight: 800; color: var(--text); }
+  .plan-price span { font-size: 14px; font-weight: 500; color: var(--text3); }
+  .plan-features { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .plan-features li { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+  .plan-features li::before { content: '✓'; color: var(--success); font-weight: 700; flex-shrink: 0; }
+  .supplier-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border2); }
+  .supplier-row:last-child { border-bottom: none; }
+  .supplier-ava { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .supplier-info { flex: 1; }
+  .supplier-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .supplier-meta { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .supplier-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+  .sup-tag-default { background: var(--primary-soft); color: var(--primary); }
+  .sup-tag-invite { background: var(--success-soft); color: var(--success); }
+  .sup-tag-sub { background: var(--info-soft); color: var(--info); }
+  .locked-overlay { background: rgba(248,40,90,.04); border: 1.5px dashed rgba(248,40,90,.3); border-radius: 10px; padding: 20px; text-align: center; }
+  .lo-icon { font-size: 32px; margin-bottom: 8px; }
+  .lo-title { font-size: 14px; font-weight: 700; color: var(--danger); margin-bottom: 4px; }
+  .lo-desc { font-size: 12px; color: var(--text3); }
+
   /* DB SCHEMA */
   .db-section { background: #0f172a; padding: 80px; }
   .db-title { font-size: 36px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
@@ -283,11 +344,13 @@
 <div class="cover">
   <div class="cover-eyebrow">🏗 Новая архитектура · PosudaMarket v2</div>
   <h1>Мультитенантная<br><span>B2B платформа</span></h1>
-  <p class="cover-sub">Каждый оптовик — отдельный магазин на своём поддомене.<br>Магазины заходят к оптовику и делают заказы. Клиенты покупают у магазинов.</p>
+  <p class="cover-sub">Поставщики, оптовики и магазины на одной платформе.<br>Invite-ссылки, подписки, RBAC — готово к масштабированию.</p>
   <div class="flow-diagram">
-    <div class="flow-node admin">🛡 Администратор<small>Создаёт оптовиков</small></div>
+    <div class="flow-node admin">🛡 Администратор<small>Управляет системой</small></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-node wholesale">📦 Оптовик<small>posuda-opt.pm.kz</small></div>
+    <div class="flow-node" style="background:rgba(23,198,83,.2);border:1px solid rgba(23,198,83,.4);color:#6ee7a0;">🏭 Поставщик<small>Каталог + invite-ссылка</small></div>
+    <div class="flow-arrow">🔗</div>
+    <div class="flow-node wholesale">📦 Оптовик<small>Free / Invite / Подписка</small></div>
     <div class="flow-arrow">→</div>
     <div class="flow-node shop">🏪 Магазин<small>Делает заказы</small></div>
     <div class="flow-arrow">→</div>
@@ -299,51 +362,45 @@
 <!-- ══════════════════ ARCHITECTURE ══════════════════ -->
 <div class="arch-section">
   <div class="arch-title">Как работает система</div>
-  <div class="arch-sub">Четыре уровня, каждый со своей зоной ответственности</div>
-  <div class="arch-grid">
+  <div class="arch-sub">Четыре роли с разграниченным доступом и системой invite-ссылок</div>
+  <div class="arch-grid" style="grid-template-columns:1fr 1fr;">
     <div class="arch-card">
       <h3><span style="font-size:20px;">🛡</span> <span style="color:#c4a0ff;">Администратор</span></h3>
       <ul>
-        <li>Заходит на основной домен <strong style="color:#e2e8f0;">pm.kz</strong></li>
-        <li>Создаёт аккаунты оптовиков</li>
-        <li>Назначает поддомен каждому оптовику</li>
-        <li>Видит всех пользователей и все заказы</li>
-        <li>Управляет глобальными настройками</li>
+        <li>Управляет поставщиками и оптовиками</li>
+        <li>Назначает default-поставщика для новых оптовиков</li>
+        <li>Блокирует поставщиков и управляет подписками</li>
+        <li>Видит всю аналитику платформы и платежи</li>
+        <li>Выдаёт ручной доступ, промокоды</li>
+      </ul>
+    </div>
+    <div class="arch-card" style="border-color:rgba(23,198,83,.3);">
+      <h3><span style="font-size:20px;">🏭</span> <span style="color:#6ee7a0;">Поставщик</span></h3>
+      <ul>
+        <li>Управляет своим каталогом товаров, категориями, остатками</li>
+        <li>Загружает фото товаров</li>
+        <li>Получает уникальную invite-ссылку для привлечения оптовиков</li>
+        <li>Видит список оптовиков, подключившихся по ссылке</li>
+        <li>Видит входящие заказы от оптовиков</li>
       </ul>
     </div>
     <div class="arch-card">
       <h3><span style="font-size:20px;">📦</span> <span style="color:#7ec8ff;">Оптовик</span></h3>
       <ul>
-        <li>Работает на своём поддомене</li>
-        <li>Настраивает название магазина</li>
-        <li>Добавляет свои категории и товары</li>
-        <li>Видит заказы от своих магазинов</li>
-        <li>Управляет ценами на свои товары</li>
-      </ul>
-      <div class="subdomain-example">
-        <span>https://</span>optmarket<span>.pm.kz</span><br>
-        <span>https://</span>keramika-opt<span>.pm.kz</span>
-      </div>
-    </div>
-    <div class="arch-card">
-      <h3><span style="font-size:20px;">🏪</span> <span style="color:#6ee7a0;">Магазин</span></h3>
-      <ul>
-        <li>Заходит на поддомен оптовика и сразу видит каталог</li>
-        <li>Добавляет товары в корзину без регистрации</li>
-        <li>При оформлении заказа — предлагается войти или зарегистрироваться</li>
-        <li>Заказ уходит оптовику на подтверждение</li>
-        <li>После подтверждения получает накладную в WhatsApp</li>
-        <li>Принимает розничные заказы от своих клиентов</li>
+        <li>После регистрации — бесплатно видит 1 default-поставщика</li>
+        <li>Добавляет поставщиков навсегда по invite-ссылкам (бесплатно)</li>
+        <li>По подписке — открывает всех поставщиков платформы</li>
+        <li>Оформляет заказы коробками у доступных поставщиков</li>
+        <li>Видит статус подписки, тарифы, историю платежей</li>
       </ul>
     </div>
     <div class="arch-card" style="border-color:rgba(253,126,20,.3);">
       <h3><span style="font-size:20px;">🛍</span> <span style="color:var(--orange);">Клиент</span></h3>
       <ul>
         <li>Заходит на сайт магазина и видит розничный каталог</li>
-        <li>Добавляет товары в корзину без регистрации</li>
-        <li>Оформляет заказ — указывает имя, телефон, адрес доставки</li>
+        <li>Добавляет товары в корзину, оформляет заказ</li>
         <li>Видит статус своих заказов в личном кабинете</li>
-        <li>При подтверждении получает уведомление</li>
+        <li>Получает уведомление при подтверждении заказа</li>
       </ul>
     </div>
   </div>
@@ -2100,6 +2157,884 @@
     </div>
   </div>
 
+</div>
+
+<!-- ══════════════════ INVITE SYSTEM ══════════════════ -->
+<div class="section-cover invite">
+  <div class="cover-eyebrow" style="background:rgba(62,151,255,.15);border-color:rgba(62,151,255,.4);color:#7ec8ff;">🔗 Система доступа</div>
+  <h2>Invite-ссылки и доступ к поставщикам</h2>
+  <p>Оптовик получает одного поставщика бесплатно. Добавляет других по ссылкам. Открывает всех — по подписке.</p>
+  <div class="perm-tags">
+    <span class="tag tag-blue">Default поставщик</span>
+    <span class="tag tag-green">Invite → навсегда бесплатно</span>
+    <span class="tag tag-purple">Подписка → все поставщики</span>
+    <span class="tag tag-red">Без доступа — скрыто</span>
+  </div>
+</div>
+
+<div class="page-section">
+
+  <!-- Как работает invite -->
+  <div class="screen-label">Invite-система · Схема работы</div>
+  <div class="screen-title">Как оптовик добавляет поставщика</div>
+  <div class="screen-desc">Поставщик генерирует уникальную ссылку и делится ею с оптовиками. Переход по ссылке автоматически добавляет поставщика в раздел «Мои поставщики».</div>
+
+  <div class="invite-flow">
+    <div class="if-step">
+      <div class="if-ico">🏭</div>
+      <div class="if-label">Поставщик</div>
+      <div class="if-sub">регистрируется на платформе</div>
+    </div>
+    <div class="if-arrow">→</div>
+    <div class="if-step" style="border-color:rgba(62,151,255,.4);background:rgba(62,151,255,.08);">
+      <div class="if-ico">🔗</div>
+      <div class="if-label">Получает invite-ссылку</div>
+      <div class="if-sub">site.kz/invite/supplier/ABC123</div>
+    </div>
+    <div class="if-arrow">→</div>
+    <div class="if-step">
+      <div class="if-ico">📤</div>
+      <div class="if-label">Делится ссылкой</div>
+      <div class="if-sub">WhatsApp, Telegram, email</div>
+    </div>
+    <div class="if-arrow">→</div>
+    <div class="if-step">
+      <div class="if-ico">📦</div>
+      <div class="if-label">Оптовик переходит</div>
+      <div class="if-sub">авторизован или регистрируется</div>
+    </div>
+    <div class="if-arrow">→</div>
+    <div class="if-step" style="border-color:rgba(23,198,83,.4);background:rgba(23,198,83,.08);">
+      <div class="if-ico">✅</div>
+      <div class="if-label">Поставщик добавлен</div>
+      <div class="if-sub">навсегда, без подписки</div>
+    </div>
+  </div>
+
+  <div class="note n-blue" style="margin-bottom:32px;">
+    <div>💡</div>
+    <div><strong>Уникальный код поставщика</strong><p>Каждый поставщик получает постоянный код при регистрации. Ссылку можно скопировать в кабинете и разместить где угодно. Если поставщик уже добавлен — оптовик увидит сообщение «Поставщик уже добавлен».</p></div>
+  </div>
+
+  <!-- Матрица доступа -->
+  <div class="screen-label">Invite-система · Матрица доступа</div>
+  <div class="screen-title">Что видит оптовик в зависимости от статуса</div>
+  <div class="screen-desc">Три уровня доступа: бесплатный, invite и подписка. Они не исключают друг друга — накапливаются.</div>
+
+  <div class="access-matrix" style="margin-bottom:40px;">
+    <div class="am-card">
+      <div class="am-head free">🆓 Бесплатный доступ (по умолчанию)</div>
+      <div class="am-item"><div class="am-ico">✅</div><div>1 поставщик по умолчанию (назначает Администратор)</div></div>
+      <div class="am-item"><div class="am-ico">✅</div><div>Каталог товаров этого поставщика</div></div>
+      <div class="am-item"><div class="am-ico">✅</div><div>Оформление заказов у доступных поставщиков</div></div>
+      <div class="am-item"><div class="am-ico" style="color:var(--danger)">✗</div><div style="color:var(--muted)">Остальные поставщики скрыты</div></div>
+    </div>
+    <div class="am-card">
+      <div class="am-head free" style="background:rgba(23,198,83,.08);color:var(--success);">🔗 + Invite-ссылка (бесплатно навсегда)</div>
+      <div class="am-item"><div class="am-ico">✅</div><div>Поставщик по умолчанию</div></div>
+      <div class="am-item"><div class="am-ico" style="color:var(--success)">✅</div><div><strong>Все поставщики, добавленные по ссылкам</strong></div></div>
+      <div class="am-item"><div class="am-ico" style="color:var(--success)">✅</div><div>Их каталоги и заказы</div></div>
+      <div class="am-item"><div class="am-ico" style="color:var(--danger)">✗</div><div style="color:var(--muted)">Новые поставщики без invite — скрыты</div></div>
+    </div>
+    <div class="am-card" style="grid-column:1/-1;">
+      <div class="am-head paid">⭐ Активная подписка — полный доступ</div>
+      <div class="am-item"><div class="am-ico">✅</div><div>Поставщик по умолчанию</div></div>
+      <div class="am-item"><div class="am-ico">✅</div><div>Все invite-поставщики</div></div>
+      <div class="am-item"><div class="am-ico" style="color:var(--primary)">✅</div><div><strong>Все активные поставщики платформы — текущие и новые</strong></div></div>
+      <div class="am-item"><div class="am-ico" style="color:var(--primary)">✅</div><div>Полный каталог всех поставщиков</div></div>
+      <div class="am-item" style="background:rgba(62,151,255,.04);"><div class="am-ico">⚡</div><div style="color:var(--text3);font-size:12px;">Когда подписка заканчивается — доступ возвращается к Free+Invite. Подписочные поставщики автоматически скрываются.</div></div>
+    </div>
+  </div>
+
+  <!-- Экран: страница invite-ссылки -->
+  <div class="screen-label">Invite-система · Экран</div>
+  <div class="screen-title">Страница invite-ссылки для неавторизованного оптовика</div>
+  <div class="screen-desc">Оптовик переходит по ссылке. Если не авторизован — видит карточку поставщика и предложение войти или зарегистрироваться. После входа — автоматическое добавление.</div>
+  <div class="screen-wrap" style="max-width:520px;margin-left:auto;margin-right:auto;">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span style="color:#94a3b8">pm.kz/invite/supplier/</span><span class="sdb-sub">ABC123</span></span></div>
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+    </div>
+    <div class="body" style="max-width:420px;margin:0 auto;padding:32px 24px;text-align:center;">
+      <div style="font-size:48px;margin-bottom:16px;">🏭</div>
+      <div style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:6px;">ООО «Посудный Рай»</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:4px;">Алматы · посуда оптом</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:24px;">128 товаров в каталоге</div>
+      <div style="background:var(--warning-soft);border:1px solid var(--warning);border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:var(--text2);">
+        ⚠️ Войдите или зарегистрируйтесь, чтобы добавить этого поставщика
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-primary" style="justify-content:center;width:100%;padding:11px;">Войти и добавить поставщика</button>
+        <button class="btn btn-light" style="justify-content:center;width:100%;padding:11px;">Зарегистрироваться</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:16px;">После входа поставщик автоматически добавится в «Мои поставщики»</div>
+    </div>
+  </div>
+
+  <!-- Экран: уже добавлен -->
+  <div class="screen-label" style="margin-top:40px;">Invite-система · Экран</div>
+  <div class="screen-title">Поставщик уже добавлен</div>
+  <div class="screen-wrap" style="max-width:520px;margin-left:auto;margin-right:auto;">
+    <div class="subdomain-bar"><span class="sdb-icon">🔒</span><span class="sdb-url"><span style="color:#94a3b8">pm.kz/invite/supplier/</span><span class="sdb-sub">ABC123</span></span></div>
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div style="margin-left:auto;"><span class="role-pill rp-wholesale">Оптовик</span></div>
+    </div>
+    <div class="body" style="max-width:420px;margin:0 auto;padding:32px 24px;text-align:center;">
+      <div style="width:64px;height:64px;background:var(--success-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;">✅</div>
+      <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">Поставщик уже добавлен</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:24px;">ООО «Посудный Рай» уже есть в вашем разделе «Мои поставщики»</div>
+      <button class="btn btn-primary" style="justify-content:center;padding:11px 24px;">Перейти к каталогу</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════ WHOLESALE CABINET 2.0 ══════════════════ -->
+<div class="section-cover wholesale">
+  <div class="cover-eyebrow" style="background:rgba(62,151,255,.15);border-color:rgba(62,151,255,.4);color:#7ec8ff;">📦 Кабинет оптовика · v2</div>
+  <h2>Мои поставщики и подписка</h2>
+  <p>Полный кабинет: управление доступом к поставщикам, статус подписки, страница тарифов</p>
+  <div class="perm-tags">
+    <span class="tag tag-blue">Мои поставщики</span>
+    <span class="tag tag-blue">Каталог с фильтром</span>
+    <span class="tag tag-blue">Статус подписки</span>
+    <span class="tag tag-blue">Тарифы</span>
+    <span class="tag tag-green">Invite-поставщики навсегда</span>
+  </div>
+</div>
+
+<div class="page-section">
+
+  <!-- Экран: Мои поставщики — free -->
+  <div class="screen-label">Оптовик · Мои поставщики</div>
+  <div class="screen-title">Раздел «Мои поставщики» — бесплатный режим</div>
+  <div class="screen-desc">Оптовик видит default-поставщика и тех, кого добавил по ссылкам. Остальные заблокированы. Виден блок «Открыть всех по подписке».</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act">🏭 Мои поставщики</div>
+        <div class="ni">📦 Каталог</div>
+        <div class="ni">📋 Заказы</div>
+        <div class="ni">⭐ Подписка</div>
+      </div>
+      <div class="topbar-right">
+        <span class="ssb-badge trial" style="font-size:10px;">Trial · 9 дней</span>
+        <span class="role-pill rp-wholesale">Оптовик</span>
+        <div class="ava" style="background:var(--primary)">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Мои поставщики</div><div class="ps">3 поставщика доступно · подписка открывает всех</div></div>
+      </div>
+
+      <!-- Блок апгрейда -->
+      <div class="sub-banner" style="margin-bottom:20px;">
+        <div class="sub-banner-left">
+          <h4>⭐ Открыть всех поставщиков платформы</h4>
+          <p>По подписке — доступны все активные поставщики, включая новых. Сейчас скрыто: 14 поставщиков</p>
+        </div>
+        <button class="btn" style="background:#fff;color:var(--primary);font-weight:700;white-space:nowrap;padding:10px 20px;">Купить подписку</button>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="ch"><div><div class="ct">Доступные поставщики (3)</div><div class="cs">default + добавленные по invite</div></div></div>
+
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--primary-soft);">🏭</div>
+          <div class="supplier-info">
+            <div class="supplier-name">ООО «Посуда Оптом»</div>
+            <div class="supplier-meta">128 товаров · Алматы</div>
+          </div>
+          <span class="supplier-tag sup-tag-default">По умолчанию</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--success-soft);">🏭</div>
+          <div class="supplier-info">
+            <div class="supplier-name">ООО «Посудный Рай»</div>
+            <div class="supplier-meta">94 товара · Алматы · добавлен 2 дня назад</div>
+          </div>
+          <span class="supplier-tag sup-tag-invite">По invite</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--success-soft);">🏭</div>
+          <div class="supplier-info">
+            <div class="supplier-name">ИП Кожахметов</div>
+            <div class="supplier-meta">67 товаров · Шымкент · добавлен 5 дней назад</div>
+          </div>
+          <span class="supplier-tag sup-tag-invite">По invite</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+      </div>
+
+      <!-- Заблокированные -->
+      <div class="locked-overlay">
+        <div class="lo-icon">🔒</div>
+        <div class="lo-title">+14 поставщиков скрыто</div>
+        <div class="lo-desc" style="margin-bottom:12px;">Активируйте подписку, чтобы получить доступ ко всем поставщикам платформы и их каталогам</div>
+        <button class="btn btn-primary btn-sm" style="margin:0 auto;">Смотреть тарифы</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Мои поставщики — подписка активна -->
+  <div class="screen-label">Оптовик · Мои поставщики — с подпиской</div>
+  <div class="screen-title">Полный доступ — подписка активна</div>
+  <div class="screen-desc">С активной подпиской оптовик видит всех поставщиков платформы. Новые поставщики автоматически доступны.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act">🏭 Мои поставщики</div>
+        <div class="ni">📦 Каталог</div>
+        <div class="ni">📋 Заказы</div>
+        <div class="ni">⭐ Подписка</div>
+      </div>
+      <div class="topbar-right">
+        <span class="ssb-badge active" style="font-size:10px;">Подписка активна</span>
+        <span class="role-pill rp-wholesale">Оптовик</span>
+        <div class="ava" style="background:var(--primary)">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Мои поставщики</div><div class="ps">17 поставщиков доступно · полный доступ по подписке</div></div>
+        <button class="btn btn-light btn-sm">Фильтр по городу</button>
+      </div>
+      <div class="note n-green" style="margin-bottom:16px;">
+        <div>✅</div>
+        <div><strong>Подписка активна до 08.06.2026</strong><p>Вам доступны все активные поставщики платформы, включая новых, которые зарегистрируются позже.</p></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="ch"><div><div class="ct">Все поставщики (17)</div><div class="cs">полный доступ</div></div><div style="display:flex;gap:8px;"><input placeholder="Поиск..." style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;"/></div></div>
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--primary-soft);">🏭</div>
+          <div class="supplier-info"><div class="supplier-name">ООО «Посуда Оптом»</div><div class="supplier-meta">128 товаров · Алматы</div></div>
+          <span class="supplier-tag sup-tag-default">По умолчанию</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--success-soft);">🏭</div>
+          <div class="supplier-info"><div class="supplier-name">ООО «Посудный Рай»</div><div class="supplier-meta">94 товара · Алматы</div></div>
+          <span class="supplier-tag sup-tag-invite">По invite</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--info-soft);">🏭</div>
+          <div class="supplier-info"><div class="supplier-name">ТОО «КазПосуда»</div><div class="supplier-meta">203 товара · Астана</div></div>
+          <span class="supplier-tag sup-tag-sub">По подписке</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+        <div class="supplier-row">
+          <div class="supplier-ava" style="background:var(--info-soft);">🏭</div>
+          <div class="supplier-info"><div class="supplier-name">ИП Жуматаев</div><div class="supplier-meta">56 товаров · Алматы · <span style="color:var(--success);font-weight:600;">Новый</span></div></div>
+          <span class="supplier-tag sup-tag-sub">По подписке</span>
+          <button class="btn btn-primary btn-sm">Каталог →</button>
+        </div>
+        <div style="padding:10px 16px;font-size:12px;color:var(--muted);text-align:center;">+ ещё 13 поставщиков</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Страница подписки оптовика -->
+  <div class="screen-label">Оптовик · Подписка</div>
+  <div class="screen-title">Страница подписки и тарифов</div>
+  <div class="screen-desc">Статус текущей подписки, дата окончания, план с функциями. Кнопка продления. Промокоды.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni">🏭 Мои поставщики</div>
+        <div class="ni">📦 Каталог</div>
+        <div class="ni act">⭐ Подписка</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-wholesale">Оптовик</span>
+        <div class="ava" style="background:var(--primary)">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="pt" style="margin-bottom:20px;">Моя подписка</div>
+
+      <!-- Trial state -->
+      <div class="sub-status-box">
+        <div class="ssb-ico trial">⏳</div>
+        <div class="ssb-info">
+          <div class="ssb-title">Пробный период</div>
+          <div class="ssb-desc">Осталось 9 дней из 14 · Истекает 17.05.2026 · Доступны все функции</div>
+        </div>
+        <span class="ssb-badge trial">Trial</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+        <div class="plan-card">
+          <div style="font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Тариф «Оптовик»</div>
+          <div class="plan-price">9 900 ₸<span> / месяц</span></div>
+          <ul class="plan-features">
+            <li>Все поставщики платформы</li>
+            <li>Новые поставщики автоматически</li>
+            <li>Полный каталог всех товаров</li>
+            <li>Заказы у любого поставщика</li>
+            <li>Уведомления о новых поставщиках</li>
+            <li>Приоритетная поддержка</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:20px;padding:11px;">Оформить подписку</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card">
+            <div class="ch"><div><div class="ct">Промокод</div><div class="cs">Получите скидку на первый месяц</div></div></div>
+            <div style="padding:14px;display:flex;gap:8px;">
+              <input placeholder="Введите промокод..." class="fc" style="flex:1;" />
+              <button class="btn btn-light btn-sm">Применить</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div><div class="ct">История платежей</div></div></div>
+            <div style="padding:4px 0;">
+              <div style="padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border2);">
+                <div><div style="font-size:13px;font-weight:600;">Trial период</div><div style="font-size:11px;color:var(--muted);">08.05.2026</div></div>
+                <span class="badge b-success">Активен</span>
+              </div>
+            </div>
+          </div>
+          <div class="note n-blue">
+            <div>🔔</div>
+            <div><strong>Уведомления об окончании</strong><p>За 7 дней и за 1 день до окончания подписки вы получите уведомление в Telegram и на email.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Каталог с фильтром по поставщикам -->
+  <div class="screen-label">Оптовик · Каталог</div>
+  <div class="screen-title">Каталог товаров с фильтром по поставщикам</div>
+  <div class="screen-desc">Оптовик видит товары только доступных поставщиков. Фильтр по поставщику, категории, поиск. С подпиской — весь каталог платформы.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni">🏭 Мои поставщики</div>
+        <div class="ni act">📦 Каталог</div>
+        <div class="ni">📋 Заказы</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-wholesale">Оптовик</span>
+        <div class="ava" style="background:var(--primary)">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Каталог товаров</div><div class="ps">3 поставщика · 289 товаров</div></div>
+      </div>
+      <!-- Фильтры -->
+      <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+        <select class="fc" style="width:auto;padding:7px 12px;font-size:12px;">
+          <option>Все поставщики (3)</option>
+          <option>ООО «Посуда Оптом»</option>
+          <option>ООО «Посудный Рай»</option>
+          <option>ИП Кожахметов</option>
+        </select>
+        <select class="fc" style="width:auto;padding:7px 12px;font-size:12px;">
+          <option>Все категории</option>
+          <option>Кастрюли</option>
+          <option>Сковородки</option>
+          <option>Тарелки</option>
+        </select>
+        <input placeholder="🔍 Поиск по товарам..." class="fc" style="flex:1;min-width:200px;font-size:12px;" />
+      </div>
+      <!-- Товары -->
+      <div class="product-grid" style="padding:0;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+        <div class="pc">
+          <div class="pc-img"><img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=300&h=220&fit=crop&auto=format" alt="Кастрюля"/></div>
+          <div class="pc-body">
+            <div class="pc-name">Кастрюля 5л нерж.</div>
+            <div class="pc-sku" style="font-size:10px;color:var(--muted);">ООО «Посуда Оптом»</div>
+            <div class="pc-price price-blue">2 400 ₸<span style="font-size:10px;color:var(--muted);">/кор.</span></div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=220&fit=crop&auto=format" alt="Сковородка"/></div>
+          <div class="pc-body">
+            <div class="pc-name">Сковорода 28см</div>
+            <div class="pc-sku" style="font-size:10px;color:var(--muted);">ООО «Посудный Рай»</div>
+            <div class="pc-price price-blue">1 800 ₸<span style="font-size:10px;color:var(--muted);">/кор.</span></div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img"><img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=300&h=220&fit=crop&auto=format" alt="Чайник"/></div>
+          <div class="pc-body">
+            <div class="pc-name">Чайник 3л</div>
+            <div class="pc-sku" style="font-size:10px;color:var(--muted);">ИП Кожахметов</div>
+            <div class="pc-price price-blue">3 200 ₸<span style="font-size:10px;color:var(--muted);">/кор.</span></div>
+          </div>
+        </div>
+        <div class="pc" style="opacity:.4;position:relative;">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;flex-direction:column;gap:4px;">
+            <div style="font-size:20px;">🔒</div>
+            <div style="font-size:10px;font-weight:700;color:var(--danger);">Подписка</div>
+          </div>
+          <div class="pc-img" style="filter:blur(2px);"><img src="https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=300&h=220&fit=crop&auto=format" alt=""/></div>
+          <div class="pc-body" style="filter:blur(2px);">
+            <div class="pc-name">ТОО «КазПосуда»</div>
+            <div class="pc-price price-blue">— ₸</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════ SUPPLIER CABINET ══════════════════ -->
+<div class="section-cover supplier-cab">
+  <div class="cover-eyebrow" style="background:rgba(23,198,83,.15);border-color:rgba(23,198,83,.4);color:#6ee7a0;">🏭 Кабинет поставщика</div>
+  <h2>Поставщик на платформе</h2>
+  <p>Управляет каталогом, остатками, фото. Получает и копирует invite-ссылку. Видит подключённых оптовиков.</p>
+  <div class="perm-tags">
+    <span class="tag tag-green">Управление товарами</span>
+    <span class="tag tag-green">Фото и остатки</span>
+    <span class="tag tag-green">Invite-ссылка</span>
+    <span class="tag tag-green">Список оптовиков</span>
+    <span class="tag tag-green">Заказы</span>
+  </div>
+</div>
+
+<div class="page-section">
+
+  <!-- Экран: Дашборд поставщика -->
+  <div class="screen-label">Поставщик · Дашборд</div>
+  <div class="screen-title">Кабинет поставщика — главная страница</div>
+  <div class="screen-desc">Поставщик видит свою статистику, товары, заказы от оптовиков и свою invite-ссылку для привлечения покупателей.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo green">Посудный<span> Рай</span></div>
+      <div class="nav">
+        <div class="ni act">🏠 Главная</div>
+        <div class="ni">📦 Товары</div>
+        <div class="ni">🗂 Категории</div>
+        <div class="ni">📋 Заказы</div>
+        <div class="ni">🔗 Моя ссылка</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-shop" style="background:var(--success-soft);color:var(--success);">Поставщик</span>
+        <div class="ava" style="background:var(--success)">ПР</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">ООО «Посудный Рай»</div><div class="ps">Ваш каталог и заказы от оптовиков</div></div>
+        <button class="btn btn-primary">+ Добавить товар</button>
+      </div>
+      <div class="stats stats-4">
+        <div class="stat"><div class="stat-ico ic-orange">📦</div><div><div class="stat-label">Товаров</div><div class="stat-val">94</div><div class="stat-hint">в каталоге</div></div></div>
+        <div class="stat"><div class="stat-ico ic-blue">📦</div><div><div class="stat-label">Оптовиков</div><div class="stat-val">23</div><div class="stat-hint">по invite-ссылке</div></div></div>
+        <div class="stat"><div class="stat-ico ic-green">📋</div><div><div class="stat-label">Заказов</div><div class="stat-val">61</div><div class="stat-hint">всего</div></div></div>
+        <div class="stat"><div class="stat-ico ic-purple">💰</div><div><div class="stat-label">Оборот (месяц)</div><div class="stat-val">2.4М</div><div class="stat-hint">₸</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Invite-ссылка поставщика -->
+  <div class="screen-label">Поставщик · Моя invite-ссылка</div>
+  <div class="screen-title">Страница «Моя ссылка» — привлечение оптовиков</div>
+  <div class="screen-desc">Поставщик видит свою уникальную ссылку, может скопировать или поделиться. Список оптовиков, подключившихся по этой ссылке.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo green">Посудный<span> Рай</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni">📦 Товары</div>
+        <div class="ni act">🔗 Моя ссылка</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-shop" style="background:var(--success-soft);color:var(--success);">Поставщик</span>
+        <div class="ava" style="background:var(--success)">ПР</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="pt" style="margin-bottom:6px;">Моя invite-ссылка</div>
+      <div class="ps" style="margin-bottom:20px;">Поделитесь ссылкой с оптовиками — они добавят вас в свой список поставщиков бесплатно и навсегда</div>
+
+      <div class="invite-link-box">
+        <div>
+          <div class="ilb-url">pm.kz/invite/supplier/PR-X7K9</div>
+          <div class="ilb-hint">Уникальная ссылка вашего аккаунта · постоянная</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-light btn-sm">📋 Копировать</button>
+          <button class="btn btn-primary btn-sm">📤 Поделиться</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:20px;">
+        <button class="btn btn-light btn-sm">WhatsApp</button>
+        <button class="btn btn-light btn-sm">Telegram</button>
+        <button class="btn btn-light btn-sm">Email</button>
+        <button class="btn btn-light btn-sm">QR-код</button>
+      </div>
+
+      <div class="card">
+        <div class="ch"><div><div class="ct">Подключились по вашей ссылке (23)</div><div class="cs">оптовики, добавившие вас</div></div><button class="btn btn-light btn-sm">Экспорт</button></div>
+        <table>
+          <thead><tr><th>Оптовик</th><th>Email</th><th>Подключился</th><th>Заказов</th><th>Статус</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ТОО «Алматы Трейд»</strong></td><td style="color:var(--muted);font-size:12px;">trade@almaty.kz</td><td style="color:var(--muted);font-size:12px;">01.05.2026</td><td>8</td><td><span class="badge b-success">Активен</span></td></tr>
+            <tr><td><strong>ИП Сейткали</strong></td><td style="color:var(--muted);font-size:12px;">seitkali@mail.ru</td><td style="color:var(--muted);font-size:12px;">28.04.2026</td><td>3</td><td><span class="badge b-success">Активен</span></td></tr>
+            <tr><td><strong>ООО «Посуда Юг»</strong></td><td style="color:var(--muted);font-size:12px;">posuda-yug@kz.kz</td><td style="color:var(--muted);font-size:12px;">15.04.2026</td><td>12</td><td><span class="badge b-success">Активен</span></td></tr>
+            <tr><td><strong>ИП Нурланов</strong></td><td style="color:var(--muted);font-size:12px;">nurlanov@shop.kz</td><td style="color:var(--muted);font-size:12px;">10.04.2026</td><td>0</td><td><span class="badge b-muted">Новый</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Управление остатками -->
+  <div class="screen-label">Поставщик · Остатки</div>
+  <div class="screen-title">Управление остатками на складе</div>
+  <div class="screen-desc">Поставщик указывает остатки в коробках для оптовиков. Можно поставить ∞ для безлимитного склада.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo green">Посудный<span> Рай</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act">📦 Товары</div>
+        <div class="ni">🗂 Категории</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-shop" style="background:var(--success-soft);color:var(--success);">Поставщик</span>
+        <div class="ava" style="background:var(--success)">ПР</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph"><div><div class="pt">Остатки товаров</div><div class="ps">Обновите остатки чтобы оптовики видели наличие</div></div><button class="btn btn-primary btn-sm">Сохранить изменения</button></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Товар</th><th>Категория</th><th>Коробок на складе</th><th>Шт/кор.</th><th>Итого шт.</th><th>Статус</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Кастрюля 5л нерж.</strong></td><td>Кастрюли</td>
+              <td><input type="number" value="24" style="width:70px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;" /></td>
+              <td>6</td><td>144</td><td><span class="badge b-success">В наличии</span></td>
+            </tr>
+            <tr>
+              <td><strong>Сковорода 28см</strong></td><td>Сковороды</td>
+              <td><div style="display:flex;align-items:center;gap:6px;"><input type="text" value="∞" style="width:50px;padding:4px 8px;border:1px solid var(--primary);border-radius:6px;font-size:14px;font-weight:700;text-align:center;color:var(--primary);" /><span style="font-size:10px;color:var(--muted);">безлимит</span></div></td>
+              <td>4</td><td>∞</td><td><span class="badge b-info">Безлимит</span></td>
+            </tr>
+            <tr>
+              <td><strong>Тарелка обед. 26см</strong></td><td>Тарелки</td>
+              <td><input type="number" value="3" style="width:70px;padding:4px 8px;border:1px solid var(--warning);border-radius:6px;font-size:13px;" /></td>
+              <td>12</td><td>36</td><td><span class="badge b-warning">Мало</span></td>
+            </tr>
+            <tr>
+              <td><strong>Чайник 2л</strong></td><td>Чайники</td>
+              <td><input type="number" value="0" style="width:70px;padding:4px 8px;border:1px solid var(--danger);border-radius:6px;font-size:13px;" /></td>
+              <td>8</td><td>0</td><td><span class="badge b-danger">Нет</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════ ADMIN CABINET 2.0 ══════════════════ -->
+<div class="section-cover admin2">
+  <div class="cover-eyebrow" style="background:rgba(114,57,234,.15);border-color:rgba(114,57,234,.4);color:#c4a0ff;">🛡 Расширенная админка</div>
+  <h2>Управление платформой</h2>
+  <p>Поставщики, подписки, default-назначение, блокировки, аналитика, ручная выдача доступа</p>
+  <div class="perm-tags">
+    <span class="tag tag-purple">Управление пользователями</span>
+    <span class="tag tag-purple">Default поставщик</span>
+    <span class="tag tag-purple">Подписки</span>
+    <span class="tag tag-purple">Блокировки</span>
+    <span class="tag tag-purple">Аналитика</span>
+  </div>
+</div>
+
+<div class="page-section">
+
+  <!-- Экран: Управление поставщиками -->
+  <div class="screen-label">Админ · Поставщики</div>
+  <div class="screen-title">Управление поставщиками и invite-ссылками</div>
+  <div class="screen-desc">Администратор видит всех поставщиков, может назначить Default, заблокировать, просмотреть invite-ссылку и статистику подключений.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏠 Главная</div>
+        <div class="ni act">🏭 Поставщики</div>
+        <div class="ni">👥 Оптовики</div>
+        <div class="ni">⭐ Подписки</div>
+        <div class="ni">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-admin">Администратор</span>
+        <div class="ava" style="background:var(--info)">АД</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph"><div><div class="pt">Поставщики</div><div class="ps">17 поставщиков на платформе</div></div><button class="btn btn-primary">+ Добавить поставщика</button></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Поставщик</th><th>Invite-ссылка</th><th>Подключений</th><th>Товаров</th><th>Статус</th><th>Действия</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>ООО «Посуда Оптом»</strong><div style="font-size:11px;color:var(--muted)">posuda-optom@kz.kz</div></td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--primary)">pm.kz/invite/…/PO-A1B2</span></td>
+              <td>47</td><td>128</td>
+              <td><span class="badge b-blue" style="font-size:10px;">⭐ Default</span></td>
+              <td style="white-space:nowrap;"><button class="btn btn-light btn-xs">Изменить</button></td>
+            </tr>
+            <tr>
+              <td><strong>ООО «Посудный Рай»</strong><div style="font-size:11px;color:var(--muted)">posray@kz.kz</div></td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--primary)">pm.kz/invite/…/PR-X7K9</span></td>
+              <td>23</td><td>94</td>
+              <td><span class="badge b-success">Активен</span></td>
+              <td style="white-space:nowrap;display:flex;gap:4px;"><button class="btn btn-light btn-xs">Default</button><button class="btn btn-danger-soft btn-xs">Блок</button></td>
+            </tr>
+            <tr>
+              <td><strong>ТОО «КазПосуда»</strong><div style="font-size:11px;color:var(--muted)">kazposuda@kz.kz</div></td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--primary)">pm.kz/invite/…/KP-M3N4</span></td>
+              <td>8</td><td>203</td>
+              <td><span class="badge b-success">Активен</span></td>
+              <td style="white-space:nowrap;display:flex;gap:4px;"><button class="btn btn-light btn-xs">Default</button><button class="btn btn-danger-soft btn-xs">Блок</button></td>
+            </tr>
+            <tr>
+              <td><strong>ИП Жуматаев</strong><div style="font-size:11px;color:var(--muted)">jum@mail.kz</div></td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--muted)">pm.kz/invite/…/JU-Q5R6</span></td>
+              <td>0</td><td>56</td>
+              <td><span class="badge b-danger">Заблокирован</span></td>
+              <td style="white-space:nowrap;"><button class="btn btn-light btn-xs">Разблок.</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Управление подписками -->
+  <div class="screen-label">Админ · Подписки</div>
+  <div class="screen-title">Управление подписками оптовиков</div>
+  <div class="screen-desc">Администратор видит статусы подписок всех оптовиков. Может вручную продлить, выдать доступ или заблокировать.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏭 Поставщики</div>
+        <div class="ni">👥 Оптовики</div>
+        <div class="ni act">⭐ Подписки</div>
+        <div class="ni">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-admin">Администратор</span>
+        <div class="ava" style="background:var(--info)">АД</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div><div class="pt">Подписки оптовиков</div><div class="ps">38 пользователей</div></div>
+      </div>
+      <div class="stats stats-4" style="margin-bottom:20px;">
+        <div class="stat"><div class="stat-ico ic-green">✅</div><div><div class="stat-label">Активных</div><div class="stat-val">24</div></div></div>
+        <div class="stat"><div class="stat-ico ic-orange">⏳</div><div><div class="stat-label">Trial</div><div class="stat-val">8</div></div></div>
+        <div class="stat"><div class="stat-ico ic-red">❌</div><div><div class="stat-label">Истекших</div><div class="stat-val">4</div></div></div>
+        <div class="stat"><div class="stat-ico ic-blue">🆓</div><div><div class="stat-label">Бесплатных</div><div class="stat-val">2</div></div></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Оптовик</th><th>Тариф</th><th>Статус</th><th>Дата начала</th><th>Истекает</th><th>Действия</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ТОО «Алматы Трейд»</strong></td><td>Оптовик · 9 900 ₸</td><td><span class="badge b-success">Активна</span></td><td style="font-size:12px;color:var(--muted)">08.04.2026</td><td style="font-size:12px;">08.06.2026</td><td><button class="btn btn-light btn-xs">+30 дней</button></td></tr>
+            <tr><td><strong>ИП Сейткали</strong></td><td>Trial</td><td><span class="badge b-warning">Trial · 9 дн.</span></td><td style="font-size:12px;color:var(--muted)">08.05.2026</td><td style="font-size:12px;">22.05.2026</td><td><button class="btn btn-primary btn-xs">Активировать</button></td></tr>
+            <tr><td><strong>ООО «Посуда Юг»</strong></td><td>Оптовик · 9 900 ₸</td><td><span class="badge b-success">Активна</span></td><td style="font-size:12px;color:var(--muted)">01.03.2026</td><td style="font-size:12px;">01.06.2026</td><td><button class="btn btn-light btn-xs">+30 дней</button></td></tr>
+            <tr><td><strong>ИП Нурланов</strong></td><td>—</td><td><span class="badge b-danger">Истекла</span></td><td style="font-size:12px;color:var(--muted)">01.03.2026</td><td style="font-size:12px;color:var(--danger);">01.04.2026</td><td style="display:flex;gap:4px;"><button class="btn btn-primary btn-xs">Выдать</button><button class="btn btn-danger-soft btn-xs">Блок</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Экран: Аналитика -->
+  <div class="screen-label">Админ · Аналитика</div>
+  <div class="screen-title">Аналитика платформы</div>
+  <div class="screen-desc">Оборот, подписки, активность оптовиков, топ поставщиков, просмотры каталогов.</div>
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">🏭 Поставщики</div>
+        <div class="ni">⭐ Подписки</div>
+        <div class="ni act">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-pill rp-admin">Администратор</span>
+        <div class="ava" style="background:var(--info)">АД</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="pt" style="margin-bottom:20px;">Аналитика · май 2026</div>
+      <div class="stats stats-4" style="margin-bottom:20px;">
+        <div class="stat"><div class="stat-ico ic-green">💰</div><div><div class="stat-label">Выручка (мес.)</div><div class="stat-val">237K</div><div class="stat-hint">₸ от подписок</div></div></div>
+        <div class="stat"><div class="stat-ico ic-blue">👥</div><div><div class="stat-label">Новых оптовиков</div><div class="stat-val">+12</div><div class="stat-hint">за месяц</div></div></div>
+        <div class="stat"><div class="stat-ico ic-purple">📦</div><div><div class="stat-label">Заказов</div><div class="stat-val">341</div><div class="stat-hint">за месяц</div></div></div>
+        <div class="stat"><div class="stat-ico ic-orange">🔗</div><div><div class="stat-label">Invite-переходов</div><div class="stat-val">89</div><div class="stat-hint">за месяц</div></div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="ch"><div><div class="ct">Топ поставщиков</div><div class="cs">по заказам за месяц</div></div></div>
+          <table>
+            <thead><tr><th>Поставщик</th><th>Заказов</th><th>Оборот</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ООО «Посуда Оптом»</strong></td><td>94</td><td><strong>4.2М ₸</strong></td></tr>
+              <tr><td><strong>ТОО «КазПосуда»</strong></td><td>78</td><td><strong>3.1М ₸</strong></td></tr>
+              <tr><td><strong>ООО «Посудный Рай»</strong></td><td>61</td><td><strong>2.4М ₸</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="ch"><div><div class="ct">Конверсия invite → подписка</div><div class="cs">за месяц</div></div></div>
+          <div style="padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <span style="font-size:13px;color:var(--text3);">Переходов по invite</span>
+              <strong>89</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <span style="font-size:13px;color:var(--text3);">Регистраций</span>
+              <strong>34</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <span style="font-size:13px;color:var(--text3);">Купили подписку</span>
+              <strong style="color:var(--success);">12</strong>
+            </div>
+            <div style="background:var(--surface3);border-radius:8px;height:8px;margin-top:14px;overflow:hidden;">
+              <div style="background:var(--success);height:100%;width:35%;border-radius:8px;"></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;">35% invite → подписка</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════ TECH ARCHITECTURE ══════════════════ -->
+<div class="section-cover tech">
+  <div class="cover-eyebrow" style="background:rgba(62,151,255,.1);border-color:rgba(62,151,255,.3);color:#7ec8ff;">⚙️ Технологии и архитектура</div>
+  <h2>Готово к масштабированию</h2>
+  <p>RBAC, защищённое API, мобильная версия, интеграции с Kaspi, 1С, CRM, Telegram-ботом</p>
+  <div class="perm-tags">
+    <span class="tag tag-blue">Laravel + Sanctum</span>
+    <span class="tag tag-blue">Vue 3 + Pinia</span>
+    <span class="tag tag-purple">RBAC роли</span>
+    <span class="tag tag-green">REST API</span>
+    <span class="tag tag-green">Mobile-ready</span>
+  </div>
+</div>
+
+<div class="page-section" style="background:#0f172a;">
+  <div class="arch-title" style="margin-bottom:8px;">Схема базы данных — новые таблицы</div>
+  <div class="arch-sub" style="margin-bottom:48px;">Что добавляется к существующей структуре</div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto 48px;">
+    <div class="db-table">
+      <div class="db-table-head dbt-purple">👥 users</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>role <span class="db-new-badge">NEW</span></span><span class="db-field-type">enum: admin,supplier,wholesaler</span></div>
+      <div class="db-field new"><span>is_active <span class="db-new-badge">NEW</span></span><span class="db-field-type">boolean</span></div>
+      <div class="db-field"><span>first_name</span><span class="db-field-type">string</span></div>
+      <div class="db-field"><span>email</span><span class="db-field-type">string unique</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-green">🏭 suppliers</div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>user_id <span class="db-new-badge">NEW</span></span><span class="db-field-type">FK → users</span></div>
+      <div class="db-field new"><span>invite_code <span class="db-new-badge">NEW</span></span><span class="db-field-type">string unique</span></div>
+      <div class="db-field new"><span>is_default <span class="db-new-badge">NEW</span></span><span class="db-field-type">boolean</span></div>
+      <div class="db-field new"><span>is_active <span class="db-new-badge">NEW</span></span><span class="db-field-type">boolean</span></div>
+      <div class="db-field"><span>name</span><span class="db-field-type">string</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-blue">🔗 wholesaler_suppliers <span class="db-new-badge" style="font-size:9px;">NEW</span></div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>user_id</span><span class="db-field-type">FK → users</span></div>
+      <div class="db-field new"><span>supplier_id</span><span class="db-field-type">FK → suppliers</span></div>
+      <div class="db-field new"><span>source</span><span class="db-field-type">enum: default,invite,subscription</span></div>
+      <div class="db-field new"><span>created_at</span><span class="db-field-type">timestamp</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head dbt-orange">⭐ subscriptions <span class="db-new-badge" style="font-size:9px;">NEW</span></div>
+      <div class="db-field key"><span>id</span><span class="db-field-type">PK</span></div>
+      <div class="db-field new"><span>user_id</span><span class="db-field-type">FK → users</span></div>
+      <div class="db-field new"><span>status</span><span class="db-field-type">enum: trial,active,expired</span></div>
+      <div class="db-field new"><span>starts_at</span><span class="db-field-type">timestamp</span></div>
+      <div class="db-field new"><span>expires_at</span><span class="db-field-type">timestamp</span></div>
+      <div class="db-field new"><span>promo_code</span><span class="db-field-type">string nullable</span></div>
+    </div>
+  </div>
+
+  <div class="tech-grid" style="max-width:1000px;margin:0 auto;">
+    <div class="tech-card tc-purple">
+      <h4>RBAC · Роли и доступы</h4>
+      <ul>
+        <li><code>admin</code> — полный доступ, управление платформой</li>
+        <li><code>supplier</code> — только свои товары, остатки, invite, заказы</li>
+        <li><code>wholesaler</code> — каталог доступных поставщиков, заказы</li>
+        <li>Middleware: <code>role:admin</code>, <code>role:supplier</code>, <code>role:wholesaler</code></li>
+        <li>Gate: <code>access-supplier</code> — проверка доступа оптовика к поставщику</li>
+      </ul>
+    </div>
+    <div class="tech-card tc-blue">
+      <h4>API · Ключевые эндпоинты</h4>
+      <ul>
+        <li><code>POST /auth/register</code> — регистрация с ролью</li>
+        <li><code>GET /invite/supplier/{code}</code> — публичная страница invite</li>
+        <li><code>POST /invite/supplier/{code}/attach</code> — прикрепить поставщика</li>
+        <li><code>GET /my-suppliers</code> — мои поставщики (для оптовика)</li>
+        <li><code>GET /subscription</code> — статус подписки</li>
+        <li><code>GET /suppliers</code> — с фильтрацией по доступу</li>
+      </ul>
+    </div>
+    <div class="tech-card tc-green">
+      <h4>Логика доступа к поставщикам</h4>
+      <ul>
+        <li>При регистрации → автоматически добавляется default supplier</li>
+        <li>Invite-переход → запись в <code>wholesaler_suppliers</code> (source: invite)</li>
+        <li>Подписка активна → все <code>is_active</code> поставщики доступны</li>
+        <li>Подписка истекает → source=subscription записи игнорируются</li>
+        <li>Новый поставщик → автоматически всем с активной подпиской</li>
+      </ul>
+    </div>
+    <div class="tech-card tc-orange">
+      <h4>Интеграции · Дорожная карта</h4>
+      <ul>
+        <li>Telegram-бот: уведомления, заказы, остатки</li>
+        <li>Kaspi Pay: приём оплаты за подписку</li>
+        <li>1С: выгрузка накладных и остатков</li>
+        <li>Push/Email: напоминания об окончании подписки</li>
+        <li>Webhook: уведомления при новом заказе</li>
+        <li>CRM: передача лидов от invite-переходов</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tech-estimate" style="margin-top:56px;">
+    <div class="te-item"><div class="te-val" style="color:#3e97ff;">4</div><div class="te-label">роли</div></div>
+    <div class="te-item"><div class="te-val" style="color:#17c653;">3</div><div class="te-label">уровня доступа</div></div>
+    <div class="te-item"><div class="te-val" style="color:#f6b100;">∞</div><div class="te-label">поставщиков по подписке</div></div>
+    <div class="te-item"><div class="te-val" style="color:#7239ea;">1</div><div class="te-label">invite-ссылка = навсегда</div></div>
+  </div>
 </div>
 
 <!-- ══════════════════ DB SCHEMA (hidden) ══════════════════ -->
