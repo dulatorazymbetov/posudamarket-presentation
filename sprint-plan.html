@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PosudaMarket — План разработки · 950 000 ₸</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --text:#1e2129; --text2:#3f4254; --text3:#6c7293; --muted:#99a1b7;
+    --border:#e8edf3; --border2:#d1dae8; --bg:#f5f8fa; --surface:#fff;
+    --blue:#3e97ff; --blue-soft:#eff6ff;
+    --green:#17c653; --green-soft:#e9faf0;
+    --yellow:#f6b100; --yellow-soft:#fff8ea;
+    --red:#f8285a; --red-soft:#fff0f3;
+    --purple:#7239ea; --purple-soft:#f3eeff;
+    --orange:#fd7e14; --orange-soft:#fff4e5;
+  }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--text); font-size:13px; line-height:1.6; padding:44px 52px; max-width:940px; margin:0 auto; }
+
+  /* HEADER */
+  .hdr { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid var(--blue); padding-bottom:20px; margin-bottom:28px; }
+  .hdr-logo { font-size:21px; font-weight:800; }
+  .hdr-logo span { color:var(--blue); }
+  .hdr-meta { text-align:right; font-size:11px; color:var(--muted); line-height:1.9; }
+  .doc-title { font-size:26px; font-weight:800; margin-bottom:5px; }
+  .doc-sub { font-size:13px; color:var(--text3); margin-bottom:26px; }
+
+  /* BUDGET HERO */
+  .budget-hero { background:linear-gradient(135deg,#1a2a4a 0%,#0a1a3c 100%); border-radius:14px; padding:28px 32px; margin-bottom:28px; display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; }
+  .bh-item { text-align:center; }
+  .bh-val { font-size:28px; font-weight:800; line-height:1; margin-bottom:5px; }
+  .bh-label { font-size:11px; color:rgba(255,255,255,.5); font-weight:500; }
+
+  /* SECTION TITLE */
+  h2 { font-size:15px; font-weight:700; color:var(--text); margin:28px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--border); display:flex; align-items:center; gap:8px; }
+  h2 .num { background:var(--blue); color:#fff; width:22px; height:22px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+
+  /* TABLE */
+  table { width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12.5px; }
+  thead th { background:var(--bg); padding:8px 12px; text-align:left; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); border-bottom:1px solid var(--border); }
+  tbody td { padding:9px 12px; border-bottom:1px solid var(--border); color:var(--text2); vertical-align:top; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover td { background:#fafbfd; }
+  .total-row td { background:var(--blue-soft) !important; font-weight:700 !important; color:var(--text) !important; border-top:2px solid var(--blue) !important; border-bottom:none !important; }
+  .subtotal-row td { background:#fafbfd; font-weight:600; color:var(--text3); border-top:1px solid var(--border2); font-size:12px; }
+
+  /* WEEK HEADER */
+  .week-head { display:flex; align-items:center; gap:12px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:12px 18px; margin-bottom:10px; }
+  .week-badge { padding:4px 14px; border-radius:100px; font-size:11px; font-weight:700; white-space:nowrap; }
+  .wb-1 { background:var(--purple-soft); color:var(--purple); }
+  .wb-2 { background:var(--blue-soft); color:var(--blue); }
+  .wb-3 { background:var(--green-soft); color:var(--green); }
+  .wb-4 { background:var(--orange-soft); color:var(--orange); }
+  .week-title { font-size:14px; font-weight:700; color:var(--text); }
+  .week-sub { font-size:12px; color:var(--text3); }
+  .week-cost { margin-left:auto; text-align:right; }
+  .week-cost-val { font-size:16px; font-weight:800; }
+  .week-cost-days { font-size:11px; color:var(--muted); }
+
+  /* TASK ROW */
+  .task-check { width:16px; height:16px; border:2px solid var(--border2); border-radius:4px; display:inline-block; vertical-align:middle; margin-right:4px; flex-shrink:0; }
+  .pill { display:inline-flex; align-items:center; padding:2px 8px; border-radius:100px; font-size:10px; font-weight:700; white-space:nowrap; }
+  .p-be { background:#f3eeff; color:var(--purple); }
+  .p-fe { background:var(--blue-soft); color:var(--blue); }
+  .p-both { background:var(--green-soft); color:var(--green); }
+  .p-ops { background:var(--orange-soft); color:var(--orange); }
+  .done-mark { color:var(--green); font-weight:700; font-size:13px; }
+
+  /* DAY TAGS */
+  .days-tag { display:inline-block; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:2px 8px; font-size:11px; font-weight:700; color:var(--text2); white-space:nowrap; }
+
+  /* NOTE */
+  .note { border-radius:0 8px 8px 0; padding:11px 14px; margin-bottom:16px; font-size:12px; line-height:1.6; display:flex; gap:10px; }
+  .note.blue { background:var(--blue-soft); border-left:4px solid var(--blue); }
+  .note.green { background:var(--green-soft); border-left:4px solid var(--green); }
+  .note.yellow { background:var(--yellow-soft); border-left:4px solid var(--yellow); }
+  .note.purple { background:var(--purple-soft); border-left:4px solid var(--purple); }
+  .note.red { background:var(--red-soft); border-left:4px solid var(--red); }
+  .note strong { display:block; font-weight:700; color:var(--text); margin-bottom:2px; }
+
+  /* BUDGET BREAKDOWN */
+  .budget-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+  .budget-card { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .bc-head { padding:11px 16px; font-size:12px; font-weight:700; border-bottom:1px solid var(--border); }
+  .bc-row { display:flex; justify-content:space-between; align-items:center; padding:8px 16px; border-bottom:1px solid var(--border); font-size:12px; }
+  .bc-row:last-child { border-bottom:none; }
+  .bc-row-total { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; font-weight:700; font-size:13px; background:var(--bg); }
+  .bc-val { font-weight:700; }
+  .bc-val.blue { color:var(--blue); }
+  .bc-val.green { color:var(--green); }
+  .bc-val.red { color:var(--red); }
+  .bc-val.muted { color:var(--muted); font-weight:400; }
+
+  /* GANTT */
+  .gantt-wrap { margin-bottom:20px; }
+  .g-row { display:grid; grid-template-columns:160px 1fr; align-items:center; gap:8px; margin-bottom:5px; }
+  .g-label { font-size:11px; color:var(--text3); font-weight:500; text-align:right; padding-right:4px; }
+  .g-track { background:var(--bg); border-radius:4px; height:22px; position:relative; overflow:hidden; }
+  .g-bar { height:100%; border-radius:4px; position:absolute; top:0; display:flex; align-items:center; padding:0 7px; font-size:10px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; }
+  .g-divider { position:absolute; top:0; bottom:0; width:1px; background:rgba(0,0,0,.08); }
+  .g-header { display:grid; grid-template-columns:160px 1fr; gap:8px; margin-bottom:4px; }
+  .g-weeks { display:flex; }
+  .g-week-lbl { flex:1; text-align:center; font-size:9px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+
+  /* DEPLOY TABLE */
+  .deploy-step { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+  .deploy-step:last-child { border-bottom:none; }
+  .ds-num { width:28px; height:28px; border-radius:8px; background:var(--blue); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .ds-body { flex:1; }
+  .ds-title { font-size:13px; font-weight:600; color:var(--text); }
+  .ds-desc { font-size:12px; color:var(--text3); margin-top:2px; }
+  .ds-cost { font-size:12px; font-weight:700; color:var(--blue); white-space:nowrap; }
+
+  /* FOOTER */
+  .doc-footer { margin-top:36px; padding-top:14px; border-top:1px solid var(--border); display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
+
+  @media print {
+    body { padding:24px 32px; font-size:12px; }
+    h2 { page-break-after:avoid; }
+    .week-head { page-break-after:avoid; }
+    tr { page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="hdr-logo">Posuda<span>Market</span></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px;">B2B платформа поставщиков и оптовиков</div>
+  </div>
+  <div class="hdr-meta">
+    <div><strong>План разработки · Sprint</strong></div>
+    <div>Бюджет: 950 000 ₸ · 2 разработчика</div>
+    <div>Дата: 08.05.2026</div>
+  </div>
+</div>
+
+<div class="doc-title">Полный план реализации и вывода на сервер</div>
+<div class="doc-sub">Детальный спринт на 2 недели — что, кто, когда и сколько стоит. Бюджет 950 000 ₸ включает разработку + деплой.</div>
+
+<!-- HERO -->
+<div class="budget-hero">
+  <div class="bh-item">
+    <div class="bh-val" style="color:#7ec8ff;">950 000 ₸</div>
+    <div class="bh-label">общий бюджет</div>
+  </div>
+  <div class="bh-item">
+    <div class="bh-val" style="color:#6ee7a0;">2 нед.</div>
+    <div class="bh-label">срок разработки</div>
+  </div>
+  <div class="bh-item">
+    <div class="bh-val" style="color:#ffc078;">2</div>
+    <div class="bh-label">разработчика</div>
+  </div>
+  <div class="bh-item">
+    <div class="bh-val" style="color:#c4a0ff;">MVP</div>
+    <div class="bh-label">полный запуск</div>
+  </div>
+</div>
+
+<div class="note blue">
+  <div>💡</div>
+  <div><strong>Почему это реально за 2 недели и 950K ₸</strong>
+  Фундамент уже готов: Laravel, Vue 3, авторизация, товары, заказы, накладные. Остаётся надстроить: роли, invite-систему, подписки, склад, деплой. Два разработчика работают параллельно — backend и frontend одновременно. Экономия ~40% по сравнению с разработкой с нуля.</div>
+</div>
+
+<!-- РАЗДЕЛ 1: КОМАНДА И СТАВКИ -->
+<h2><span class="num">1</span> Команда и бюджет</h2>
+
+<div class="budget-grid">
+  <div class="budget-card">
+    <div class="bc-head" style="background:var(--purple-soft);color:var(--purple);">👤 Разработчик 1 — Backend (Laravel)</div>
+    <div class="bc-row"><span>Уровень</span><span class="bc-val">Middle · 3–4 года опыта</span></div>
+    <div class="bc-row"><span>Ставка</span><span class="bc-val blue">22 000 ₸ / день</span></div>
+    <div class="bc-row"><span>Рабочих дней</span><span class="bc-val">10 дней (2 нед.)</span></div>
+    <div class="bc-row"><span>Задачи</span><span class="bc-val muted">RBAC, API, подписки, склад</span></div>
+    <div class="bc-row-total"><span>Итого</span><span class="bc-val blue">220 000 ₸</span></div>
+  </div>
+  <div class="budget-card">
+    <div class="bc-head" style="background:var(--blue-soft);color:var(--blue);">👤 Разработчик 2 — Frontend (Vue)</div>
+    <div class="bc-row"><span>Уровень</span><span class="bc-val">Middle · 2–3 года опыта</span></div>
+    <div class="bc-row"><span>Ставка</span><span class="bc-val blue">20 000 ₸ / день</span></div>
+    <div class="bc-row"><span>Рабочих дней</span><span class="bc-val">10 дней (2 нед.)</span></div>
+    <div class="bc-row"><span>Задачи</span><span class="bc-val muted">Кабинеты, склад UI, деплой FE</span></div>
+    <div class="bc-row-total"><span>Итого</span><span class="bc-val blue">200 000 ₸</span></div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Статья</th>
+      <th style="text-align:right;">Сумма</th>
+      <th>Что входит</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Разработчик 1 (Backend)</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--purple);">220 000 ₸</td>
+      <td>10 рабочих дней × 22 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Разработчик 2 (Frontend)</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--blue);">200 000 ₸</td>
+      <td>10 рабочих дней × 20 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Настройка сервера и деплой</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--orange);">80 000 ₸</td>
+      <td>VPS настройка, Nginx, SSL, CI/CD, домен — 1 день DevOps</td>
+    </tr>
+    <tr>
+      <td><strong>Тестирование (QA)</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--green);">50 000 ₸</td>
+      <td>Ручное тестирование всех ролей и сценариев — 2–3 дня</td>
+    </tr>
+    <tr>
+      <td><strong>Резерв / правки по итогам теста</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">100 000 ₸</td>
+      <td>~10% на баги, правки UI, непредвиденные задачи</td>
+    </tr>
+    <tr>
+      <td><strong>Сервер первые 3 месяца</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">60 000 ₸</td>
+      <td>VPS 4 ядра / 8 ГБ RAM — 20 000 ₸/мес × 3 мес.</td>
+    </tr>
+    <tr>
+      <td><strong>Домен (.kz) + SSL</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">18 000 ₸</td>
+      <td>Регистрация домена на 1 год + бесплатный SSL</td>
+    </tr>
+    <tr>
+      <td><strong>Буфер на переработки и экстра</strong></td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">222 000 ₸</td>
+      <td>Запас на задержки, дополнительные фичи, PM-время</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td><strong>ИТОГО</strong></td>
+      <td style="text-align:right;font-size:16px;color:var(--blue);">950 000 ₸</td>
+      <td style="color:var(--green);font-weight:600;">Полная реализация + сервер + запуск</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- РАЗДЕЛ 2: НЕДЕЛЯ 1 -->
+<h2><span class="num">2</span> Неделя 1 (дни 1–5) — Фундамент: роли, invite, подписки</h2>
+
+<div class="week-head">
+  <span class="week-badge wb-1">Неделя 1</span>
+  <div>
+    <div class="week-title">Архитектура ролей + Invite-система + Подписки (MVP)</div>
+    <div class="week-sub">Backend + Frontend параллельно · дни 1–5</div>
+  </div>
+  <div class="week-cost">
+    <div class="week-cost-val" style="color:var(--purple);">210 000 ₸</div>
+    <div class="week-cost-days">5 дней × 2 разработчика</div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:3%">#</th>
+      <th style="width:30%">Задача</th>
+      <th style="width:9%">Кто</th>
+      <th style="width:8%;text-align:center;">Дней</th>
+      <th style="width:10%;text-align:center;">Дни</th>
+      <th>Результат / что сдаётся</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- День 1 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 1 · Понедельник</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">1</td>
+      <td><strong>Миграции: role, invite_code, subscriptions, wholesaler_suppliers</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 1</td>
+      <td style="font-size:12px;">Новые поля и таблицы применены. База готова к ролям.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">2</td>
+      <td><strong>Макет кабинетов по ролям (роутинг, навигация)</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 1</td>
+      <td style="font-size:12px;">Три разных кабинета: Поставщик / Оптовик / Админ. Навигация по роли.</td>
+    </tr>
+    <!-- День 2 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 2 · Вторник</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">3</td>
+      <td><strong>RBAC: middleware role:admin/supplier/wholesaler, Gate-политики</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 2</td>
+      <td style="font-size:12px;">API защищено по ролям. Поставщик не видит данные других поставщиков.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">4</td>
+      <td><strong>Регистрация с выбором роли + страница входа по роли</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 2</td>
+      <td style="font-size:12px;">Форма регистрации. После входа — редирект в нужный кабинет.</td>
+    </tr>
+    <!-- День 3 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 3 · Среда</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">5</td>
+      <td><strong>Invite-ссылки: генерация кода, API прикрепления, логика default-поставщика</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 3</td>
+      <td style="font-size:12px;">POST /invite/supplier/{code}/attach. Автодобавление default при регистрации.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">6</td>
+      <td><strong>Страница invite-ссылки (публичная) + «Поставщик уже добавлен»</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 3</td>
+      <td style="font-size:12px;">Карточка поставщика, кнопки входа/регистрации, автодобавление после auth.</td>
+    </tr>
+    <!-- День 4 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 4 · Четверг</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">7</td>
+      <td><strong>Подписки: модель, trial 14 дней, статусы, scheduler истечения</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 4</td>
+      <td style="font-size:12px;">Trial создаётся при регистрации. Cron истекает подписку. API статуса.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">8</td>
+      <td><strong>«Мои поставщики» — кабинет оптовика (free/invite/подписка)</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 4</td>
+      <td style="font-size:12px;">Список доступных поставщиков с тегами. Заблокированный блок с апгрейдом.</td>
+    </tr>
+    <!-- День 5 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 5 · Пятница</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">9</td>
+      <td><strong>Фильтрация /suppliers и /products по доступу оптовика</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 5</td>
+      <td style="font-size:12px;">API возвращает только доступные данные в зависимости от роли/подписки.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">10</td>
+      <td><strong>Email-уведомления (истечение подписки за 7 и 1 день)</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 5</td>
+      <td style="font-size:12px;">Laravel Mail + Queue. Шаблоны писем.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">11</td>
+      <td><strong>Страница подписки оптовика (статус, тариф, промокод, история)</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 5</td>
+      <td style="font-size:12px;">Trial-счётчик, план 9 900 ₸/мес, ввод промокода, история платежей.</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="subtotal-row">
+      <td colspan="3"><strong>Итого неделя 1</strong></td>
+      <td style="text-align:center;font-weight:700;">10 задач</td>
+      <td style="text-align:center;font-weight:700;">5 дней</td>
+      <td style="font-weight:700;color:var(--purple);">MVP-ядро готово: роли + invite + подписки</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- РАЗДЕЛ 3: НЕДЕЛЯ 2 -->
+<h2><span class="num">3</span> Неделя 2 (дни 6–10) — Склад + Поставщик + Админка + Деплой</h2>
+
+<div class="week-head">
+  <span class="week-badge wb-3">Неделя 2</span>
+  <div>
+    <div class="week-title">Складской учёт + Кабинет поставщика + Расширенная админка + Сервер</div>
+    <div class="week-sub">Backend + Frontend + DevOps · дни 6–10</div>
+  </div>
+  <div class="week-cost">
+    <div class="week-cost-val" style="color:var(--green);">210 000 ₸</div>
+    <div class="week-cost-days">5 дней × 2 разработчика</div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:3%">#</th>
+      <th style="width:30%">Задача</th>
+      <th style="width:9%">Кто</th>
+      <th style="width:8%;text-align:center;">Дней</th>
+      <th style="width:10%;text-align:center;">Дни</th>
+      <th>Результат / что сдаётся</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- День 6 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 6 · Понедельник</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">12</td>
+      <td><strong>Склад: таблицы и API (поступления, списание, инвентаризация, остатки)</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 6</td>
+      <td style="font-size:12px;">stock_receipts, stock_writeoffs, stock_inventories, stock_balances. CRUD API.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">13</td>
+      <td><strong>Кабинет поставщика: invite-страница + список подключившихся оптовиков</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 6</td>
+      <td style="font-size:12px;">Страница «Моя ссылка»: копировать, поделиться, QR, таблица оптовиков.</td>
+    </tr>
+    <!-- День 7 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 7 · Вторник</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">14</td>
+      <td><strong>Склад: проведение документов → пересчёт остатков, интеграция с заказами</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 7</td>
+      <td style="font-size:12px;">Проведение накладной → +коробки. Подтверждение заказа → −коробки. Поддержка ∞.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">15</td>
+      <td><strong>UI склада: журнал поступлений + создание накладной со строками</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 7</td>
+      <td style="font-size:12px;">Список документов, форма накладной, таблица товаров в коробках, итоги, проведение.</td>
+    </tr>
+    <!-- День 8 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 8 · Среда</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">16</td>
+      <td><strong>Расширенная админка: управление поставщиками (default, блок), подписки</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 8</td>
+      <td style="font-size:12px;">API: назначить default, заблокировать, выдать подписку вручную.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">17</td>
+      <td><strong>Сканирование штрихкода + создание карточки товара на месте</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">1 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 8</td>
+      <td style="font-size:12px;">Браузерная камера / ввод кода. Не найдено → форма создания товара прямо в накладной.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">18</td>
+      <td><strong>UI склада: Списание и Инвентаризация</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 8</td>
+      <td style="font-size:12px;">Акт списания с причиной. Ревизия: факт vs система, расхождения, корректировка.</td>
+    </tr>
+    <!-- День 9 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 9 · Четверг · Деплой</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">19</td>
+      <td><strong>Настройка VPS + Nginx + SSL + домен + очереди + бэкапы</strong></td>
+      <td><span class="pill p-ops">DevOps</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 9</td>
+      <td style="font-size:12px;">Сервер поднят, HTTPS работает, очереди для email/notifications запущены.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">20</td>
+      <td><strong>Деплой backend: .env, migrate, seed, supervisor, cron</strong></td>
+      <td><span class="pill p-be">Backend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 9</td>
+      <td style="font-size:12px;">Laravel на сервере. Планировщик (подписки, уведомления). Storage для фото.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">21</td>
+      <td><strong>Деплой frontend: build, Nginx, переменные окружения</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 9</td>
+      <td style="font-size:12px;">Vue собран, раздаётся Nginx. API указывает на боевой сервер.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">22</td>
+      <td><strong>Смоук-тест на боевом: все роли, все экраны, базовые сценарии</strong></td>
+      <td><span class="pill p-both">Оба</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 9</td>
+      <td style="font-size:12px;">Прошли регистрацию, invite, подписку, склад, заказ на боевом сервере.</td>
+    </tr>
+    <!-- День 10 -->
+    <tr style="background:#fafbfd;">
+      <td colspan="6" style="padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">День 10 · Пятница · QA и сдача</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">23</td>
+      <td><strong>Полное QA: все роли, граничные кейсы, invite-флоу, подписка</strong></td>
+      <td><span class="pill p-both">Оба</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 10</td>
+      <td style="font-size:12px;">Чеклист по всем ролям. Исправление критических багов.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">24</td>
+      <td><strong>Правки и полировка UI по итогам теста</strong></td>
+      <td><span class="pill p-fe">Frontend</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 10</td>
+      <td style="font-size:12px;">Финальный вид интерфейса. Исправления по замечаниям.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--muted);">25</td>
+      <td><strong>Сдача: передача доступов, документация, инструкция</strong></td>
+      <td><span class="pill p-both">Оба</span></td>
+      <td style="text-align:center;"><span class="days-tag">0.5 д.</span></td>
+      <td style="text-align:center;font-size:11px;color:var(--muted);">День 10</td>
+      <td style="font-size:12px;">Логины/пароли, доступ к серверу, краткая инструкция по работе.</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="subtotal-row">
+      <td colspan="3"><strong>Итого неделя 2</strong></td>
+      <td style="text-align:center;font-weight:700;">13 задач</td>
+      <td style="text-align:center;font-weight:700;">5 дней</td>
+      <td style="font-weight:700;color:var(--green);">Склад + деплой + QA + сдача</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- РАЗДЕЛ 4: ДЕПЛОЙ -->
+<h2><span class="num">4</span> Детали вывода на сервер</h2>
+
+<div class="note purple">
+  <div>🖥</div>
+  <div><strong>Рекомендуемый сервер: Hetzner CX32 или Beget VPS</strong>
+  4 ядра CPU · 8 ГБ RAM · 80 ГБ SSD · Ubuntu 22.04. Hetzner — ~5 000–7 000 ₸/мес (самый надёжный). Beget — ~15 000–20 000 ₸/мес (казахстанская поддержка). DigitalOcean — ~8 000–10 000 ₸/мес.</div>
+</div>
+
+<div class="budget-card" style="margin-bottom:20px;">
+  <div class="bc-head" style="background:var(--orange-soft);color:var(--orange);">⚙️ Пошаговый план деплоя (день 9)</div>
+  <div class="deploy-step">
+    <div class="ds-num">1</div>
+    <div class="ds-body">
+      <div class="ds-title">Аренда VPS и настройка окружения</div>
+      <div class="ds-desc">Ubuntu 22.04 · PHP 8.2 · MySQL 8 · Nginx · Redis · Supervisor · Certbot (SSL)</div>
+    </div>
+    <div class="ds-cost">~1–2 ч.</div>
+  </div>
+  <div class="deploy-step">
+    <div class="ds-num">2</div>
+    <div class="ds-body">
+      <div class="ds-title">Регистрация и настройка домена (.kz)</div>
+      <div class="ds-desc">Купить домен posudamarket.kz или pm.kz. Прописать A-запись на IP сервера. Certbot выдаёт SSL автоматически.</div>
+    </div>
+    <div class="ds-cost">~30 мин.</div>
+  </div>
+  <div class="deploy-step">
+    <div class="ds-num">3</div>
+    <div class="ds-body">
+      <div class="ds-title">Деплой Laravel backend</div>
+      <div class="ds-desc">git clone · composer install · .env (DB, MAIL, APP_KEY) · php artisan migrate --seed · storage:link · queue:work через Supervisor · schedule:run через cron</div>
+    </div>
+    <div class="ds-cost">~2 ч.</div>
+  </div>
+  <div class="deploy-step">
+    <div class="ds-num">4</div>
+    <div class="ds-body">
+      <div class="ds-title">Деплой Vue frontend</div>
+      <div class="ds-desc">npm run build · скопировать dist/ на сервер · Nginx раздаёт статику · .env.production с URL API</div>
+    </div>
+    <div class="ds-cost">~1 ч.</div>
+  </div>
+  <div class="deploy-step">
+    <div class="ds-num">5</div>
+    <div class="ds-body">
+      <div class="ds-title">Настройка бэкапов и мониторинга</div>
+      <div class="ds-desc">Ежедневный дамп MySQL → S3/Backblaze. Cron-проверка доступности. UptimeRobot (бесплатный мониторинг).</div>
+    </div>
+    <div class="ds-cost">~1 ч.</div>
+  </div>
+  <div class="deploy-step">
+    <div class="ds-num">6</div>
+    <div class="ds-body">
+      <div class="ds-title">Смоук-тест на боевом сервере</div>
+      <div class="ds-desc">Регистрация всех ролей · invite-флоу · подписка · добавление товара · склад · заказ · накладная PDF</div>
+    </div>
+    <div class="ds-cost">~2 ч.</div>
+  </div>
+</div>
+
+<!-- РАЗДЕЛ 5: ГАНТ -->
+<h2><span class="num">5</span> График — кто что делает по дням</h2>
+
+<div class="gantt-wrap">
+  <div class="g-header">
+    <div></div>
+    <div class="g-weeks">
+      <div class="g-week-lbl">Пн</div>
+      <div class="g-week-lbl">Вт</div>
+      <div class="g-week-lbl">Ср</div>
+      <div class="g-week-lbl">Чт</div>
+      <div class="g-week-lbl">Пт</div>
+      <div class="g-week-lbl">Пн</div>
+      <div class="g-week-lbl">Вт</div>
+      <div class="g-week-lbl">Ср</div>
+      <div class="g-week-lbl">Чт</div>
+      <div class="g-week-lbl">Пт</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Миграции + RBAC</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#7239ea;left:0%;width:20%;">Роли</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Invite API + подписки</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#7239ea;left:20%;width:30%;">Invite + подписки</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Склад API</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#f6b100;left:50%;width:20%;">Склад BE</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Деплой Backend</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#fd7e14;left:80%;width:10%;">Deploy</div>
+    </div>
+  </div>
+  <div style="height:10px;"></div>
+  <div class="g-row">
+    <div class="g-label">Кабинеты (роутинг)</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#3e97ff;left:0%;width:20%;">Кабинеты</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Invite FE + подписка UI</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#3e97ff;left:20%;width:30%;">Invite + подписка</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Поставщик + склад UI</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#3e97ff;left:50%;width:30%;">Поставщик + склад</div>
+    </div>
+  </div>
+  <div class="g-row">
+    <div class="g-label">Деплой FE + QA</div>
+    <div class="g-track">
+      <div class="g-bar" style="background:#17c653;left:80%;width:20%;">Deploy + QA</div>
+    </div>
+  </div>
+  <div style="margin-top:8px;display:flex;gap:16px;font-size:11px;color:var(--muted);">
+    <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px;background:#7239ea;display:inline-block;"></span>Backend</span>
+    <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px;background:#3e97ff;display:inline-block;"></span>Frontend</span>
+    <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px;background:#f6b100;display:inline-block;"></span>Склад</span>
+    <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px;background:#17c653;display:inline-block;"></span>QA + Deploy</span>
+    <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px;background:#fd7e14;display:inline-block;"></span>DevOps</span>
+  </div>
+</div>
+
+<!-- РАЗДЕЛ 6: ИТОГОВЫЙ БЮДЖЕТ -->
+<h2><span class="num">6</span> Итоговый бюджет — полная разбивка</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:35%">Статья расходов</th>
+      <th style="text-align:center;width:12%">Кол-во</th>
+      <th style="text-align:center;width:15%">Ставка</th>
+      <th style="text-align:right;">Сумма</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Разработчик 1 — Backend</strong><div style="font-size:11px;color:var(--muted)">RBAC, API, подписки, склад BE, деплой BE</div></td>
+      <td style="text-align:center;">10 дней</td>
+      <td style="text-align:center;">22 000 ₸/день</td>
+      <td style="text-align:right;font-weight:700;color:var(--purple);">220 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Разработчик 2 — Frontend</strong><div style="font-size:11px;color:var(--muted)">Кабинеты, invite UI, подписка, склад UI, QA</div></td>
+      <td style="text-align:center;">10 дней</td>
+      <td style="text-align:center;">20 000 ₸/день</td>
+      <td style="text-align:right;font-weight:700;color:var(--blue);">200 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>DevOps / настройка сервера</strong><div style="font-size:11px;color:var(--muted)">VPS, Nginx, SSL, Supervisor, CI, бэкапы</div></td>
+      <td style="text-align:center;">1 день</td>
+      <td style="text-align:center;">80 000 ₸</td>
+      <td style="text-align:right;font-weight:700;color:var(--orange);">80 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>QA / тестирование</strong><div style="font-size:11px;color:var(--muted)">Ручное тестирование всех ролей и сценариев</div></td>
+      <td style="text-align:center;">2–3 дня</td>
+      <td style="text-align:center;">—</td>
+      <td style="text-align:right;font-weight:700;color:var(--green);">50 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>VPS-сервер (3 месяца)</strong><div style="font-size:11px;color:var(--muted)">Hetzner CX32 или аналог · 4 ядра / 8 ГБ</div></td>
+      <td style="text-align:center;">3 мес.</td>
+      <td style="text-align:center;">20 000 ₸/мес</td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">60 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Домен (.kz, 1 год)</strong><div style="font-size:11px;color:var(--muted)">posudamarket.kz или pm.kz</div></td>
+      <td style="text-align:center;">1 год</td>
+      <td style="text-align:center;">—</td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">18 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Резерв (правки, непредвиденное)</strong><div style="font-size:11px;color:var(--muted)">~10% от разработки — стандартный буфер</div></td>
+      <td style="text-align:center;">—</td>
+      <td style="text-align:center;">—</td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">100 000 ₸</td>
+    </tr>
+    <tr>
+      <td><strong>Организация, коммуникация, PM</strong><div style="font-size:11px;color:var(--muted)">Постановка задач, созвоны, согласование</div></td>
+      <td style="text-align:center;">—</td>
+      <td style="text-align:center;">—</td>
+      <td style="text-align:right;font-weight:700;color:var(--text3);">222 000 ₸</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td><strong>ИТОГО</strong></td>
+      <td style="text-align:center;">10 раб. дней</td>
+      <td style="text-align:center;">2 нед.</td>
+      <td style="text-align:right;font-size:17px;color:var(--blue);">950 000 ₸</td>
+    </tr>
+  </tfoot>
+</table>
+
+<div class="note green">
+  <div>✅</div>
+  <div><strong>Что входит в 950 000 ₸ — полный список</strong>
+  Разработка ролей (admin, supplier, wholesaler) · Invite-система с автодобавлением · «Мои поставщики» · Фильтрация доступа · Trial 14 дней + подписки + промокоды · Email-уведомления · Складской учёт (поступления, списание, инвентаризация) · Сканирование штрихкода · Расширенная админка · Деплой на VPS · SSL, домен · Настройка бэкапов · QA · Передача доступов · 3 месяца хостинга включено.</div>
+</div>
+
+<!-- РАЗДЕЛ 7: СХЕМА ОПЛАТЫ -->
+<h2><span class="num">7</span> Рекомендуемая схема оплаты</h2>
+
+<div class="note yellow">
+  <div>💰</div>
+  <div><strong>Никогда не платите всё сразу</strong>
+  Разбейте оплату на 3 части — это защищает вас и мотивирует разработчика держать темп и качество.</div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Платёж</th>
+      <th style="text-align:center;">Когда</th>
+      <th style="text-align:right;">Сумма</th>
+      <th>Условие выплаты</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Аванс (30%)</strong></td>
+      <td style="text-align:center;">До старта · День 1</td>
+      <td style="text-align:right;font-weight:700;color:var(--blue);">285 000 ₸</td>
+      <td>Подписание договора. Оплата сервера и домена.</td>
+    </tr>
+    <tr>
+      <td><strong>По итогам недели 1 (40%)</strong></td>
+      <td style="text-align:center;">После дня 5</td>
+      <td style="text-align:right;font-weight:700;color:var(--blue);">380 000 ₸</td>
+      <td>Показан рабочий MVP на тестовом: роли, invite, подписки.</td>
+    </tr>
+    <tr>
+      <td><strong>После сдачи (30%)</strong></td>
+      <td style="text-align:center;">День 10 · сдача</td>
+      <td style="text-align:right;font-weight:700;color:var(--blue);">285 000 ₸</td>
+      <td>Система работает на боевом сервере. Пройден QA. Переданы все доступы.</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2"><strong>Итого</strong></td>
+      <td style="text-align:right;font-size:15px;color:var(--blue);">950 000 ₸</td>
+      <td style="color:var(--green);font-weight:600;">3 платежа · 100% защита</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- РАЗДЕЛ 8: ЧТО НЕ ВХОДИТ -->
+<h2><span class="num">8</span> Что НЕ входит в эти 2 недели (следующий этап)</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width:35%">Функция</th>
+      <th style="text-align:center;width:15%">Доп. срок</th>
+      <th style="text-align:right;width:18%">Доп. стоимость</th>
+      <th>Примечание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Оплата Kaspi Pay (автоматическая)</strong></td>
+      <td style="text-align:center;">+3–5 дней</td>
+      <td style="text-align:right;color:var(--text3);">+100 000 ₸</td>
+      <td style="font-size:12px;color:var(--text3);">Сейчас — ручная выдача доступа администратором</td>
+    </tr>
+    <tr>
+      <td><strong>Telegram-бот (уведомления и заказы)</strong></td>
+      <td style="text-align:center;">+3–5 дней</td>
+      <td style="text-align:right;color:var(--text3);">+80 000 ₸</td>
+      <td style="font-size:12px;color:var(--text3);">Уведомления, кнопки подтверждения заказов</td>
+    </tr>
+    <tr>
+      <td><strong>Мобильная версия / PWA</strong></td>
+      <td style="text-align:center;">+3–4 дня</td>
+      <td style="text-align:right;color:var(--text3);">+60 000 ₸</td>
+      <td style="font-size:12px;color:var(--text3);">Адаптация UI + иконка на экран телефона</td>
+    </tr>
+    <tr>
+      <td><strong>Интеграция с 1С</strong></td>
+      <td style="text-align:center;">+7–10 дней</td>
+      <td style="text-align:right;color:var(--text3);">+200 000 ₸</td>
+      <td style="font-size:12px;color:var(--text3);">Выгрузка накладных, синхронизация остатков</td>
+    </tr>
+    <tr>
+      <td><strong>Аналитика и дашборд для админа</strong></td>
+      <td style="text-align:center;">+2–3 дня</td>
+      <td style="text-align:right;color:var(--text3);">+50 000 ₸</td>
+      <td style="font-size:12px;color:var(--text3);">Графики, конверсия invite, топ поставщиков</td>
+    </tr>
+    <tr>
+      <td><strong>Автопродление подписки</strong></td>
+      <td style="text-align:center;">+2–3 дня</td>
+      <td style="text-align:right;color:var(--text3);">+40 000 ₸</td>
+      <td style="font-size:12px;color:var(--text3);">Рекуррентные платежи через платёжный шлюз</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="doc-footer">
+  <div>PosudaMarket · Sprint Plan · Бюджет 950 000 ₸ · 08.05.2026</div>
+  <div>Открыть в браузере → Cmd+P → Сохранить как PDF</div>
+</div>
+
+</body>
+</html>
