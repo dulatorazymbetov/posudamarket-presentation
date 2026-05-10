@@ -1271,6 +1271,30 @@
         </div>
       </div>
 
+      <!-- Discount block -->
+      <div class="card" style="max-width:680px;margin-bottom:16px;border:1px solid var(--warning);background:var(--warning-soft);">
+        <div style="padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="font-size:16px;">🏷️</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Скидка для этого клиента</div>
+            <div style="font-size:12px;color:var(--text3);">Поставщик может дать персональную скидку. Применяется ко всей сумме накладной.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;background:#fff;border:1.5px solid var(--warning);border-radius:8px;overflow:hidden;">
+              <button style="border:none;background:none;padding:6px 12px;font-size:18px;cursor:pointer;color:var(--text3);">−</button>
+              <span style="font-size:18px;font-weight:800;color:var(--warning);min-width:40px;text-align:center;padding:0 4px;">5%</span>
+              <button style="border:none;background:none;padding:6px 12px;font-size:18px;cursor:pointer;color:var(--text3);">+</button>
+            </div>
+            <button class="btn btn-sm" style="background:var(--warning);color:#fff;border:none;">Применить</button>
+          </div>
+        </div>
+        <div style="padding:10px 20px 14px;display:flex;gap:20px;flex-wrap:wrap;border-top:1px solid rgba(246,177,0,.3);">
+          <div style="font-size:12px;color:var(--text3);">Сумма до скидки: <span style="font-weight:600;color:var(--text);">30 580 ₸</span></div>
+          <div style="font-size:12px;color:var(--text3);">Скидка 5%: <span style="font-weight:600;color:var(--danger);">−1 529 ₸</span></div>
+          <div style="font-size:12px;color:var(--text3);">Итого к оплате: <span style="font-size:14px;font-weight:800;color:var(--success);">29 051 ₸</span></div>
+        </div>
+      </div>
+
       <!-- Invoice preview -->
       <div class="card" style="max-width:680px;">
         <div style="padding:28px;border-bottom:2px solid var(--border);">
@@ -1299,9 +1323,15 @@
             <tr><td style="color:var(--muted)">3</td><td><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=80&h=80&fit=crop&auto=format" style="width:36px;height:36px;border-radius:6px;object-fit:cover;display:block;" /></td><td>Кастрюля 8л нерж. с крышкой</td><td style="font-family:monospace;font-size:11px;color:var(--muted)">KST-008</td><td>1</td><td>10</td><td>12 000 ₸</td><td><strong>12 000 ₸</strong></td></tr>
           </tbody>
         </table>
-        <div style="padding:16px 28px;background:var(--surface2);display:flex;justify-content:flex-end;align-items:center;gap:24px;">
-          <span style="font-size:13px;color:var(--text3);">ИТОГО К ОПЛАТЕ:</span>
-          <span style="font-size:24px;font-weight:800;color:var(--text);">30 580 ₸</span>
+        <div style="padding:16px 28px;background:var(--surface2);display:flex;justify-content:flex-end;align-items:center;gap:24px;flex-wrap:wrap;">
+          <div style="text-align:right;">
+            <div style="font-size:12px;color:var(--text3);text-decoration:line-through;">30 580 ₸</div>
+            <div style="font-size:11px;color:var(--warning);font-weight:600;">Скидка 5% (−1 529 ₸)</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text3);text-align:right;margin-bottom:2px;">ИТОГО К ОПЛАТЕ:</div>
+            <span style="font-size:24px;font-weight:800;color:var(--success);">29 051 ₸</span>
+          </div>
         </div>
       </div>
 
@@ -1317,7 +1347,8 @@
             • Кастрюля 5л нерж. сталь (KST-001) — 1 кор. × 8 500 ₸<br>
             • Кастрюля 3л эмаль (KST-003) — 2 кор. × 5 040 ₸<br>
             • Кастрюля 8л нерж. с крышкой (KST-008) — 1 кор. × 12 000 ₸<br><br>
-            <strong>Итого: 30 580 ₸</strong><br><br>
+            Сумма: 30 580 ₸ · Скидка 5%: −1 529 ₸<br>
+            <strong>Итого: 29 051 ₸</strong><br><br>
             Накладная: https://posudamir.pm.kz/invoice/094<br><br>
             — Посудный мир
           </div>
