@@ -350,11 +350,7 @@
     <div class="flow-arrow">→</div>
     <div class="flow-node" style="background:rgba(23,198,83,.2);border:1px solid rgba(23,198,83,.4);color:#6ee7a0;">🏭 Поставщик<small>Каталог + invite-ссылка</small></div>
     <div class="flow-arrow">🔗</div>
-    <div class="flow-node wholesale">📦 Оптовик<small>Free / Invite / Подписка</small></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-node shop">🏪 Магазин<small>Делает заказы</small></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-node" style="background:rgba(253,126,20,.15);border-color:rgba(253,126,20,.4);color:#ffc078;">🛍 Клиент<small>Покупает у магазина</small></div>
+    <div class="flow-node wholesale">📦 Оптовик<small>Заказывает у поставщика</small></div>
   </div>
   <div class="cover-hint">↓ Прокрутите вниз</div>
 </div>
@@ -362,7 +358,7 @@
 <!-- ══════════════════ ARCHITECTURE ══════════════════ -->
 <div class="arch-section">
   <div class="arch-title">Как работает система</div>
-  <div class="arch-sub">Четыре роли с разграниченным доступом и системой invite-ссылок</div>
+  <div class="arch-sub">Три роли + администратор: разграниченный доступ и invite-ссылки</div>
   <div class="arch-grid" style="grid-template-columns:1fr 1fr;">
     <div class="arch-card">
       <h3><span style="font-size:20px;">🛡</span> <span style="color:#c4a0ff;">Администратор</span></h3>
@@ -384,23 +380,17 @@
         <li>Видит входящие заказы от оптовиков</li>
       </ul>
     </div>
-    <div class="arch-card">
-      <h3><span style="font-size:20px;">📦</span> <span style="color:#7ec8ff;">Оптовик</span></h3>
-      <ul>
+    <div class="arch-card" style="grid-column:1/-1;">
+      <h3><span style="font-size:20px;">📦</span> <span style="color:#7ec8ff;">Оптовик</span> <span style="font-size:12px;font-weight:500;color:var(--muted);margin-left:8px;">— конечный покупатель в системе</span></h3>
+      <ul style="columns:2;gap:32px;">
         <li>После регистрации — бесплатно видит 1 default-поставщика</li>
         <li>Добавляет поставщиков навсегда по invite-ссылкам (бесплатно)</li>
         <li>По подписке — открывает всех поставщиков платформы</li>
         <li>Оформляет заказы коробками у доступных поставщиков</li>
+        <li>Видит накладные, отправляет в WhatsApp</li>
+        <li>Ведёт складской учёт: поступления, списание, инвентаризация</li>
+        <li>Отслеживает долги перед поставщиками</li>
         <li>Видит статус подписки, тарифы, историю платежей</li>
-      </ul>
-    </div>
-    <div class="arch-card" style="border-color:rgba(253,126,20,.3);">
-      <h3><span style="font-size:20px;">🛍</span> <span style="color:var(--orange);">Клиент</span></h3>
-      <ul>
-        <li>Заходит на сайт магазина и видит розничный каталог</li>
-        <li>Добавляет товары в корзину, оформляет заказ</li>
-        <li>Видит статус своих заказов в личном кабинете</li>
-        <li>Получает уведомление при подтверждении заказа</li>
       </ul>
     </div>
   </div>
