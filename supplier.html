@@ -308,6 +308,133 @@
   .cta-sub { margin-top: 18px; font-size: 12px; color: #334155; }
 
   .section-divider { height: 1px; background: linear-gradient(90deg, transparent, #1e293b 30%, #1e293b 70%, transparent); }
+
+  /* ══════════════════════════════════════════════════
+     RESPONSIVE — tablet (≤768px) & mobile (≤430px)
+     iPhone 13/14/15/16/17 Pro: 390px
+     iPhone 13/14/15/16/17 Pro Max: 430px
+  ══════════════════════════════════════════════════ */
+
+  @media (max-width: 900px) {
+    .value-grid    { grid-template-columns: 1fr; }
+    .steps-grid    { grid-template-columns: 1fr 1fr; }
+    .stats-4       { grid-template-columns: 1fr 1fr; }
+    .stats-3       { grid-template-columns: 1fr 1fr; }
+    .two-col       { grid-template-columns: 1fr; }
+    .three-col     { grid-template-columns: 1fr; }
+    .debt-summary  { grid-template-columns: 1fr; }
+    .form-row      { grid-template-columns: 1fr; }
+    .page-section  { padding: 36px 24px; }
+    .dark-section  { padding: 48px 24px; }
+    .value-section { padding: 48px 24px; }
+    .section-title { font-size: 26px; }
+    .section-sub   { font-size: 14px; }
+  }
+
+  @media (max-width: 600px) {
+    /* Cover */
+    .cover         { padding: 48px 20px; min-height: auto; padding-top: 64px; padding-bottom: 48px; }
+    .cover h1      { font-size: 32px; }
+    .cover-sub     { font-size: 15px; margin-bottom: 28px; }
+    .cover-chips   { gap: 8px; margin-bottom: 32px; }
+    .chip          { font-size: 12px; padding: 6px 12px; }
+
+    /* Section covers */
+    .section-cover      { padding: 48px 20px; min-height: auto; }
+    .section-cover h2   { font-size: 26px; }
+    .section-cover p    { font-size: 14px; }
+
+    /* Page sections */
+    .page-section  { padding: 28px 16px; }
+    .dark-section  { padding: 40px 16px; }
+    .value-section { padding: 40px 16px; }
+    .screen-title  { font-size: 20px; }
+    .screen-desc   { font-size: 13px; }
+    .screen-wrap   { border-radius: 8px; margin-bottom: 32px; }
+
+    /* Steps */
+    .steps-grid    { grid-template-columns: 1fr; gap: 12px; }
+    .section-title { font-size: 22px; }
+
+    /* Stats */
+    .stats-4       { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stats-3       { grid-template-columns: 1fr; }
+    .stat          { padding: 12px; gap: 10px; }
+    .stat-ico      { width: 36px; height: 36px; font-size: 16px; }
+    .stat-val      { font-size: 18px; }
+
+    /* Topbar — скрываем nav, оставляем лого + роль + аватар */
+    .topbar        { padding: 0 14px; height: 52px; }
+    .nav           { display: none; }
+    .logo          { font-size: 15px; margin-right: 0; }
+    .role-pill     { display: none; }
+
+    /* Page header */
+    .ph            { flex-direction: column; gap: 10px; }
+    .ph-right      { flex-wrap: wrap; }
+
+    /* Product grid */
+    .product-grid  { grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+    .pc-img        { height: 80px; font-size: 26px; }
+    .pc-body       { padding: 10px; }
+    .pc-name       { font-size: 12px; }
+    .pc-price      { font-size: 15px; }
+    .pc-box-price  { font-size: 11px; }
+
+    /* Tables */
+    table          { font-size: 12px; }
+    th             { padding: 7px 10px; font-size: 10px; }
+    td             { padding: 9px 10px; }
+
+    /* Debt summary */
+    .debt-summary  { grid-template-columns: 1fr; gap: 10px; }
+    .ds-val        { font-size: 20px; }
+
+    /* Invite flow */
+    .invite-flow   { gap: 6px; }
+    .if-step       { min-width: 100px; padding: 12px 14px; }
+    .if-ico        { font-size: 22px; }
+    .if-label      { font-size: 11px; }
+    .if-arrow      { font-size: 16px; padding: 0 4px; }
+
+    /* Invite link box */
+    .invite-link-box { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .ilb-url         { font-size: 11px; word-break: break-all; }
+
+    /* Invoice */
+    .invoice-wrap        { padding: 16px; }
+    .invoice-header      { flex-direction: column; gap: 12px; }
+    .invoice-parties     { grid-template-columns: 1fr; gap: 10px; }
+    .invoice-wrap table  { font-size: 11px; }
+
+    /* Profile / form */
+    .form-row      { grid-template-columns: 1fr; }
+    .wa-prefix     { font-size: 12px; padding: 8px 8px; }
+
+    /* CTA */
+    .cta-section   { padding: 60px 20px; }
+    .cta-section h2 { font-size: 26px; }
+    .cta-section p  { font-size: 14px; }
+    .cta-btns      { flex-direction: column; align-items: stretch; gap: 10px; }
+    .cta-btn-primary, .cta-btn-secondary { padding: 13px 20px; font-size: 14px; }
+
+    /* Value section heading */
+    .value-section > div > div:nth-child(2) { font-size: 22px !important; }
+    .value-section > div > div:nth-child(3) { font-size: 13px !important; }
+
+    /* Note */
+    .note { padding: 10px 12px; font-size: 12px; }
+
+    /* Two-col inside invite section */
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* Очень узкие экраны (≤360px — старые Android, не iPhone) */
+  @media (max-width: 360px) {
+    .cover h1      { font-size: 26px; }
+    .product-grid  { grid-template-columns: 1fr; }
+    .stats-4       { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
