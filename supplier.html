@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PosudaMarket — Кабинет поставщика</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #f5f8fa; --surface: #ffffff; --surface2: #f9fafb; --surface3: #f1f4f9;
+    --border: #e8edf3; --border2: #d1dae8;
+    --text: #1e2129; --text2: #3f4254; --text3: #6c7293; --muted: #99a1b7;
+    --primary: #3e97ff; --primary-soft: #eff6ff;
+    --success: #17c653; --success-soft: #e9faf0; --success-dark: #0d9e40;
+    --danger: #f8285a; --danger-soft: #fff0f3;
+    --warning: #f6b100; --warning-soft: #fff8ea;
+    --info: #7239ea; --info-soft: #f3eeff;
+    --orange: #fd7e14; --orange-soft: #fff4e5;
+    --font: 'Inter', sans-serif;
+  }
+  body { font-family: var(--font); background: #0f172a; color: var(--text); }
+
+  /* ── COVER ─────────────────────────────────────── */
+  .cover {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #0a1f10 60%, #0f172a 100%);
+    padding: 60px 40px; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(23,198,83,.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(23,198,83,.12); border: 1px solid rgba(23,198,83,.3);
+    border-radius: 100px; padding: 6px 18px; color: #6ee7a0;
+    font-size: 13px; font-weight: 600; margin-bottom: 32px;
+  }
+  .cover h1 { font-size: 54px; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 16px; }
+  .cover h1 span { color: #17c653; }
+  .cover-sub { font-size: 18px; color: #64748b; max-width: 580px; margin-bottom: 48px; line-height: 1.6; }
+  .cover-chips { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 56px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 8px 18px; border-radius: 10px;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    color: #94a3b8; font-size: 13px; font-weight: 500;
+  }
+  .chip-icon { font-size: 16px; }
+  .cover-hint { color: #334155; font-size: 13px; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  /* ── VALUE PROPS ─────────────────────────────────── */
+  .value-section { background: #0f172a; padding: 80px; }
+  .value-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
+  .value-card {
+    background: #1e293b; border-radius: 14px; padding: 28px;
+    border: 1px solid rgba(255,255,255,.06);
+    position: relative; overflow: hidden;
+  }
+  .value-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .vc-green::after  { background: linear-gradient(90deg, #17c653, #0d9e40); }
+  .vc-blue::after   { background: linear-gradient(90deg, #3e97ff, #1a6fd4); }
+  .vc-orange::after { background: linear-gradient(90deg, #fd7e14, #d4620d); }
+  .value-card .vc-icon { font-size: 32px; margin-bottom: 16px; }
+  .value-card h3 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .value-card p  { font-size: 13px; color: #64748b; line-height: 1.6; }
+
+  /* ── SECTION COVER ───────────────────────────────── */
+  .section-cover {
+    min-height: 30vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 70px 40px;
+  }
+  .section-cover.sc-products  { background: linear-gradient(135deg, #001a0e 0%, #0a3020 100%); }
+  .section-cover.sc-orders    { background: linear-gradient(135deg, #001033 0%, #0a2050 100%); }
+  .section-cover.sc-debts     { background: linear-gradient(135deg, #1a0000 0%, #3a0a0a 100%); }
+  .section-cover.sc-analytics { background: linear-gradient(135deg, #0a0022 0%, #1a0a40 100%); }
+  .section-cover.sc-invite    { background: linear-gradient(135deg, #001a0e 0%, #0a2510 100%); }
+  .section-cover.sc-profile   { background: linear-gradient(135deg, #0a0a1a 0%, #1a1a33 100%); }
+  .section-cover h2 { font-size: 40px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+  .section-cover p  { font-size: 16px; color: rgba(255,255,255,.5); max-width: 500px; margin-bottom: 24px; }
+  .perm-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .tag { padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .tag-green  { background: rgba(23,198,83,.15);  border: 1px solid rgba(23,198,83,.35);  color: #6ee7a0; }
+  .tag-blue   { background: rgba(62,151,255,.15); border: 1px solid rgba(62,151,255,.35); color: #7ec8ff; }
+  .tag-orange { background: rgba(253,126,20,.15); border: 1px solid rgba(253,126,20,.35); color: #fdb07a; }
+  .tag-purple { background: rgba(114,57,234,.15); border: 1px solid rgba(114,57,234,.35); color: #c4a0ff; }
+  .tag-red    { background: rgba(248,40,90,.1);   border: 1px solid rgba(248,40,90,.3);   color: #ff8aaa; }
+
+  /* ── PAGE SECTION ────────────────────────────────── */
+  .page-section { background: var(--bg); padding: 56px 72px; }
+  .screen-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 20px; }
+  .screen-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .screen-desc  { font-size: 14px; color: var(--text3); margin-bottom: 28px; max-width: 680px; line-height: 1.6; }
+  .note { display: flex; gap: 12px; background: #fff; border-radius: 0 8px 8px 0; padding: 13px 18px; margin-bottom: 24px; font-size: 13px; line-height: 1.5; }
+  .note.n-green  { border-left: 4px solid var(--success); }
+  .note.n-blue   { border-left: 4px solid var(--primary); }
+  .note.n-orange { border-left: 4px solid var(--orange); }
+  .note.n-purple { border-left: 4px solid var(--info); }
+  .note strong { display: block; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .note p { color: var(--text3); margin: 0; }
+  .screen-wrap { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.07); margin-bottom: 56px; }
+
+  /* ── TOPBAR ──────────────────────────────────────── */
+  .topbar { display: flex; align-items: center; background: var(--surface); border-bottom: 1px solid var(--border); height: 60px; padding: 0 22px; gap: 6px; }
+  .logo { font-size: 17px; font-weight: 800; color: var(--text); margin-right: 36px; white-space: nowrap; }
+  .logo span { color: var(--success); }
+  .nav { display: flex; gap: 2px; flex: 1; }
+  .ni { display: flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text3); white-space: nowrap; cursor: default; }
+  .ni.act { background: var(--success-soft); color: var(--success-dark); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .role-pill { padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase; background: var(--success-soft); color: var(--success-dark); }
+  .ava { width: 32px; height: 32px; border-radius: 50%; background: var(--success); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+  .bell { position: relative; cursor: default; }
+  .bell-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; border: 1.5px solid var(--surface); }
+
+  /* ── CONTENT ─────────────────────────────────────── */
+  .body { padding: 24px; }
+  .ph { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; }
+  .ph-left .pt { font-size: 21px; font-weight: 700; color: var(--text); }
+  .ph-left .ps { font-size: 13px; color: var(--text3); margin-top: 3px; }
+  .ph-right { display: flex; gap: 8px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: default; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-light   { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); }
+  .btn-ghost   { background: transparent; color: var(--text3); border: 1px solid var(--border2); }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+  .btn-xs { padding: 3px 9px; font-size: 11px; }
+  .btn-danger-soft { background: var(--danger-soft); color: var(--danger); }
+
+  /* ── STATS ───────────────────────────────────────── */
+  .stats { display: grid; gap: 14px; margin-bottom: 22px; }
+  .stats-4 { grid-template-columns: repeat(4,1fr); }
+  .stats-3 { grid-template-columns: repeat(3,1fr); }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px; }
+  .stat-ico { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .ic-green  { background: var(--success-soft); }
+  .ic-blue   { background: var(--primary-soft); }
+  .ic-orange { background: var(--orange-soft); }
+  .ic-red    { background: var(--danger-soft); }
+  .ic-purple { background: var(--info-soft); }
+  .stat-label { font-size: 11px; color: var(--text3); font-weight: 500; }
+  .stat-val   { font-size: 24px; font-weight: 800; color: var(--text); line-height: 1; }
+  .stat-hint  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── CARD ────────────────────────────────────────── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .ch { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 18px 12px; border-bottom: 1px solid var(--border); }
+  .ct { font-size: 14px; font-weight: 700; color: var(--text); }
+  .cs { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+
+  /* ── TABLE ───────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { padding: 9px 15px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 11px 15px; border-bottom: 1px solid var(--border2); color: var(--text2); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .mono { font-family: monospace; font-size: 12px; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .b-success { background: var(--success-soft); color: var(--success-dark); }
+  .b-warning { background: var(--warning-soft); color: var(--warning); }
+  .b-muted   { background: var(--surface3);     color: var(--muted); }
+  .b-danger  { background: var(--danger-soft);  color: var(--danger); }
+  .b-blue    { background: var(--primary-soft); color: var(--primary); }
+  .b-info    { background: var(--info-soft);    color: var(--info); }
+
+  /* ── PRODUCT GRID ────────────────────────────────── */
+  .product-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; padding: 18px; }
+  .pc { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); }
+  .pc-img { height: 100px; background: var(--surface3); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .pc-body { padding: 12px; }
+  .pc-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .pc-sku  { font-size: 11px; color: var(--muted); margin-bottom: 5px; font-family: monospace; }
+  .pc-cat  { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+  .pc-prices { display: flex; align-items: baseline; gap: 6px; }
+  .pc-price  { font-size: 18px; font-weight: 800; color: var(--success-dark); }
+  .pc-price-unit { font-size: 11px; color: var(--muted); }
+  .pc-box-price { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .pc-upb { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .pc-active { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .toggle { width: 36px; height: 20px; border-radius: 10px; background: var(--success); position: relative; cursor: default; }
+  .toggle-dot { position: absolute; right: 3px; top: 3px; width: 14px; height: 14px; background: #fff; border-radius: 50%; }
+
+  /* ── ORDER DETAIL ────────────────────────────────── */
+  .order-meta { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; padding: 16px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .om-item { }
+  .om-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 3px; }
+  .om-val   { font-size: 14px; font-weight: 600; color: var(--text); }
+
+  /* ── CHART MOCK ──────────────────────────────────── */
+  .chart-mock { padding: 20px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
+  .chart-bar { flex: 1; border-radius: 6px 6px 0 0; min-width: 20px; opacity: .85; transition: opacity .2s; }
+  .chart-bar:hover { opacity: 1; }
+  .chart-labels { display: flex; gap: 8px; margin-top: 6px; }
+  .chart-label { flex: 1; text-align: center; font-size: 10px; color: var(--muted); }
+  .chart-grid { position: relative; }
+
+  /* ── PROGRESS BAR ────────────────────────────────── */
+  .progress-wrap { background: var(--surface2); border-radius: 100px; height: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 100px; }
+
+  /* ── TOP ROW ─────────────────────────────────────── */
+  .top-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border2); }
+  .top-row:last-child { border-bottom: none; }
+  .top-rank { width: 24px; height: 24px; border-radius: 50%; background: var(--surface3); color: var(--muted); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .top-rank.r1 { background: var(--warning-soft); color: var(--warning); }
+  .top-rank.r2 { background: var(--surface3); color: var(--text2); }
+  .top-rank.r3 { background: var(--orange-soft); color: var(--orange); }
+  .top-body  { flex: 1; }
+  .top-name  { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .top-bar-wrap { background: var(--surface3); border-radius: 100px; height: 5px; overflow: hidden; }
+  .top-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #17c653, #0d9e40); }
+  .top-value { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+  .top-count { font-size: 11px; color: var(--muted); width: 50px; text-align: right; }
+
+  /* ── DEBT SUMMARY ────────────────────────────────── */
+  .debt-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 22px; }
+  .ds-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .ds-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .ds-val   { font-size: 26px; font-weight: 800; }
+
+  /* ── INVITE ──────────────────────────────────────── */
+  .invite-flow { display: flex; align-items: center; gap: 0; margin: 28px 0; flex-wrap: wrap; justify-content: center; }
+  .if-step { display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 16px 22px; text-align: center; min-width: 130px; }
+  .if-ico   { font-size: 28px; }
+  .if-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.8); }
+  .if-sub   { font-size: 10px; color: rgba(255,255,255,.4); }
+  .if-arrow { color: rgba(255,255,255,.2); font-size: 22px; padding: 0 8px; }
+  .invite-link-box { background: #f0fff6; border: 1.5px dashed var(--success); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .ilb-url  { font-family: monospace; font-size: 13px; color: var(--success-dark); font-weight: 600; }
+  .ilb-hint { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .wholesaler-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border2); }
+  .wholesaler-row:last-child { border-bottom: none; }
+  .wholesaler-ava { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; background: var(--primary-soft); }
+  .wholesaler-info { flex: 1; }
+  .wholesaler-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .wholesaler-meta { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .ws-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+  .ws-default { background: var(--surface3);   color: var(--muted); }
+  .ws-invite  { background: var(--success-soft); color: var(--success-dark); }
+
+  /* ── INVOICE MOCK ────────────────────────────────── */
+  .invoice-wrap { padding: 24px; max-width: 640px; }
+  .invoice-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+  .invoice-company { font-size: 18px; font-weight: 800; color: var(--text); }
+  .invoice-meta { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+  .invoice-badge { background: var(--success-soft); color: var(--success-dark); border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 700; }
+  .invoice-number { font-size: 13px; color: var(--text3); margin-bottom: 2px; }
+  .invoice-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--surface2); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; border: 1px solid var(--border); }
+  .ip-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: .5px; margin-bottom: 4px; }
+  .ip-val   { font-size: 13px; font-weight: 600; color: var(--text); }
+  .ip-sub   { font-size: 11px; color: var(--text3); }
+
+  /* ── PROFILE ─────────────────────────────────────── */
+  .profile-layout { display: grid; grid-template-columns: 200px 1fr; }
+  .profile-nav { border-right: 1px solid var(--border); padding: 16px 0; }
+  .pn-item { padding: 9px 18px; font-size: 13px; font-weight: 500; color: var(--text3); }
+  .pn-item.active { color: var(--success-dark); font-weight: 600; background: var(--success-soft); border-left: 3px solid var(--success); }
+  .profile-content { padding: 24px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-group { margin-bottom: 14px; }
+  .fl { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 5px; display: block; }
+  .fc { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border2); border-radius: 8px; font-size: 13px; color: var(--text); background: var(--surface); font-family: var(--font); }
+  .fc-focus { border-color: var(--success); }
+  .wa-row { display: flex; align-items: center; gap: 8px; }
+  .wa-prefix { padding: 8px 12px; background: var(--success-soft); border: 1.5px solid var(--success); border-right: none; border-radius: 8px 0 0 8px; font-size: 13px; color: var(--success-dark); font-weight: 600; white-space: nowrap; }
+  .wa-input { flex: 1; border-radius: 0 8px 8px 0; }
+
+  /* ── DARK SECTION ────────────────────────────────── */
+  .dark-section { background: #0f172a; padding: 80px; }
+  .section-title { font-size: 36px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
+  .section-sub   { font-size: 16px; color: #64748b; text-align: center; margin-bottom: 48px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+  .step-card { background: #1e293b; border-radius: 14px; padding: 24px; position: relative; }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; background: rgba(23,198,83,.15); border: 1.5px solid rgba(23,198,83,.4); color: #6ee7a0; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .step-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; }
+  .step-desc  { font-size: 12px; color: #64748b; line-height: 1.5; }
+  .step-tag   { display: inline-block; margin-top: 10px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(23,198,83,.1); color: #6ee7a0; border: 1px solid rgba(23,198,83,.3); font-family: monospace; }
+
+  /* ── CTA ─────────────────────────────────────────── */
+  .cta-section {
+    background: linear-gradient(135deg, #0a1f10 0%, #0f172a 100%);
+    padding: 100px 40px; text-align: center;
+  }
+  .cta-section h2 { font-size: 40px; font-weight: 800; color: #fff; margin-bottom: 14px; }
+  .cta-section p  { font-size: 17px; color: #64748b; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn-primary {
+    padding: 14px 32px; background: var(--success); color: #fff;
+    border-radius: 10px; font-size: 15px; font-weight: 700;
+    border: none; cursor: default;
+  }
+  .cta-btn-secondary {
+    padding: 14px 32px; background: transparent; color: #6ee7a0;
+    border: 1.5px solid rgba(23,198,83,.4); border-radius: 10px;
+    font-size: 15px; font-weight: 700; cursor: default;
+  }
+  .cta-sub { margin-top: 18px; font-size: 12px; color: #334155; }
+
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, #1e293b 30%, #1e293b 70%, transparent); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     COVER
+══════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-eyebrow">🏭 Для поставщиков посуды</div>
+  <h1>Ваши оптовики —<br>в одном <span>кабинете</span></h1>
+  <p class="cover-sub">Управляйте каталогом, принимайте заказы и контролируйте долги без звонков и Excel-таблиц</p>
+  <div class="cover-chips">
+    <div class="chip"><span class="chip-icon">📦</span> Каталог товаров с фото</div>
+    <div class="chip"><span class="chip-icon">🛒</span> Входящие заказы онлайн</div>
+    <div class="chip"><span class="chip-icon">💰</span> Учёт долгов</div>
+    <div class="chip"><span class="chip-icon">📊</span> Аналитика продаж</div>
+    <div class="chip"><span class="chip-icon">🔗</span> Invite-ссылки</div>
+    <div class="chip"><span class="chip-icon">💬</span> WhatsApp в один клик</div>
+  </div>
+  <div class="cover-hint">↓ прокрути вниз</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     VALUE PROPS
+══════════════════════════════════════════════════ -->
+<div class="value-section">
+  <div style="text-align:center;margin-bottom:48px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#475569;margin-bottom:12px">Зачем это нужно</div>
+    <div style="font-size:34px;font-weight:800;color:#fff">Прекратите вести учёт в мессенджерах</div>
+    <div style="font-size:16px;color:#64748b;margin-top:10px">PosudaMarket заменяет переписку в WhatsApp, таблицы Excel и устные договорённости</div>
+  </div>
+  <div class="value-grid">
+    <div class="value-card vc-green">
+      <div class="vc-icon">📋</div>
+      <h3>Заказы без звонков</h3>
+      <p>Оптовики сами оформляют заказы через каталог. Вы получаете уведомление и подтверждаете одной кнопкой. Накладная генерируется автоматически.</p>
+    </div>
+    <div class="value-card vc-blue">
+      <div class="vc-icon">💰</div>
+      <h3>Долги под контролем</h3>
+      <p>Каждый подтверждённый заказ автоматически создаёт запись о долге. Оптовик платит — вы фиксируете оплату с фото чека. История всегда под рукой.</p>
+    </div>
+    <div class="value-card vc-orange">
+      <div class="vc-icon">📊</div>
+      <h3>Аналитика продаж</h3>
+      <p>Выручка по месяцам, топ оптовиков по обороту, топ товаров — всё в реальном времени. Экспорт в Excel для бухгалтерии.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION: КАК ЭТО РАБОТАЕТ
+══════════════════════════════════════════════════ -->
+<div class="dark-section">
+  <div class="section-title">Как работает платформа</div>
+  <div class="section-sub">Четыре шага от регистрации до первого заказа</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">Заполняете каталог</div>
+      <div class="step-desc">Добавляете товары с фото, ценами и штрихкодами. Организуете по категориям.</div>
+      <div class="step-tag">products</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">Приглашаете оптовиков</div>
+      <div class="step-desc">Генерируете invite-ссылку и отправляете клиентам. Они подключаются за 30 секунд.</div>
+      <div class="step-tag">invite-code</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">Принимаете заказы</div>
+      <div class="step-desc">Оптовик оформляет заказ онлайн. Вы подтверждаете, выставляете скидку, создаётся накладная.</div>
+      <div class="step-tag">orders</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-title">Контролируете оплаты</div>
+      <div class="step-desc">Каждый заказ отслеживается до полной оплаты. Долг виден по каждому клиенту.</div>
+      <div class="step-tag">debts</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION: КАТАЛОГ ТОВАРОВ
+══════════════════════════════════════════════════ -->
+<div class="section-cover sc-products">
+  <h2>📦 Каталог товаров</h2>
+  <p>Создайте свой прайс-лист с фотографиями, артикулами и штрихкодами прямо в браузере</p>
+  <div class="perm-tags">
+    <span class="tag tag-green">Фото товаров</span>
+    <span class="tag tag-green">Артикул / Штрихкод</span>
+    <span class="tag tag-green">Цена × коробки</span>
+    <span class="tag tag-green">Категории</span>
+    <span class="tag tag-green">Скрыть / Показать</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="screen-label">Экран — Мои товары</div>
+  <div class="screen-title">Весь ассортимент в одном месте</div>
+  <div class="screen-desc">Цена указывается за единицу, система автоматически считает цену коробки. Оптовик видит цену именно за коробку при оформлении заказа.</div>
+
+  <div class="note n-green">
+    <span>💡</span>
+    <div><strong>Логика ценообразования</strong><p>Цена/коробка = цена за единицу × кол-во единиц в коробке. Оптовики всегда заказывают коробками — это исключает недоразумения с количеством.</p></div>
+  </div>
+
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni act">📦 Товары</div>
+        <div class="ni">🛒 Заказы</div>
+        <div class="ni">💰 Долги</div>
+        <div class="ni">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <div class="bell">🔔<div class="bell-dot"></div></div>
+        <div class="role-pill">Поставщик</div>
+        <div class="ava">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="pt">Мои товары</div>
+          <div class="ps">42 позиции в каталоге</div>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-ghost btn-sm">⬇ Экспорт</button>
+          <button class="btn btn-success btn-sm">+ Новый товар</button>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        <div class="pc">
+          <div class="pc-img" style="background:#f0fff6">🍲</div>
+          <div class="pc-body">
+            <div class="pc-name">Кастрюля «Премиум» 5л</div>
+            <div class="pc-sku">SKU-0042 · 4607123456789</div>
+            <div class="pc-cat">📂 Кастрюли</div>
+            <div class="pc-prices">
+              <div class="pc-price">2 400 ₸</div>
+              <div class="pc-price-unit">/шт</div>
+            </div>
+            <div class="pc-box-price" style="color:var(--success-dark);font-weight:700">28 800 ₸/кор (×12)</div>
+            <div class="pc-active">
+              <span class="badge b-success">Активен</span>
+              <div class="toggle"><div class="toggle-dot"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img" style="background:#eff6ff">🥘</div>
+          <div class="pc-body">
+            <div class="pc-name">Сковорода 28 см антипригар</div>
+            <div class="pc-sku">SKU-0087 · 4607123456790</div>
+            <div class="pc-cat">📂 Сковородки</div>
+            <div class="pc-prices">
+              <div class="pc-price">1 800 ₸</div>
+              <div class="pc-price-unit">/шт</div>
+            </div>
+            <div class="pc-box-price" style="color:var(--success-dark);font-weight:700">21 600 ₸/кор (×12)</div>
+            <div class="pc-active">
+              <span class="badge b-success">Активен</span>
+              <div class="toggle"><div class="toggle-dot"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img" style="background:#fff8ea">🫖</div>
+          <div class="pc-body">
+            <div class="pc-name">Чайник эмалированный 3л</div>
+            <div class="pc-sku">SKU-0113</div>
+            <div class="pc-cat">📂 Чайники</div>
+            <div class="pc-prices">
+              <div class="pc-price">1 200 ₸</div>
+              <div class="pc-price-unit">/шт</div>
+            </div>
+            <div class="pc-box-price" style="color:var(--success-dark);font-weight:700">14 400 ₸/кор (×12)</div>
+            <div class="pc-active">
+              <span class="badge b-success">Активен</span>
+              <div class="toggle"><div class="toggle-dot"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img" style="background:#fff0f3">🍽️</div>
+          <div class="pc-body">
+            <div class="pc-name">Набор тарелок 6 шт</div>
+            <div class="pc-sku">SKU-0201</div>
+            <div class="pc-cat">📂 Столовая посуда</div>
+            <div class="pc-prices">
+              <div class="pc-price">3 600 ₸</div>
+              <div class="pc-price-unit">/компл</div>
+            </div>
+            <div class="pc-box-price" style="color:var(--success-dark);font-weight:700">43 200 ₸/кор (×12)</div>
+            <div class="pc-active">
+              <span class="badge b-muted">Скрыт</span>
+              <div class="toggle" style="background:var(--border2)"><div class="toggle-dot" style="left:3px;right:auto"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION: ЗАКАЗЫ
+══════════════════════════════════════════════════ -->
+<div class="section-cover sc-orders">
+  <h2>🛒 Входящие заказы</h2>
+  <p>Оптовик оформил заказ — вы получили уведомление. Подтвердите, задайте скидку, накладная готова</p>
+  <div class="perm-tags">
+    <span class="tag tag-blue">Новые / Подтверждённые</span>
+    <span class="tag tag-blue">Индивидуальная скидка</span>
+    <span class="tag tag-blue">Накладная PDF</span>
+    <span class="tag tag-blue">Экспорт в Excel</span>
+    <span class="tag tag-blue">WhatsApp клиента</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="screen-label">Экран — Заказы</div>
+  <div class="screen-title">Весь поток заказов от оптовиков</div>
+  <div class="screen-desc">Новые заказы приходят со статусом «черновик». После подтверждения создаётся долг и доступна накладная.</div>
+
+  <div class="note n-blue">
+    <span>📋</span>
+    <div><strong>Статусная машина заказа</strong><p>draft (новый) → confirmed (подтверждён + долг создан) → shipped (отгружен). При подтверждении вы можете задать процент скидки для конкретного оптовика.</p></div>
+  </div>
+
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">📦 Товары</div>
+        <div class="ni act">🛒 Заказы</div>
+        <div class="ni">💰 Долги</div>
+        <div class="ni">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <div class="bell">🔔<div class="bell-dot"></div></div>
+        <div class="role-pill">Поставщик</div>
+        <div class="ava">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="pt">Заказы</div>
+          <div class="ps">18 заказов</div>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-ghost btn-sm">⬇ Excel</button>
+          <select style="padding:6px 10px;border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2)">
+            <option>Все статусы</option>
+            <option>Новые</option>
+            <option>Подтверждённые</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Оптовик</th>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th style="text-align:right">Сумма</th>
+                <th style="text-align:right">Скидка</th>
+                <th style="text-align:right">К оплате</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background:#f0fff6">
+                <td><span class="mono">ORD-00218</span></td>
+                <td><strong>Магазин «Уют»</strong><div style="font-size:11px;color:var(--muted)">+7 701 234 56 78</div></td>
+                <td style="color:var(--text3)">28.05.2026</td>
+                <td><span class="badge" style="background:#fff8ea;color:var(--warning)">Новый</span></td>
+                <td style="text-align:right">86 400 ₸</td>
+                <td style="text-align:right;color:var(--muted)">—</td>
+                <td style="text-align:right;font-weight:700">86 400 ₸</td>
+                <td>
+                  <button class="btn btn-success btn-xs">✓ Подтвердить</button>
+                  <button class="btn btn-ghost btn-xs" style="margin-left:4px">Открыть</button>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">ORD-00217</span></td>
+                <td><strong>ИП Серикова</strong><div style="font-size:11px;color:var(--muted)">+7 702 345 67 89</div></td>
+                <td style="color:var(--text3)">27.05.2026</td>
+                <td><span class="badge b-success">Подтверждён</span></td>
+                <td style="text-align:right">144 000 ₸</td>
+                <td style="text-align:right;color:var(--success-dark)">5%</td>
+                <td style="text-align:right;font-weight:700">136 800 ₸</td>
+                <td>
+                  <button class="btn btn-light btn-xs">Накладная</button>
+                  <button class="btn btn-ghost btn-xs" style="margin-left:4px">💬 WA</button>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">ORD-00216</span></td>
+                <td><strong>ТОО «Алем»</strong><div style="font-size:11px;color:var(--muted)">+7 707 456 78 90</div></td>
+                <td style="color:var(--text3)">26.05.2026</td>
+                <td><span class="badge b-success">Подтверждён</span></td>
+                <td style="text-align:right">57 600 ₸</td>
+                <td style="text-align:right;color:var(--muted)">—</td>
+                <td style="text-align:right;font-weight:700">57 600 ₸</td>
+                <td>
+                  <button class="btn btn-light btn-xs">Накладная</button>
+                  <button class="btn btn-ghost btn-xs" style="margin-left:4px">💬 WA</button>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">ORD-00215</span></td>
+                <td><strong>Магазин «Астана»</strong><div style="font-size:11px;color:var(--muted)">+7 708 567 89 01</div></td>
+                <td style="color:var(--text3)">25.05.2026</td>
+                <td><span class="badge b-muted">Черновик</span></td>
+                <td style="text-align:right">28 800 ₸</td>
+                <td style="text-align:right;color:var(--muted)">—</td>
+                <td style="text-align:right;font-weight:700">28 800 ₸</td>
+                <td>
+                  <button class="btn btn-success btn-xs">✓ Подтвердить</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Накладная -->
+      <div style="height:24px"></div>
+      <div class="screen-label" style="margin-top:0">Накладная — пример</div>
+      <div class="screen-title" style="font-size:18px">Автоматически создаётся при подтверждении</div>
+      <div class="card" style="margin-top:16px">
+        <div class="invoice-wrap">
+          <div class="invoice-header">
+            <div>
+              <div class="invoice-company">АК Посуда</div>
+              <div class="invoice-meta">Алматы, ул. Рыскулова 47<br>+7 701 234 56 78 · ak@posuda.kz</div>
+            </div>
+            <div style="text-align:right">
+              <div class="invoice-badge">✓ Подтверждён</div>
+              <div class="invoice-number" style="margin-top:8px">Накладная № ORD-00217</div>
+              <div style="font-size:12px;color:var(--muted)">27 мая 2026 г.</div>
+            </div>
+          </div>
+          <div class="invoice-parties">
+            <div>
+              <div class="ip-label">Поставщик</div>
+              <div class="ip-val">АК Посуда</div>
+              <div class="ip-sub">ИИН 123456789012</div>
+            </div>
+            <div>
+              <div class="ip-label">Покупатель</div>
+              <div class="ip-val">ИП Серикова Айгуль</div>
+              <div class="ip-sub">+7 702 345 67 89</div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Наименование</th>
+                <th style="text-align:center">Кор.</th>
+                <th style="text-align:center">Ед.</th>
+                <th style="text-align:right">Цена/кор.</th>
+                <th style="text-align:right">Сумма</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Кастрюля «Премиум» 5л</td><td style="text-align:center">2</td><td style="text-align:center">24</td><td style="text-align:right">28 800 ₸</td><td style="text-align:right;font-weight:600">57 600 ₸</td></tr>
+              <tr><td>2</td><td>Сковорода 28 см антипригар</td><td style="text-align:center">3</td><td style="text-align:center">36</td><td style="text-align:right">21 600 ₸</td><td style="text-align:right;font-weight:600">64 800 ₸</td></tr>
+              <tr><td>3</td><td>Чайник эмалированный 3л</td><td style="text-align:center">1</td><td style="text-align:center">12</td><td style="text-align:right">14 400 ₸</td><td style="text-align:right;font-weight:600">14 400 ₸</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td colspan="5" style="text-align:right;font-weight:700">Итого:</td><td style="text-align:right;font-weight:800">144 000 ₸</td></tr>
+              <tr><td colspan="5" style="text-align:right;color:var(--success-dark);font-weight:600">Скидка 5%:</td><td style="text-align:right;color:var(--success-dark);font-weight:800">−7 200 ₸</td></tr>
+              <tr style="background:var(--success-soft)"><td colspan="5" style="text-align:right;font-weight:800;color:var(--success-dark)">К оплате:</td><td style="text-align:right;font-weight:800;color:var(--success-dark);font-size:16px">136 800 ₸</td></tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION: ДОЛГИ
+══════════════════════════════════════════════════ -->
+<div class="section-cover sc-debts">
+  <h2>💰 Учёт долгов</h2>
+  <p>Каждый подтверждённый заказ — это автоматическая запись о долге. Фиксируйте оплаты с фото чека</p>
+  <div class="perm-tags">
+    <span class="tag tag-red">Непогашенные долги</span>
+    <span class="tag tag-orange">Частичная оплата</span>
+    <span class="tag tag-green">История платежей</span>
+    <span class="tag tag-blue">Фото чека</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="screen-label">Экран — Долги оптовиков</div>
+  <div class="screen-title">Вся дебиторская задолженность в одном месте</div>
+  <div class="screen-desc">Статусы: не оплачен → частично → оплачен. Каждый платёж логируется с датой, суммой и примечанием.</div>
+
+  <div class="note n-orange">
+    <span>💳</span>
+    <div><strong>Как фиксировать оплату</strong><p>Нажмите «+ Оплата», введите сумму и прикрепите фото чека или квитанции перевода. Долг пересчитывается мгновенно.</p></div>
+  </div>
+
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">📦 Товары</div>
+        <div class="ni">🛒 Заказы</div>
+        <div class="ni act">💰 Долги</div>
+        <div class="ni">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <div class="role-pill">Поставщик</div>
+        <div class="ava">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="pt">Долги оптовиков</div>
+          <div class="ps">Актуальные остатки по каждому клиенту</div>
+        </div>
+      </div>
+      <div class="debt-summary">
+        <div class="ds-card">
+          <div class="ds-label">Общий долг</div>
+          <div class="ds-val" style="color:var(--danger)">384 600 ₸</div>
+        </div>
+        <div class="ds-card">
+          <div class="ds-label">Всего выставлено</div>
+          <div class="ds-val">1 248 000 ₸</div>
+        </div>
+        <div class="ds-card">
+          <div class="ds-label">Оплачено</div>
+          <div class="ds-val" style="color:var(--success-dark)">863 400 ₸</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Оптовик</th>
+                <th>Заказ</th>
+                <th>Дата</th>
+                <th style="text-align:right">Сумма заказа</th>
+                <th style="text-align:right">Оплачено</th>
+                <th style="text-align:right">Остаток</th>
+                <th>Статус</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Магазин «Уют»</strong><div style="font-size:11px;color:var(--muted)">+7 701 234 56 78</div></td>
+                <td><span class="mono">ORD-00217</span></td>
+                <td style="color:var(--text3)">27.05.2026</td>
+                <td style="text-align:right">136 800 ₸</td>
+                <td style="text-align:right;color:var(--success-dark)">0 ₸</td>
+                <td style="text-align:right;font-weight:700;color:var(--danger)">136 800 ₸</td>
+                <td><span class="badge b-danger">Не оплачен</span></td>
+                <td><button class="btn btn-primary btn-xs">+ Оплата</button> <button class="btn btn-ghost btn-xs" style="margin-left:4px">История</button></td>
+              </tr>
+              <tr>
+                <td><strong>ИП Серикова</strong><div style="font-size:11px;color:var(--muted)">+7 702 345 67 89</div></td>
+                <td><span class="mono">ORD-00214</span></td>
+                <td style="color:var(--text3)">20.05.2026</td>
+                <td style="text-align:right">86 400 ₸</td>
+                <td style="text-align:right;color:var(--success-dark)">50 000 ₸</td>
+                <td style="text-align:right;font-weight:700;color:var(--warning)">36 400 ₸</td>
+                <td><span class="badge b-warning">Частично</span></td>
+                <td><button class="btn btn-primary btn-xs">+ Оплата</button> <button class="btn btn-ghost btn-xs" style="margin-left:4px">История</button></td>
+              </tr>
+              <tr>
+                <td><strong>ТОО «Алем»</strong><div style="font-size:11px;color:var(--muted)">+7 707 456 78 90</div></td>
+                <td><span class="mono">ORD-00211</span></td>
+                <td style="color:var(--text3)">10.05.2026</td>
+                <td style="text-align:right">57 600 ₸</td>
+                <td style="text-align:right;color:var(--success-dark)">57 600 ₸</td>
+                <td style="text-align:right;font-weight:700;color:var(--success-dark)">0 ₸</td>
+                <td><span class="badge b-success">Оплачен</span></td>
+                <td><button class="btn btn-ghost btn-xs">История</button></td>
+              </tr>
+              <tr>
+                <td><strong>Магазин «Астана»</strong><div style="font-size:11px;color:var(--muted)">+7 708 567 89 01</div></td>
+                <td><span class="mono">ORD-00209</span></td>
+                <td style="color:var(--text3)">05.05.2026</td>
+                <td style="text-align:right">211 400 ₸</td>
+                <td style="text-align:right;color:var(--success-dark)">0 ₸</td>
+                <td style="text-align:right;font-weight:700;color:var(--danger)">211 400 ₸</td>
+                <td><span class="badge b-danger">Не оплачен</span></td>
+                <td><button class="btn btn-primary btn-xs">+ Оплата</button> <button class="btn btn-ghost btn-xs" style="margin-left:4px">История</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION: АНАЛИТИКА
+══════════════════════════════════════════════════ -->
+<div class="section-cover sc-analytics">
+  <h2>📊 Аналитика продаж</h2>
+  <p>Динамика выручки, топ оптовиков и самые продаваемые товары — за любой период</p>
+  <div class="perm-tags">
+    <span class="tag tag-purple">Выручка / месяц</span>
+    <span class="tag tag-purple">Топ оптовиков</span>
+    <span class="tag tag-purple">Топ товаров</span>
+    <span class="tag tag-purple">Фильтр по дате</span>
+    <span class="tag tag-blue">Экспорт в Excel</span>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="screen-label">Экран — Аналитика</div>
+  <div class="screen-title">Показатели продаж в реальном времени</div>
+  <div class="screen-desc">Выберите период — день, месяц, квартал или год. Все цифры пересчитываются мгновенно.</div>
+
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">📦 Товары</div>
+        <div class="ni">🛒 Заказы</div>
+        <div class="ni">💰 Долги</div>
+        <div class="ni act">📊 Аналитика</div>
+      </div>
+      <div class="topbar-right">
+        <div class="role-pill">Поставщик</div>
+        <div class="ava">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="pt">Аналитика</div>
+          <div class="ps">Продажи и выручка за период</div>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-ghost btn-sm">Месяц</button>
+          <button class="btn btn-primary btn-sm">Квартал</button>
+          <button class="btn btn-ghost btn-sm">Год</button>
+        </div>
+      </div>
+
+      <div class="stats stats-4">
+        <div class="stat">
+          <div class="stat-ico ic-green">🛒</div>
+          <div><div class="stat-label">Заказов подтверждено</div><div class="stat-val">47</div><div class="stat-hint">из 52 всего</div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico ic-blue">📈</div>
+          <div><div class="stat-label">Выручка</div><div class="stat-val" style="font-size:18px">2 184 000 ₸</div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico ic-green">✅</div>
+          <div><div class="stat-label">Оплачено</div><div class="stat-val" style="font-size:18px;color:var(--success-dark)">1 799 400 ₸</div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico ic-red">⚠️</div>
+          <div><div class="stat-label">Долг</div><div class="stat-val" style="font-size:18px;color:var(--danger)">384 600 ₸</div><div class="stat-hint">8 оптовиков</div></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="ch"><div class="ct">Выручка по месяцам</div><div class="cs">последние 6 месяцев</div></div>
+          <div class="chart-mock">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height:55%;background:linear-gradient(180deg,#17c653,#0d9e40)"></div>
+              <div class="chart-bar" style="height:70%;background:linear-gradient(180deg,#17c653,#0d9e40)"></div>
+              <div class="chart-bar" style="height:48%;background:linear-gradient(180deg,#17c653,#0d9e40)"></div>
+              <div class="chart-bar" style="height:82%;background:linear-gradient(180deg,#17c653,#0d9e40)"></div>
+              <div class="chart-bar" style="height:91%;background:linear-gradient(180deg,#17c653,#0d9e40)"></div>
+              <div class="chart-bar" style="height:100%;background:linear-gradient(180deg,#17c653,#0d9e40);opacity:1"></div>
+            </div>
+            <div class="chart-labels">
+              <div class="chart-label">Дек</div>
+              <div class="chart-label">Янв</div>
+              <div class="chart-label">Фев</div>
+              <div class="chart-label">Мар</div>
+              <div class="chart-label">Апр</div>
+              <div class="chart-label">Май</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><div class="ct">Топ оптовиков</div><div class="cs">по выручке за период</div></div>
+          <div>
+            <div class="top-row">
+              <div class="top-rank r1">1</div>
+              <div class="top-body"><div class="top-name">Магазин «Астана»</div><div class="progress-wrap"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,#17c653,#0d9e40)"></div></div></div>
+              <div class="top-value">684 000 ₸</div>
+              <div class="top-count">14 зак.</div>
+            </div>
+            <div class="top-row">
+              <div class="top-rank r2">2</div>
+              <div class="top-body"><div class="top-name">ИП Серикова Айгуль</div><div class="progress-wrap"><div class="progress-fill" style="width:71%;background:linear-gradient(90deg,#17c653,#0d9e40)"></div></div></div>
+              <div class="top-value">487 200 ₸</div>
+              <div class="top-count">11 зак.</div>
+            </div>
+            <div class="top-row">
+              <div class="top-rank r3">3</div>
+              <div class="top-body"><div class="top-name">ТОО «Алем»</div><div class="progress-wrap"><div class="progress-fill" style="width:56%;background:linear-gradient(90deg,#17c653,#0d9e40)"></div></div></div>
+              <div class="top-value">384 000 ₸</div>
+              <div class="top-count">8 зак.</div>
+            </div>
+            <div class="top-row">
+              <div class="top-rank">4</div>
+              <div class="top-body"><div class="top-name">Магазин «Уют»</div><div class="progress-wrap"><div class="progress-fill" style="width:41%;background:linear-gradient(90deg,#17c653,#0d9e40)"></div></div></div>
+              <div class="top-value">280 800 ₸</div>
+              <div class="top-count">6 зак.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ch"><div class="ct">Топ товаров по выручке</div><button class="btn btn-ghost btn-sm">⬇ Экспорт</button></div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Товар</th><th style="text-align:right">Заказов</th><th style="text-align:right">Коробок</th><th style="text-align:right">Единиц</th><th style="text-align:right">Выручка</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="color:var(--warning);font-weight:700">1</td><td>Кастрюля «Премиум» 5л</td><td style="text-align:right">28</td><td style="text-align:right">112</td><td style="text-align:right">1 344</td><td style="text-align:right;font-weight:700;color:var(--success-dark)">3 225 600 ₸</td></tr>
+            <tr><td style="font-weight:600;color:var(--text3)">2</td><td>Сковорода 28 см антипригар</td><td style="text-align:right">22</td><td style="text-align:right">88</td><td style="text-align:right">1 056</td><td style="text-align:right;font-weight:700;color:var(--success-dark)">1 900 800 ₸</td></tr>
+            <tr><td style="font-weight:600;color:var(--text3)">3</td><td>Чайник эмалированный 3л</td><td style="text-align:right">19</td><td style="text-align:right">57</td><td style="text-align:right">684</td><td style="text-align:right;font-weight:700;color:var(--success-dark)">820 800 ₸</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION: INVITE
+══════════════════════════════════════════════════ -->
+<div class="section-cover sc-invite">
+  <h2>🔗 Invite-система</h2>
+  <p>Один раз сгенерируйте ссылку — клиент подключается за 30 секунд и сразу видит ваш каталог</p>
+  <div class="invite-flow">
+    <div class="if-step"><div class="if-ico">🏭</div><div class="if-label">Вы генерируете код</div><div class="if-sub">в кабинете поставщика</div></div>
+    <div class="if-arrow">→</div>
+    <div class="if-step"><div class="if-ico">💬</div><div class="if-label">Отправляете ссылку</div><div class="if-sub">WhatsApp / мессенджер</div></div>
+    <div class="if-arrow">→</div>
+    <div class="if-step"><div class="if-ico">🔓</div><div class="if-label">Оптовик вводит код</div><div class="if-sub">в своём кабинете</div></div>
+    <div class="if-arrow">→</div>
+    <div class="if-step"><div class="if-ico">✅</div><div class="if-label">Подключён и заказывает</div><div class="if-sub">видит ваш каталог</div></div>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="screen-label">Экран — Профиль / Мои оптовики</div>
+  <div class="screen-title">Управляйте доступом к каталогу</div>
+  <div class="screen-desc">Сгенерируйте invite-код и отправьте клиенту. Код одноразовый. Видите всех подключённых оптовиков.</div>
+
+  <div class="note n-green">
+    <span>🔗</span>
+    <div><strong>Invite-код — это безопасно</strong><p>Код одноразовый и может иметь срок действия. Подключённый оптовик автоматически получает доступ к вашему каталогу без участия администратора.</p></div>
+  </div>
+
+  <div class="screen-wrap">
+    <div class="topbar">
+      <div class="logo">Posuda<span>Market</span></div>
+      <div class="nav">
+        <div class="ni">📦 Товары</div>
+        <div class="ni">🛒 Заказы</div>
+        <div class="ni">💰 Долги</div>
+        <div class="ni">📊 Аналитика</div>
+        <div class="ni act">👤 Профиль</div>
+      </div>
+      <div class="topbar-right">
+        <div class="role-pill">Поставщик</div>
+        <div class="ava">АК</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="two-col">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="ch"><div class="ct">Invite-ссылка</div></div>
+            <div style="padding:16px">
+              <div class="invite-link-box">
+                <div>
+                  <div class="ilb-url">posudamarket.local/invite/AK-X7F2Q</div>
+                  <div class="ilb-hint">Одноразовый · действует 30 дней</div>
+                </div>
+                <button class="btn btn-success btn-sm">📋 Скопировать</button>
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-ghost btn-sm" style="flex:1">🔄 Новый код</button>
+                <button class="btn" style="flex:1;background:#25D366;color:#fff;font-size:12px">💬 Отправить в WhatsApp</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Мои оптовики</div><div class="cs">8 клиентов</div></div>
+            <div>
+              <div class="wholesaler-row">
+                <div class="wholesaler-ava">🏪</div>
+                <div class="wholesaler-info"><div class="wholesaler-name">Магазин «Астана»</div><div class="wholesaler-meta">+7 708 567 89 01 · подключён 15.01.2026</div></div>
+                <span class="ws-tag ws-default">По умолч.</span>
+              </div>
+              <div class="wholesaler-row">
+                <div class="wholesaler-ava">👤</div>
+                <div class="wholesaler-info"><div class="wholesaler-name">ИП Серикова Айгуль</div><div class="wholesaler-meta">+7 702 345 67 89 · подключён 03.03.2026</div></div>
+                <span class="ws-tag ws-invite">Инвайт</span>
+              </div>
+              <div class="wholesaler-row">
+                <div class="wholesaler-ava">🏢</div>
+                <div class="wholesaler-info"><div class="wholesaler-name">ТОО «Алем»</div><div class="wholesaler-meta">+7 707 456 78 90 · подключён 10.04.2026</div></div>
+                <span class="ws-tag ws-invite">Инвайт</span>
+              </div>
+              <div class="wholesaler-row">
+                <div class="wholesaler-ava">🏪</div>
+                <div class="wholesaler-info"><div class="wholesaler-name">Магазин «Уют»</div><div class="wholesaler-meta">+7 701 234 56 78 · подключён 22.04.2026</div></div>
+                <span class="ws-tag ws-default">По умолч.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="ch"><div class="ct">Профиль компании</div></div>
+            <div class="profile-content">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="fl">Название компании</label>
+                  <input class="fc" value="АК Посуда" readonly />
+                </div>
+                <div class="form-group">
+                  <label class="fl">Телефон</label>
+                  <input class="fc" value="+7 701 234 56 78" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="fl">WhatsApp номер</label>
+                <div class="wa-row">
+                  <div class="wa-prefix">wa.me/</div>
+                  <input class="fc wa-input fc-focus" value="77012345678" readonly />
+                </div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">Оптовики видят кнопку «Написать в WhatsApp» рядом с накладной</div>
+              </div>
+              <div class="form-group">
+                <label class="fl">Адрес</label>
+                <input class="fc" value="Алматы, ул. Рыскулова 47" readonly />
+              </div>
+              <button class="btn btn-success btn-sm" style="margin-top:4px">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CTA
+══════════════════════════════════════════════════ -->
+<div class="cta-section">
+  <h2>Готовы попробовать?</h2>
+  <p>Настройте каталог и пригласите первого оптовика за 15 минут</p>
+  <div class="cta-btns">
+    <button class="cta-btn-primary">Начать бесплатно</button>
+    <button class="cta-btn-secondary">Посмотреть демо →</button>
+  </div>
+  <div class="cta-sub">Пробный период · без привязки карты · поддержка в WhatsApp</div>
+</div>
+
+</body>
+</html>
